@@ -1,28 +1,36 @@
 // getURL.js
 const axios = require('axios');
+const stringSimilarity = require('string-similarity');
+const Jikan = require('jikan4.js')
+const client = new Jikan.Client();
 const JIKAN_API_BASE_URL = 'https://api.jikan.moe/v4';
 
-async function getURL(passedMangaName) {
-
-    const mangaName = passedMangaName
-
+async function getAnime(message, searchString) {
     try {
-        //Gets raw manga data from JIKAN API using passed manga name. 
-        const mangaData = await axios.get(`${JIKAN_API_BASE_URL}/manga?q=${mangaName}`)
-        //JSON stringifies the raw manga data. 
-        const jsonData = JSON.stringify(mangaData.data);
-        //parses the JSON. 
-        const parsedData = JSON.parse(jsonData);
-        //dataURL returns FIRST INDEX OBJECT of parsed JSON. 
-        const dataURL = parsedData.data[0].url; 
+        const searchResults = await client.anime.search(searchString)
 
-        return dataURL;
+        const bestMatch = searchResults.reduce((best, anime) => {
+            const similarity = stringSimilarity.compareTwoStrings(searchString, anime.title.default);
+            if (similarity > best.similarity) {
+                return { similarity, anime };
+            }
+            return best;
+        }, { similarity: 0, anime: null });
+
+        if (bestMatch.anime) {
+            const result = {
+                //id: bestMatch.anime.id,
+                url: bestMatch.anime.url
+            };
+
+            message.channel.send((result.url).toString())
+        } else {
+            message.channel.send('No match found.');
+        }
     } catch (error) {
-        console.error('Error fetching manga data:', error);
-        message.channel.send('An error occurred while fetching manga data.');
+        console.error('Error:', error.message);
     }
 }
-
 
 module.exports = {
     name: 'url',
@@ -31,8 +39,7 @@ module.exports = {
         const passedMangaName = args.join(' ');
 
         try {
-            const url = await getURL(passedMangaName);
-            message.channel.send(`Manga URL: ${url}`);
+            const test = await getAnime(message, passedMangaName);
         } catch (error) {
             console.error('Error:', error.message);
             message.channel.send('An error occurred: ' + error.message);
