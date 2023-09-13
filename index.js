@@ -1,9 +1,16 @@
+//IMPORT DOTENV, AXIOS, DISCORD
 require('dotenv').config();
 const axios = require('axios');
-
 const { Client, IntentsBitField } = require('discord.js');
+
+//COMMAND PREFIX
 const PREFIX = '!';
 
+//COMMAND IMPORTS 
+const getCharacterCommand = require('./commands/getCharacter');
+const getUrlCommand = require('./commands/getURL');
+
+//JIKAN URL 
 const JIKAN_API_BASE_URL = 'https://api.jikan.moe/v4';
 
 const client = new Client({
@@ -19,32 +26,22 @@ client.on('ready', (c) => {
     console.log(`${c.user.tag + " is ready."}`);
 })
 
-
-
 client.on('messageCreate', async (message) => {
 
     if (message.author.bot) return;
 
     if (message.content.startsWith(PREFIX)) { 
-        const commandArgs = message.content.slice(PREFIX.length).trim().split(/ +/);
-        const command = commandArgs.shift().toLowerCase();
+        //args is the argument, i.e. !url One Piece would be One Piece
+        const args = message.content.slice(PREFIX.length).trim().split(/ +/);
+        //command is the command i.e. !url One Piece would be url 
+        const command = args.shift().toLowerCase();
 
-        if (command === 't') { 
-            const mangaName = commandArgs.join(' ');
-
-            try {
-                //message.channel.send(mangaName);
-                const response = await axios.get(`${JIKAN_API_BASE_URL}/manga?q=${mangaName}`)
-                const jsonData = JSON.stringify(response.data);
-                const parsedData = JSON.parse(jsonData);
-                const testurl = parsedData.data[0].url;
-                //const jsonData = JSON.stringify(response.data);
-
-                message.channel.send(testurl)
-            } catch (error) {
-                console.error('Error fetching manga data:', error);
-                message.channel.send('An error occurred while fetching manga data.');
-            }
+        if (command === getCharacterCommand.name) {
+            getCharacterCommand.execute(message, args);
+        } 
+        
+        if (command === getUrlCommand.name) {
+            getUrlCommand.execute(message, args);
         }
     }
     
