@@ -1,11 +1,9 @@
-// getURL.js
-const axios = require('axios');
+// getAnime.js
 const stringSimilarity = require('string-similarity');
 const Jikan = require('jikan4.js')
 const client = new Jikan.Client();
-const JIKAN_API_BASE_URL = 'https://api.jikan.moe/v4';
 
-async function getAnime(message, searchString) {
+async function getAnimeIDFromString(message, searchString) {
     try {
         const searchResults = await client.anime.search(searchString)
 
@@ -19,11 +17,11 @@ async function getAnime(message, searchString) {
 
         if (bestMatch.anime) {
             const result = {
-                //id: bestMatch.anime.id,
+                animeID: bestMatch.anime.id,
                 url: bestMatch.anime.url
             };
 
-            message.channel.send((result.url).toString())
+            getAnimeInfo(message, result.animeID);
         } else {
             message.channel.send('No match found.');
         }
@@ -32,14 +30,25 @@ async function getAnime(message, searchString) {
     }
 }
 
+async function getAnimeInfo(message, animeID) {
+    try { 
+        const anime = await client.anime.get(animeID) 
+
+        message.channel.send(`Synopsis:\n\n ${anime.synopsis}\n\nCheck it out here: \n\n ${anime.url}
+        `)
+    } catch (error) { 
+        console.error('Error:', error.message);
+    }
+}
+
 module.exports = {
-    name: 'url',
-    description: 'Get URL',
+    name: 'info',
+    description: 'Gets Anime Information.',
     async execute(message, args) {
         const passedMangaName = args.join(' ');
 
         try {
-            const test = await getAnime(message, passedMangaName);
+            const info = await getAnimeIDFromString(message, passedMangaName);
         } catch (error) {
             console.error('Error:', error.message);
             message.channel.send('An error occurred: ' + error.message);

@@ -1,6 +1,5 @@
 //IMPORT DOTENV, AXIOS, DISCORD
 require('dotenv').config();
-const axios = require('axios');
 const { Client, IntentsBitField } = require('discord.js');
 
 //COMMAND PREFIX
@@ -8,10 +7,7 @@ const PREFIX = '!';
 
 //COMMAND IMPORTS 
 const getCharacterCommand = require('./commands/getCharacter');
-const getUrlCommand = require('./commands/getURL');
-
-//JIKAN URL 
-const JIKAN_API_BASE_URL = 'https://api.jikan.moe/v4';
+const getAnimeCommand = require('./commands/getAnime');
 
 const client = new Client({
     intents: [
@@ -40,24 +36,24 @@ client.on('messageCreate', async (message) => {
             getCharacterCommand.execute(message, args);
         } 
         
-        if (command === getUrlCommand.name) {
-            getUrlCommand.execute(message, args);
+        if (command === getAnimeCommand.name) {
+            getAnimeCommand.execute(message, args);
         }
     }
     
 })
 
-
 client.login(process.env.TOKEN);
 
+//SHUTS DOWN BOT AND NODE INSTANCES TO PREVENT MULTIPLE RUNNING INSTANCES
 process.on('SIGINT', () => {
-    console.log('Received SIGINT signal. Shutting down gracefully.');
+    console.log('Received SIGINT signal. Shutting down.');
     client.destroy(); // Close the Discord.js client connection
     process.exit(0); // Exit the Node.js process
 });
 
 process.on('SIGTERM', () => {
-    console.log('Received SIGTERM signal. Shutting down gracefully.');
+    console.log('Received SIGTERM signal. Shutting down.');
     client.destroy(); // Close the Discord.js client connection
     process.exit(0); // Exit the Node.js process
 });
