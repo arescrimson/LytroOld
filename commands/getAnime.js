@@ -32,7 +32,12 @@ async function getAnimeIDFromString(message, searchString) {
 
 async function getAnimeInfo(message, animeID) {
     try {
-        const anime = await client.anime.get(animeID)
+
+        //GETS ANIME INFORMATION
+        const anime = await client.anime.get(animeID);
+        const stats = await client.anime.getStatistics(animeID);      
+
+        //GENRES AS A STRING LIST WITH COMMAS 
         let genreText = "";
 
         for (let i = 0; i < anime.genres.length; i++) {
@@ -43,9 +48,28 @@ async function getAnimeInfo(message, animeID) {
             }
         }
 
-        const genres = anime.genres.map(genre => genre.name).join(', ');
+        const GENRES = anime.genres.map(genre => genre.name).join(', ');
 
-        message.channel.send(`Synopsis:\n\n ${anime.synopsis}\n\n Genres:\n\n ${genres}\n\n MyAnimeList URL: \n\n ${anime.url}`)
+        //RATINGS AS AN AVERAGED SCORE STRING 
+        let totalScore = 0; 
+        let totalVotes = 0; 
+
+        for (const obj of stats.scores) {
+            totalScore += obj.score * obj.votes;
+            totalVotes += obj.votes;
+        }
+
+        const averageScore = totalScore / totalVotes; 
+
+        //SYNOPSIS, URL, EPISODES, RATINGS
+        const SYNOPSIS = anime.synopsis; 
+        const URL = anime.url; 
+        const EPISODES = anime.episodes;
+        const RATINGS = `Average Score Based off of ${totalVotes.toLocaleString()} votes: ${averageScore.toFixed(2) + ' / 10'}`;
+
+        //FORMATTED SENT MESSAGE 
+        message.channel.send(`**Synopsis:**\n\n ${SYNOPSIS}\n\n **Episodes:**\n\n ${EPISODES}\n\n **Ratings**\n\n ${RATINGS}\n\n **Genres:**
+        \n${GENRES}\n\n **MyAnimeList URL:** \n\n ${URL}`)
     } catch (error) {
         console.error('Error:', error.message);
     }
@@ -55,10 +79,14 @@ module.exports = {
     name: 'info',
     description: 'Gets Anime Information.',
     async execute(message, args) {
+
+        //Gets passed manga name. 
         const passedMangaName = args.join(' ');
 
         try {
+            //Gets anime ID from ID get function. 
             const animeID = await getAnimeIDFromString(message, passedMangaName);
+            //Gets anime information Info get function. 
             getAnimeInfo(message, animeID);
         } catch (error) {
             console.error('Error:', error.message);
