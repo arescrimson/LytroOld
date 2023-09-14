@@ -21,7 +21,7 @@ async function getAnimeIDFromString(message, searchString) {
                 url: bestMatch.anime.url
             };
 
-            getAnimeInfo(message, result.animeID);
+            return result.animeID
         } else {
             message.channel.send('No match found.');
         }
@@ -31,12 +31,33 @@ async function getAnimeIDFromString(message, searchString) {
 }
 
 async function getAnimeInfo(message, animeID) {
-    try { 
-        const anime = await client.anime.get(animeID) 
+    try {
+        const anime = await client.anime.get(animeID)
+        const ch = await client.anime.getCharacters(animeID);
+        let genreText = "";
 
-        message.channel.send(`Synopsis:\n\n ${anime.synopsis}\n\nCheck it out here: \n\n ${anime.url}
-        `)
-    } catch (error) { 
+        for (let i = 0; i < anime.genres.length; i++) {
+            genreText += anime.genres[i].name;
+
+            if (i < anime.genres.length - 1) {
+                genreText += ", "; // Add a comma and space between genres (except for the last one)
+            }
+        }
+
+        const genres = anime.genres.map(genre => genre.name).join(', ');
+
+        message.channel.send(`Synopsis:\n\n ${anime.synopsis}\n\n Genres:\n\n ${genres}\n\n MyAnimeList URL: \n\n ${anime.url}`)
+
+        console.log(ch[0].character.id)
+        /*
+        const attachment = anime.image.jpg.default.href;
+        message.channel.send({
+            files: [{
+                attachment: attachment, 
+            }],
+          });
+          */
+    } catch (error) {
         console.error('Error:', error.message);
     }
 }
@@ -48,7 +69,8 @@ module.exports = {
         const passedMangaName = args.join(' ');
 
         try {
-            const info = await getAnimeIDFromString(message, passedMangaName);
+            const animeID = await getAnimeIDFromString(message, passedMangaName);
+            getAnimeInfo(message, animeID);
         } catch (error) {
             console.error('Error:', error.message);
             message.channel.send('An error occurred: ' + error.message);

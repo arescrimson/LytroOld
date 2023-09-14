@@ -1,50 +1,70 @@
-// getCharacter.js
-const axios = require('axios');
-const JIKAN_API_BASE_URL = 'https://api.jikan.moe/v4';
+// getAnime.js
+const stringSimilarity = require('string-similarity');
+const Jikan = require('jikan4.js')
+const client = new Jikan.Client();
 
-async function getCharacter(mangaName, characterName) {
-
-    const manga = mangaName;
-    const ch = characterName;
-
+async function getAnimeIDFromString(message, searchString) {
     try {
-        //Gets raw manga data from JIKAN API using passed manga name. 
-        const mangaData = await axios.get(`${JIKAN_API_BASE_URL}/manga?q=${manga}`);
-        //JSON stringifies the raw manga data. 
-        const jsonData = JSON.stringify(mangaData.data);
-        //parses the JSON. 
-        const parsedData = JSON.parse(jsonData);
-        //dataURL returns FIRST INDEX OBJECT of parsed JSON. 
-        const parsedDataID = parsedData.data[0].mal_id; 
+        const searchResults = await client.anime.search(searchString)
 
-        const characterData = await axios.get(`${JIKAN_API_BASE_URL}/manga/${parsedDataID}/characters`)
-        //JSON stringifies the raw manga data. 
-        const characterJSON = JSON.stringify(characterData.data);
-        //parses the JSON. 
-        const characterParsedData = JSON.parse(characterJSON);
+        const bestMatch = searchResults.reduce((best, anime) => {
+            const similarity = stringSimilarity.compareTwoStrings(searchString, anime.title.default);
+            if (similarity > best.similarity) {
+                return { similarity, anime };
+            }
+            return best;
+        }, { similarity: 0, anime: null });
 
-        const foundCharacter = characterParsedData.data.find((character) => character.name === ch);
+        if (bestMatch.anime) {
+            const result = {
+                animeID: bestMatch.anime.id,
+                url: bestMatch.anime.url
+            };
 
-        console.log(foundCharacter);
-        
-        //return character;
+            return result.animeID;
+        } else {
+            message.channel.send('No match found.');
+        }
     } catch (error) {
-        console.error('Error fetching character data:', error);
-        message.channel.send('An error occurred while fetching character data.');
+        console.error('Error:', error.message);
     }
 }
 
+async function getAnimeCharacters(message, animeID, role) {
+
+    try {
+        const ch = await client.anime.getCharacters(animeID);
+
+        let maxIndex = 0; 
+
+        for ( let i = 0; i < ch.length; i++ ) { 
+
+            if ( role === 'main') { 
+                if ( ch[i].role === 'Main') { 
+                    message.channel.send(`Main Characters: ${ch[i].character.url}`)
+                }   
+            } else { 
+                if ( ch[i].role === 'Supporting' && maxIndex < 5) { 
+                    message.channel.send(`Supporting Characters: ${ch[i].character.url}`)
+                    maxIndex++;
+                } 
+            }
+        }
+    } catch (error) {
+        console.error('Error:', error.message);
+    }
+}
 
 module.exports = {
-    name: 'ch',
-    description: 'Get Character',
+    name: 'chr',
+    description: 'Gets Character Information.',
     async execute(message, args) {
-        const characterName = args.pop();
-        const mangaName = args.join(' ');
+        const role = args[0].toLowerCase(); 
+        const passedMangaName = args.slice(1).join(' ');
 
         try {
-            const url = await getCharacter(mangaName, characterName);
-            //message.channel.send(`Manga URL: ${url}`);
+            const animeID = await getAnimeIDFromString(message, passedMangaName);
+            getAnimeCharacters(message, animeID, role)
         } catch (error) {
             console.error('Error:', error.message);
             message.channel.send('An error occurred: ' + error.message);
