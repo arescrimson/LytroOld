@@ -78,12 +78,14 @@ module.exports = {
     name: 'img',
     description: 'Gets Anime Images.',
     async execute(message, args) {
-        
+
         //Gets passed manga name. 
         const passedMangaName = args.join(' ');
 
         try {
+            //Gets anime ID from ID get function. 
             const animeID = await getAnimeIDFromString(message, passedMangaName);
+            //Gets anime information Info get function. 
             getAnimeImages(message, animeID)
         } catch (error) {
             console.error('Error:', error.message);

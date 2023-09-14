@@ -30,7 +30,7 @@ async function getAnimeIDFromString(message, searchString) {
     }
 }
 
-async function getAnimeCharacters(message, animeID, role) {
+async function getAnimeCharacters(message, animeID, name) {
 
     try {
         const ch = await client.anime.getCharacters(animeID);
@@ -39,19 +39,23 @@ async function getAnimeCharacters(message, animeID, role) {
 
         for (let i = 0; i < ch.length; i++) {
 
-            if (role === 'main') {
+            if (name === 'main') {
                 if (ch[i].role === 'Main') {
                     message.channel.send(`Main Characters: ${ch[i].character.url}`)
                 }
-            } else if (role === 'sup') {
+            } else if (name === 'sup') {
                 if (ch[i].role === 'Supporting' && maxIndex < 5) {
                     message.channel.send(`Supporting Characters: ${ch[i].character.url}`)
                     maxIndex++;
                 }
-            } else {
-                message.channel.send('Please specify main or supporting character D:');
-                break;
             }
+
+            if (name === ch[i].character.name) {
+                console.log(name)
+                console.log(ch[i].character.name)
+                message.channel.send(`Character: ${ch[i].character.url}`)
+            }
+
         }
     } catch (error) {
         console.error('Error:', error.message);
@@ -62,12 +66,12 @@ module.exports = {
     name: 'chr',
     description: 'Gets Character Information.',
     async execute(message, args) {
-        const role = args[0].toLowerCase();
+        const characterName = args[0].toLowerCase();
         const passedMangaName = args.slice(1).join(' ');
 
         try {
             const animeID = await getAnimeIDFromString(message, passedMangaName);
-            getAnimeCharacters(message, animeID, role)
+            getAnimeCharacters(message, animeID, characterName)
         } catch (error) {
             console.error('Error:', error.message);
             message.channel.send('An error occurred: ' + error.message);

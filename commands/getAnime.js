@@ -71,8 +71,6 @@ async function getAnimeInfo(message, animeID) {
             }
         }
 
-        const GENRES = anime.genres.map(genre => genre.name).join(', ');
-
         //RATINGS AS AN AVERAGED SCORE STRING 
         let totalScore = 0; 
         let totalVotes = 0; 
@@ -88,7 +86,8 @@ async function getAnimeInfo(message, animeID) {
         const SYNOPSIS = anime.synopsis; 
         const URL = anime.url; 
         const EPISODES = anime.episodes;
-        const RATINGS = `Average Score Based off of ${totalVotes.toLocaleString()} votes: ${averageScore.toFixed(2) + ' / 10'}`;
+        const GENRES = anime.genres.map(genre => genre.name).join(', ');
+        const RATINGS = `Average score based off ${totalVotes.toLocaleString()} votes: ${averageScore.toFixed(2) + ' / 10'}`;
 
         //FORMATTED SENT MESSAGE 
         message.channel.send(`**Synopsis:**\n\n ${SYNOPSIS}\n\n **Episodes:**\n\n ${EPISODES}\n\n **Ratings**\n\n ${RATINGS}\n\n **Genres:**
@@ -105,6 +104,7 @@ module.exports = {
 
         //Gets passed manga name. 
         const passedMangaName = args.join(' ');
+        console.log(passedMangaName)
 
         try {
             //Gets anime ID from ID get function. 
