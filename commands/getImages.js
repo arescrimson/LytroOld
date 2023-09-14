@@ -49,7 +49,8 @@ async function getAnimeIDFromString(message, searchString) {
 }
 
 /**
- * Gets Anime Images from the animeID passed. 
+ * Gets Anime Images from the animeID passed, and sends a Random Image 
+ * from the Anime Pictures Gallery. 
  * 
  * @param {*} message is the discord message. 
  * @param {*} animeID is the animeID passed. 
@@ -77,6 +78,8 @@ module.exports = {
     name: 'img',
     description: 'Gets Anime Images.',
     async execute(message, args) {
+        
+        //Gets passed manga name. 
         const passedMangaName = args.join(' ');
 
         try {
