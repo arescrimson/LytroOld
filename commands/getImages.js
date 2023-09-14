@@ -1,4 +1,4 @@
-// getAnime.js
+// getCharacter.js
 const stringSimilarity = require('string-similarity');
 const Jikan = require('jikan4.js')
 const client = new Jikan.Client();
@@ -21,7 +21,7 @@ async function getAnimeIDFromString(message, searchString) {
                 url: bestMatch.anime.url
             };
 
-            return result.animeID
+            return result.animeID;
         } else {
             message.channel.send('No match found.');
         }
@@ -30,36 +30,33 @@ async function getAnimeIDFromString(message, searchString) {
     }
 }
 
-async function getAnimeInfo(message, animeID) {
+async function getAnimeImages(message, animeID) {
+
     try {
-        const anime = await client.anime.get(animeID)
-        let genreText = "";
+        const ch = await client.anime.getPictures(animeID);
+        let maxIndex = 0;
 
-        for (let i = 0; i < anime.genres.length; i++) {
-            genreText += anime.genres[i].name;
+        const testlink = ch[0].jpg.default.href
 
-            if (i < anime.genres.length - 1) {
-                genreText += ", "; // Add a comma and space between genres (except for the last one)
-            }
-        }
-
-        const genres = anime.genres.map(genre => genre.name).join(', ');
-
-        message.channel.send(`Synopsis:\n\n ${anime.synopsis}\n\n Genres:\n\n ${genres}\n\n MyAnimeList URL: \n\n ${anime.url}`)
+        message.channel.send({
+            files: [{ 
+                attachment: testlink
+            }]
+        })
     } catch (error) {
         console.error('Error:', error.message);
     }
 }
 
 module.exports = {
-    name: 'info',
-    description: 'Gets Anime Information.',
+    name: 'img',
+    description: 'Gets Anime Images.',
     async execute(message, args) {
         const passedMangaName = args.join(' ');
 
         try {
             const animeID = await getAnimeIDFromString(message, passedMangaName);
-            getAnimeInfo(message, animeID);
+            getAnimeImages(message, animeID)
         } catch (error) {
             console.error('Error:', error.message);
             message.channel.send('An error occurred: ' + error.message);

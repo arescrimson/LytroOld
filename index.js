@@ -8,6 +8,7 @@ const PREFIX = '!';
 //COMMAND IMPORTS 
 const getCharacterCommand = require('./commands/getCharacter');
 const getAnimeCommand = require('./commands/getAnime');
+const getImageCommand = require('./commands/getImages');
 
 const client = new Client({
     intents: [
@@ -38,6 +39,10 @@ client.on('messageCreate', async (message) => {
         
         if (command === getAnimeCommand.name) {
             getAnimeCommand.execute(message, args);
+        }
+
+        if (command === getImageCommand.name) {
+            getImageCommand.execute(message, args);
         }
     }
     

@@ -1,4 +1,4 @@
-// getAnime.js
+// getCharacter.js
 const stringSimilarity = require('string-similarity');
 const Jikan = require('jikan4.js')
 const client = new Jikan.Client();
@@ -35,19 +35,22 @@ async function getAnimeCharacters(message, animeID, role) {
     try {
         const ch = await client.anime.getCharacters(animeID);
 
-        let maxIndex = 0; 
+        let maxIndex = 0;
 
-        for ( let i = 0; i < ch.length; i++ ) { 
+        for (let i = 0; i < ch.length; i++) {
 
-            if ( role === 'main') { 
-                if ( ch[i].role === 'Main') { 
+            if (role === 'main') {
+                if (ch[i].role === 'Main') {
                     message.channel.send(`Main Characters: ${ch[i].character.url}`)
-                }   
-            } else { 
-                if ( ch[i].role === 'Supporting' && maxIndex < 5) { 
+                }
+            } else if (role === 'sup') {
+                if (ch[i].role === 'Supporting' && maxIndex < 5) {
                     message.channel.send(`Supporting Characters: ${ch[i].character.url}`)
                     maxIndex++;
-                } 
+                }
+            } else {
+                message.channel.send('Please specify main or supporting character D:');
+                break;
             }
         }
     } catch (error) {
@@ -59,7 +62,7 @@ module.exports = {
     name: 'chr',
     description: 'Gets Character Information.',
     async execute(message, args) {
-        const role = args[0].toLowerCase(); 
+        const role = args[0].toLowerCase();
         const passedMangaName = args.slice(1).join(' ');
 
         try {
