@@ -1,4 +1,6 @@
-// getCharacter.js
+// getCharacterOld.js 
+
+//GETS API DATA VIA RAW JSON INSTEAD OF WRAPPER THIS IS NOT BEING USED. 
 const axios = require('axios');
 const JIKAN_API_BASE_URL = 'https://api.jikan.moe/v4';
 

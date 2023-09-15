@@ -1,5 +1,6 @@
-//IMPORT DOTENV, AXIOS, DISCORD
+//IMPORT DOTENV FOR TOKEN 
 require('dotenv').config();
+//IMPORT DISCORDJS / CLIENT AND INTENTS FOR MESSAGE SENDING 
 const { Client, IntentsBitField } = require('discord.js');
 
 //COMMAND PREFIX
@@ -10,6 +11,7 @@ const getCharacterCommand = require('./commands/getCharacter');
 const getAnimeCommand = require('./commands/getAnime');
 const getImageCommand = require('./commands/getImages');
 
+//CREATE CLIENT 
 const client = new Client({
     intents: [
         IntentsBitField.Flags.Guilds,
@@ -19,10 +21,12 @@ const client = new Client({
     ],
 });
 
+//DISPLAYS BOT STATUS IN TERMINAL ON START 
 client.on('ready', (c) => {
     console.log(`${c.user.tag + " is ready."}`);
 })
 
+//STARTS BOT FUNCTION ON MESSAGE CREATE 
 client.on('messageCreate', async (message) => {
 
     if (message.author.bot) return;
@@ -32,7 +36,7 @@ client.on('messageCreate', async (message) => {
         const args = message.content.slice(PREFIX.length).trim().split(/ +/);
         //command is the command i.e. !url One Piece would be url 
         const command = args.shift().toLowerCase();
-
+     
         if (command === getCharacterCommand.name) {
             getCharacterCommand.execute(message, args);
         } 
@@ -48,6 +52,7 @@ client.on('messageCreate', async (message) => {
     
 })
 
+//LOGINS USING BOT TOKEN FROM ENV 
 client.login(process.env.TOKEN);
 
 //SHUTS DOWN BOT AND NODE INSTANCES TO PREVENT MULTIPLE RUNNING INSTANCES

@@ -18,7 +18,7 @@ const client = new Jikan.Client();
  * 
  * @param {*} message is the discord message.
  * @param {*} searchString is the searched anime name. 
- * @returns 
+ * @returns best result anime ID. 
  */
 async function getAnimeIDFromString(message, searchString) {
     try {
