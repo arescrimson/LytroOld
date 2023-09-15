@@ -69,7 +69,7 @@ async function getAnimeCharacters(message, animeID, characterName) {
             //passed characterName. toLowerCase because of case sensitivity in equality. 
             else {
                 if (getFirstName(message,(ch[i].character.name).toLowerCase()) === characterName) { 
-                    message.channel.send(`Character: ${ch[i].character.url}`)
+                    message.channel.send(`${ch[i].character.name}: ${ch[i].character.url}`)
                     characterFound = true; 
                 } 
             }
