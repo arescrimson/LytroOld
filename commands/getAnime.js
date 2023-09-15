@@ -44,7 +44,7 @@ async function getAnimeInfo(message, animeID) {
 
         const averageScore = totalScore / totalVotes; 
 
-        //SYNOPSIS, URL, EPISODES, RATINGS
+        //SYNOPSIS, URL, EPISODES, GENRES, RATINGS
         const SYNOPSIS = anime.synopsis; 
         const URL = anime.url; 
         const EPISODES = anime.episodes;

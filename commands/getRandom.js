@@ -7,6 +7,11 @@ const Jikan = require('jikan4.js')
 //JIKANJS WRAPPER LIBRARY
 const client = new Jikan.Client();
 
+/**
+ * Gets Random Anime. Returns information identical to getAnime. 
+ * 
+ * @param {*} message is the discord message. 
+ */
 async function getRandomAnime(message) {
 
     try {
@@ -39,7 +44,7 @@ async function getRandomAnime(message) {
 
         const averageScore = totalScore / totalVotes; 
 
-        //SYNOPSIS, URL, EPISODES, RATINGS
+        //SYNOPSIS, URL, EPISODES, GENRES, RATINGS
         const SYNOPSIS = anime.synopsis; 
         const URL = anime.url; 
         const EPISODES = anime.episodes;
@@ -50,17 +55,16 @@ async function getRandomAnime(message) {
         message.channel.send(`**Synopsis:**\n\n ${SYNOPSIS}\n\n **Episodes:**\n\n ${EPISODES}\n\n **Ratings**\n\n ${RATINGS}\n\n **Genres:**
         \n${GENRES}\n\n **MyAnimeList URL:** \n\n ${URL}`)       
     } catch (error) {
+        message.channel.send('An error occurred: ' + error.message);
         console.error('Error:', error.message);
     }
 }
 
 module.exports = {
     name: 'rand',
-    description: 'Gets Random Anime info.',
-    async execute(message, args) {
-
+    description: 'Gets Random Anime Info.',
+    async execute(message) {
         try {
-            //Gets anime information Info get function. 
             await getRandomAnime(message)
         } catch (error) {
             console.error('Error:', error.message);
