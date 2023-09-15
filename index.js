@@ -7,8 +7,8 @@ const { Client, IntentsBitField } = require('discord.js');
 const PREFIX = '!';
 
 //COMMAND IMPORTS 
-const getCharacterCommand = require('./commands/getCharacter');
 const getAnimeCommand = require('./commands/getAnime');
+const getCharacterCommand = require('./commands/getCharacter');
 const getImageCommand = require('./commands/getImages');
 const getRandomCommand = require('./commands/getRandom')
 
@@ -32,29 +32,27 @@ client.on('messageCreate', async (message) => {
 
     if (message.author.bot) return;
 
-    if (message.content.startsWith(PREFIX)) { 
+    if (message.content.startsWith(PREFIX)) {
         //args is the argument, i.e. !url One Piece would be One Piece
         const args = message.content.slice(PREFIX.length).trim().split(/ +/);
         //command is the command i.e. !url One Piece would be url 
         const command = args.shift().toLowerCase();
-     
-        if (command === getCharacterCommand.name) {
-            getCharacterCommand.execute(message, args);
-        } 
-        
-        if (command === getAnimeCommand.name) {
-            getAnimeCommand.execute(message, args);
-        }
 
-        if (command === getImageCommand.name) {
-            getImageCommand.execute(message, args);
-        }
-
-        if (command === getRandomCommand.name) {
-            getRandomCommand.execute(message);
+        switch (command) {
+            case getAnimeCommand.name:
+                getAnimeCommand.execute(message, args);
+                break; 
+            case getCharacterCommand.name: 
+                getCharacterCommand.execute(message,args);
+                break;
+            case getImageCommand.name: 
+                getImageCommand.execute(message,args);
+                break;
+            case getRandomCommand.name: 
+                getRandomCommand.execute(message,args);
+                break;
         }
     }
-    
 })
 
 //LOGINS USING BOT TOKEN FROM ENV 
