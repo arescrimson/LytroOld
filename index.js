@@ -10,6 +10,7 @@ const PREFIX = '!';
 const getCharacterCommand = require('./commands/getCharacter');
 const getAnimeCommand = require('./commands/getAnime');
 const getImageCommand = require('./commands/getImages');
+const getRandomCommand = require('./commands/getRandom')
 
 //CREATE CLIENT 
 const client = new Client({
@@ -47,6 +48,10 @@ client.on('messageCreate', async (message) => {
 
         if (command === getImageCommand.name) {
             getImageCommand.execute(message, args);
+        }
+
+        if (command === getRandomCommand.name) {
+            getRandomCommand.execute(message);
         }
     }
     

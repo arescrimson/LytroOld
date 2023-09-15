@@ -1,4 +1,4 @@
-//getID.js 
+//getAnimeIDFromString.js 
 
 //IMPORTS
 
