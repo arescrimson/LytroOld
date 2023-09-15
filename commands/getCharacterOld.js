@@ -1,7 +1,14 @@
 // getCharacterOld.js 
 
-//GETS API DATA VIA RAW JSON INSTEAD OF WRAPPER THIS IS NOT BEING USED. 
+//GETS API DATA VIA RAW JSON INSTEAD OF WRAPPER 
+//THIS IS NOT BEING USED. 
+
+//IMPORTS 
+
+//AXIOS HTTPS GET LIBRARY 
 const axios = require('axios');
+
+//JIKAN URL 
 const JIKAN_API_BASE_URL = 'https://api.jikan.moe/v4';
 
 async function getCharacter(mangaName, characterName) {
@@ -19,12 +26,13 @@ async function getCharacter(mangaName, characterName) {
         //dataURL returns FIRST INDEX OBJECT of parsed JSON. 
         const parsedDataID = parsedData.data[0].mal_id; 
 
+        //Does another search with the ID of the searched manga. 
         const characterData = await axios.get(`${JIKAN_API_BASE_URL}/manga/${parsedDataID}/characters`)
         //JSON stringifies the raw manga data. 
         const characterJSON = JSON.stringify(characterData.data);
         //parses the JSON. 
         const characterParsedData = JSON.parse(characterJSON);
-
+        //finds character name comparing 
         const foundCharacter = characterParsedData.data.find((character) => character.name === ch);
 
         console.log(foundCharacter);

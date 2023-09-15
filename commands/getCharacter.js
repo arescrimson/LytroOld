@@ -34,7 +34,7 @@ function getFirstName(message, characterName) {
 }
 
 /**
- * Gets Anime Information from the animeID passed. 
+ * Gets Anime Characters from the animeID passed. 
  * 
  * @param {*} message is the discord message. 
  * @param {*} animeID is the animeID passed. 
