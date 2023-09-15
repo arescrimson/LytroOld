@@ -51,6 +51,8 @@ client.on('messageCreate', async (message) => {
             case getRandomCommand.name: 
                 getRandomCommand.execute(message,args);
                 break;
+            default: 
+                message.channel.send('Command not found :(')
         }
     }
 })
