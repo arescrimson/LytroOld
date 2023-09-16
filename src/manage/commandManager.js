@@ -14,7 +14,7 @@ function commandManager() {
         const command = require(`../commands/${commandName}`);
         commandList.push(command);
     }
-    
+
     return commandList; 
 }
 

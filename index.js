@@ -6,7 +6,6 @@ require('dotenv').config();
 const { Client, IntentsBitField } = require('discord.js');
 //IMPORT COMMAND LIST 
 const {commandManager} = require('./src/manage/commandManager')
-//COMMAND LIST FROM COMMAND MANAGER
 const commandList = commandManager();
 
 //COMMAND PREFIX
@@ -43,7 +42,7 @@ client.on('messageCreate', async (message) => {
         //Loops through command List to find command
         for (const commandType of commandList) {
             if (commandType.name === command) {
-                commandType.execute(message, args);
+                commandType.execute(message, args, commandType);
                 found = true;
                 break;
             }

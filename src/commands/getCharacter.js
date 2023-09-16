@@ -17,20 +17,12 @@ const client = new Jikan.Client();
  * @param {*} characterName is the character Name. 
  * @returns the first name. 
  */
-function getFirstName(message, characterName) {
-    const nameParts = characterName.split(',').map(part => part.trim());
-    
-    if (nameParts.length === 2) {
-        // Extract and return the first part (firstname)
-        return nameParts[1];
-      } else if (nameParts.length === 1) {
-        // If there's only one part, assume it's the first name
-        return nameParts[0];
-      } else {
-        // Return an error message or handle the case where the format is not as expected
-        message.channel.send('invalid')
-        return "Invalid format";
-      }
+function getFirstName(message, characterName, databaseNames) {
+    const nameParts = databaseNames.split(',').map(part => part.trim().toLowerCase());
+
+    if (nameParts.includes(characterName.toLowerCase())) {
+        return true;
+    } 
 }
 
 /**
@@ -38,7 +30,7 @@ function getFirstName(message, characterName) {
  * 
  * @param {*} message is the discord message. 
  * @param {*} animeID is the animeID passed. 
- * @param {*} characterName is the character name specified in the discord command. 
+ * @param {*} characterName is the lowercased character Name being searched. 
  */
 async function getAnimeCharacters(message, animeID, characterName) {
 
@@ -53,29 +45,30 @@ async function getAnimeCharacters(message, animeID, characterName) {
             if (characterName === 'main') {
                 if (ch[i].role === 'Main') {
                     message.channel.send(`Main Characters: ${ch[i].character.url}`)
-                    characterFound = true; 
+                    characterFound = true;
                 }
-            } 
+            }
             //if character name is sup, indexes ALL SUPPORTING CHARACTERS. 
             else if (characterName === 'sup') {
 
                 if (ch[i].role === 'Supporting' && maxIndex < 5) {
                     message.channel.send(`Supporting Characters: ${ch[i].character.url}`)
                     maxIndex++;
-                    characterFound = true; 
+                    characterFound = true;
                 }
-            } 
+            }
             //if character name is specified as a name, first extracts first name and compares it to 
             //passed characterName. toLowerCase because of case sensitivity in equality. 
             else {
-                if (getFirstName(message,(ch[i].character.name).toLowerCase()) === characterName) { 
+                if (getFirstName(message, characterName, (ch[i].character.name).toLowerCase())) {
                     message.channel.send(`${ch[i].character.name}: ${ch[i].character.url}`)
-                    characterFound = true; 
-                } 
+                    characterFound = true;
+                    break;
+                }
             }
         }
 
-        if(!characterFound) { 
+        if (!characterFound) {
             message.channel.send('Character not found :(')
         }
     } catch (error) {
