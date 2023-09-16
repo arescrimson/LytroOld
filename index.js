@@ -1,9 +1,9 @@
 //IMPORT DOTENV FOR TOKEN 
 require('dotenv').config();
 
-
 //IMPORT DISCORDJS / CLIENT AND INTENTS FOR MESSAGE SENDING 
 const { Client, IntentsBitField } = require('discord.js');
+
 //IMPORT COMMAND LIST 
 const {commandManager} = require('./src/manage/commandManager')
 const commandList = commandManager();

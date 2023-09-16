@@ -1,17 +1,11 @@
 // getHelp.js
 
-const commandNames = [
-    'getHelp',
-    'getAnime',
-    'getCharacter',
-    'getImages',
-    'getRandom'
-];
 /**
  * Gets list of possible commands. REWRITE ENTIRE COMMAND MANAGER SYSTEM TO BE ABLE TO ACCESS COMMAND DESCRIPTIONS INSTEAD 
  * OF INDEXES!
  * 
  * @param {*} message is the discord message. 
+ * @param {*} commandList is the list of commands passed. 
  */
 async function getHelp(message, commandList) {
 

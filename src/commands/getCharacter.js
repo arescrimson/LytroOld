@@ -80,7 +80,7 @@ async function getAnimeCharacters(message, animeID, characterName) {
 
 module.exports = {
     name: 'chr',
-    description: '!chr [main, sup, character_name] [anime_name] Gets Character Information.',
+    description: '!chr [main, sup, character_name] [anime_name] Returns Character Information. Use main for main characters, sup for supporting characters, and specify name for a specific character.',
     async execute(message, args) {
         //takes character name from zero index. Needs reworking for 2 word character names. 
         const characterName = args[0].toLowerCase();
