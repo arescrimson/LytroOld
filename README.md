@@ -1,6 +1,6 @@
 # Lytro
 
-Open-Source Discord Bot that uses [discord.js](https://discord.js.org/), [string-Similarity](https://www.npmjs.com/package/string-similarity) for bot functionality. Uses [Jikan API](https://jikan.moe/) using data from [MyAnimeList](https://myanimelist.net/). 
+Open-Source Discord Bot that uses [discord.js](https://discord.js.org/) for bot functionality. Uses [Jikan API](https://jikan.moe/) using data from [MyAnimeList](https://myanimelist.net/). 
 
 Currently implemented commands: 
 
