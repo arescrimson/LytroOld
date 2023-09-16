@@ -42,7 +42,7 @@ client.on('messageCreate', async (message) => {
         //Loops through command List to find command
         for (const commandType of commandList) {
             if (commandType.name === command) {
-                commandType.execute(message, args, commandType);
+                commandType.execute(message, args, commandList);
                 found = true;
                 break;
             }
