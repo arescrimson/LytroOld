@@ -5,7 +5,8 @@ function commandManager() {
         'getAnime',
         'getCharacter',
         'getImages',
-        'getRandom'
+        'getRandom', 
+        'getQuote'
     ];
 
     const commandList = [];
