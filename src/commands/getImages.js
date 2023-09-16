@@ -37,7 +37,7 @@ async function getAnimeImages(message, animeID) {
 
 module.exports = {
     name: 'img',
-    description: 'Gets Anime Images.',
+    description: '!img [anime_name] Gets Anime Images.',
     async execute(message, args) {
 
         //Gets passed manga name. 

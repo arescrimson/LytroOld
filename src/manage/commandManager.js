@@ -18,5 +18,4 @@ function commandManager() {
     return commandList; 
 }
 
-
 module.exports = { commandManager }

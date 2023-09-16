@@ -50,7 +50,6 @@ async function getAnimeCharacters(message, animeID, characterName) {
             }
             //if character name is sup, indexes ALL SUPPORTING CHARACTERS. 
             else if (characterName === 'sup') {
-
                 if (ch[i].role === 'Supporting' && maxIndex < 5) {
                     message.channel.send(`Supporting Characters: ${ch[i].character.url}`)
                     maxIndex++;
@@ -61,7 +60,10 @@ async function getAnimeCharacters(message, animeID, characterName) {
             //passed characterName. toLowerCase because of case sensitivity in equality. 
             else {
                 if (getFirstName(message, characterName, (ch[i].character.name).toLowerCase())) {
-                    message.channel.send(`${ch[i].character.name}: ${ch[i].character.url}`)
+                    message.channel.send(`**Character Name:** ${ch[i].character.name}\n\n` +
+                    `**Role:** ${ch[i].role}\n\n` +
+                    `**Voice Actor:** ${ch[i].voiceActors[0].person.name} (${ch[i].voiceActors[0].language})\n\n` +
+                    `${ch[i].character.url}`);                    
                     characterFound = true;
                     break;
                 }
@@ -78,7 +80,7 @@ async function getAnimeCharacters(message, animeID, characterName) {
 
 module.exports = {
     name: 'chr',
-    description: 'Gets Character Information.',
+    description: '!chr [main, sup, character_name] [anime_name] Gets Character Information.',
     async execute(message, args) {
         //takes character name from zero index. Needs reworking for 2 word character names. 
         const characterName = args[0].toLowerCase();

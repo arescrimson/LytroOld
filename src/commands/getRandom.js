@@ -62,7 +62,7 @@ async function getRandomAnime(message) {
 
 module.exports = {
     name: 'rand',
-    description: 'Gets Random Anime Info.',
+    description: '!rand Gets Random Anime Info.',
     async execute(message) {
         try {
             await getRandomAnime(message)

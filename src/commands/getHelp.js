@@ -16,10 +16,10 @@ const commandNames = [
 async function getHelp(message, commandList) {
 
     message.channel.send(`**Available Commands:**\n\n` +
-                     `!info [anime_name] ${commandList[1].description}\n\n` +
-                     `!chr [main, sup, character_name] [anime_name] ${commandList[2].description}\n\n` +
-                     `!img [anime_name] ${commandList[3].description}\n\n` + 
-                     `!rand ${commandList[4].description}`);
+                     `${commandList[1].description}\n\n` +
+                     `${commandList[2].description}\n\n` +
+                     `${commandList[3].description}\n\n` + 
+                     `${commandList[4].description}`);
 
 }
 
