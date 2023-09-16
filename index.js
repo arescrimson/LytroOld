@@ -1,16 +1,16 @@
 //IMPORT DOTENV FOR TOKEN 
 require('dotenv').config();
+
+
 //IMPORT DISCORDJS / CLIENT AND INTENTS FOR MESSAGE SENDING 
 const { Client, IntentsBitField } = require('discord.js');
+//IMPORT COMMAND LIST 
+const {commandManager} = require('./src/manage/commandManager')
+//COMMAND LIST FROM COMMAND MANAGER
+const commandList = commandManager();
 
 //COMMAND PREFIX
 const PREFIX = '!';
-
-//COMMAND IMPORTS 
-const getAnimeCommand = require('./commands/getAnime');
-const getCharacterCommand = require('./commands/getCharacter');
-const getImageCommand = require('./commands/getImages');
-const getRandomCommand = require('./commands/getRandom')
 
 //CREATE CLIENT 
 const client = new Client({
@@ -38,21 +38,19 @@ client.on('messageCreate', async (message) => {
         //command is the command i.e. !url One Piece would be url 
         const command = args.shift().toLowerCase();
 
-        switch (command) {
-            case getAnimeCommand.name:
-                getAnimeCommand.execute(message, args);
-                break; 
-            case getCharacterCommand.name: 
-                getCharacterCommand.execute(message,args);
+        let found = false;
+
+        //Loops through command List to find command
+        for (const commandType of commandList) {
+            if (commandType.name === command) {
+                commandType.execute(message, args);
+                found = true;
                 break;
-            case getImageCommand.name: 
-                getImageCommand.execute(message,args);
-                break;
-            case getRandomCommand.name: 
-                getRandomCommand.execute(message,args);
-                break;
-            default: 
-                message.channel.send('Command not found :(')
+            }
+        }
+
+        if (!found) {
+            message.channel.send('Command not found :(');
         }
     }
 })
