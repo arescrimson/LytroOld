@@ -3,11 +3,23 @@
 //IMPORTS
 
 //IMPORT GETID 
-const {getAnimeIDFromString} = require('../utils/getAnimeIDFromString')
+const { getAnimeIDFromString } = require('../utils/getAnimeIDFromString')
 //JIKAN API LIBRARY 
 const Jikan = require('jikan4.js')
 //JIKANJS WRAPPER LIBRARY
 const client = new Jikan.Client();
+
+/**
+ * Checks if value passed is null. If null, instead returns error Message 
+ * as to display 'Value not found.' instead of null in message response. 
+ * 
+ * @param {*} value is the Jikan get value. 
+ * @param {*} errMessage is the message if value is null.  
+ * @returns either value or error Message depending on if value is null. 
+ */
+function commandNullCheck(value, errMessage) {
+    return (value !== null) ? value : errMessage;
+}
 
 /**
  * Gets Anime Information from the animeID passed. 
@@ -20,7 +32,7 @@ async function getAnimeInfo(message, animeID) {
 
         //GETS ANIME INFORMATION
         const anime = await client.anime.get(animeID);
-        const stats = await client.anime.getStatistics(animeID);      
+        const stats = await client.anime.getStatistics(animeID);
 
         //GENRES AS A STRING LIST WITH COMMAS 
         let genreText = "";
@@ -34,26 +46,32 @@ async function getAnimeInfo(message, animeID) {
         }
 
         //RATINGS AS AN AVERAGED SCORE STRING 
-        let totalScore = 0; 
-        let totalVotes = 0; 
+        let totalScore = 0;
+        let totalVotes = 0;
 
         for (const obj of stats.scores) {
             totalScore += obj.score * obj.votes;
             totalVotes += obj.votes;
         }
 
-        const averageScore = totalScore / totalVotes; 
+        const averageScore = totalScore / totalVotes;
 
         //SYNOPSIS, URL, EPISODES, GENRES, RATINGS
-        const SYNOPSIS = anime.synopsis; 
-        const URL = anime.url; 
-        const EPISODES = anime.episodes;
+        const SYNOPSIS = commandNullCheck(anime.synopsis, 'Synopsis not found.');
+        const URL = commandNullCheck(anime.url, 'URL not found.');
+        const EPISODES = commandNullCheck(anime.episodes, 'Episodes not found.');
+        const RANK = commandNullCheck(anime.rank, 'Rank not found.');
         const GENRES = anime.genres.map(genre => genre.name).join(', ');
         const RATINGS = `Average score based off ${totalVotes.toLocaleString()} votes: ${averageScore.toFixed(2) + ' / 10'}`;
 
         //FORMATTED SENT MESSAGE 
-        message.channel.send(`**Synopsis:**\n\n ${SYNOPSIS}\n\n **Episodes:**\n\n ${EPISODES}\n\n **Ratings**\n\n ${RATINGS}\n\n **Genres:**
-        \n${GENRES}\n\n **MyAnimeList URL:** \n\n ${URL}`)
+        message.channel.send(`**Synopsis:**\n\n${SYNOPSIS}\n\n` +
+            `**Rank:**\n\n${RANK}\n\n` +
+            `**Episodes:**\n\n${EPISODES}\n\n` +
+            `**Ratings**\n\n${RATINGS}\n\n` +
+            `**Genres:**\n\n${GENRES}\n\n` +
+            `**MyAnimeList URL:**\n\n${URL}
+                            `)
     } catch (error) {
         console.error('Error:', error.message);
     }
@@ -66,7 +84,7 @@ module.exports = {
 
         //Gets passed manga name. 
         const passedMangaName = args.join(' ');
-        
+
 
         try {
             //Gets anime ID from ID get function. 
