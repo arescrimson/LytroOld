@@ -5,17 +5,33 @@ Open Source Anime Discord Bot.
 <!-- PROJECT ABOUT !-->
 ## About
 
-Implemented commands: 
+Currently features simple commands for anime and manga. Currently planning to expand to include more API integration, as well as embed and streaming information support.
+
+**Data Source:** This bot uses the [MyAnimeList (MAL) API](https://myanimelist.net/apiconfig/references/api/v2) to fetch anime and manga information. You can visit the [MyAnimeList website](https://myanimelist.net/) for more details.
+
+## Anime Commands
+
+**!help** returns a list of possible commands with their descriptions. 
 
 **!info [anime name]:** returns information like synopsis, rating based off total votes, genre, and url. 
 
-**!chr [prefix] [anime name]** depending on prefix, returns either 'main' main characters, 'sup' supporting characters, or a specified character name. Provides information like character role and voice actor. 
+**!chr [prefix] [anime name]:** depending on prefix, returns either 'main' main characters, 'sup' supporting characters, or a specified character name. Provides information like character role and voice actor. 
 
-**!img [anime name]** returns a random image pertaining to the picture gallery of the specific anime. 
+**!img [anime name]:** returns a random image pertaining to the picture gallery of the specific anime. 
 
-**!rand** returns information identical to !info with a random anime. 
+**!rand:** returns information identical to !info with a random anime.
 
-**Data Source:** This bot uses the [MyAnimeList (MAL) API](https://myanimelist.net/apiconfig/references/api/v2) to fetch anime and manga information. You can visit the [MyAnimeList website](https://myanimelist.net/) for more details and user reviews.
+**!quote:** returns a random quote, the character, and the anime/manga it came from. 
+
+## Manga Commands
+
+**!minfo [manga name]:** returns information like synopsis, rating based off total votes, genre, and url. 
+
+**!mchr [prefix] [manga name]:** depending on prefix, returns either 'main' main characters, 'sup' supporting characters, or a specified character name. Provides information like character role and voice actor. 
+
+**!mimg [manga name]:** returns a random image pertaining to the picture gallery of the specific manga. 
+
+**!mrand:** returns information identical to !info with a random manga.
 
 ## Built With 
 
