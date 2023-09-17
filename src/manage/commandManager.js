@@ -9,10 +9,22 @@ function commandManager() {
         'getQuote'
     ];
 
+    const commandMNames = [ 
+        'getManga',
+        'getMCharacter',
+        'getMImages',
+        'getMRandom', 
+    ]
+
     const commandList = [];
 
     for (const commandName of commandNames) {
-        const command = require(`../commands/${commandName}`);
+        const command = require(`../animecommands/${commandName}`);
+        commandList.push(command);
+    }
+
+    for (const commandName of commandMNames) { 
+        const command = require(`../mangacommands/${commandName}`); 
         commandList.push(command);
     }
 
