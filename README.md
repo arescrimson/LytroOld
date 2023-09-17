@@ -13,7 +13,7 @@ Currently features simple commands for anime and manga. Currently planning to ex
 
 **!help** returns a list of possible commands with their descriptions. 
 
-**!info [anime name]:** returns information like synopsis, rating based off total votes, genre, and url. 
+**!a [anime name]:** returns information like synopsis, rating based off total votes, genre, and url. 
 
 **!chr [prefix] [anime name]:** depending on prefix, returns either 'main' main characters, 'sup' supporting characters, or a specified character name. Provides information like character role and voice actor. 
 
@@ -25,7 +25,7 @@ Currently features simple commands for anime and manga. Currently planning to ex
 
 ## Manga Commands
 
-**!minfo [manga name]:** returns information like synopsis, rating based off total votes, genre, and url. 
+**!m [manga name]:** returns information like synopsis, rating based off total votes, genre, and url. 
 
 **!mchr [prefix] [manga name]:** depending on prefix, returns either 'main' main characters, 'sup' supporting characters, or a specified character name. Provides information like character role and voice actor. 
 
