@@ -81,13 +81,12 @@ async function getMangaInfo(message, mangaID) {
 }
 
 module.exports = {
-    name: 'minfo',
-    description: '!info [manga_name] Returns manga Information.',
+    name: 'm',
+    description: '!m [manga_name] Returns manga Information.',
     async execute(message, args) {
 
         //Gets passed manga name. 
         const passedMangaName = args.join(' ');
-
 
         try {
             //Gets manga ID from ID get function. 

@@ -81,8 +81,8 @@ async function getAnimeInfo(message, animeID) {
 }
 
 module.exports = {
-    name: 'info',
-    description: '!info [anime_name] Returns Anime Information.',
+    name: 'a',
+    description: '!a [anime_name] Returns Anime Information.',
     async execute(message, args) {
 
         //Gets passed manga name. 
