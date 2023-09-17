@@ -15,6 +15,7 @@ const client = new Jikan.Client();
 async function getRandomAnime(message) {
 
     try {
+        //true parameter enables sfw check 
         const random = await client.anime.random(true);
         const animeID = random.id;
         
@@ -44,7 +45,7 @@ async function getRandomAnime(message) {
 
         const averageScore = totalScore / totalVotes; 
 
-        //SYNOPSIS, URL, EPISODES, GENRES, RATINGS
+        //SYNOPSIS, URL, RANK, EPISODES, GENRES, RATINGS
         const SYNOPSIS = anime.synopsis; 
         const URL = anime.url; 
         const RANK = anime.rank;

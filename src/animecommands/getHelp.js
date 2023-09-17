@@ -9,11 +9,13 @@
  */
 async function getHelp(message, commandList) {
 
+    console.log(commandList.length); // Temporary counter of command list. 
+
     message.channel.send(`**Available Commands:**\n\n` +
                      `${commandList[1].description}\n\n` +
                      `${commandList[2].description}\n\n` +
                      `${commandList[3].description}\n\n` + 
-                     `${commandList[4].description}\n\n`
+                     `${commandList[4].description}\n\n` +
                      `${commandList[5].description}\n\n`
                      );
 

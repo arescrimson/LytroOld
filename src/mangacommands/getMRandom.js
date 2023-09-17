@@ -46,7 +46,7 @@ async function getRandomManga(message) {
 
         //SYNOPSIS, URL, EPISODES, GENRES, RATINGS
         const SYNOPSIS = manga.synopsis; 
-        const URL = manga.url; 
+        const URL = manga.url;  
         const RANK = manga.rank;
         const CHAPTERS = manga.chapters;
         const GENRES = manga.genres.map(genre => genre.name).join(', ');

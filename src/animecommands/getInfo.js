@@ -22,7 +22,7 @@ function commandNullCheck(value, errMessage) {
 }
 
 /**
- * Gets more information from the animeID passed. 
+ * Gets additional information from the animeID passed. 
  * 
  * @param {*} message is the discord message. 
  * @param {*} animeID is the animeID passed. 
@@ -43,7 +43,6 @@ async function getInfo(message, animeID) {
                             `**Year Released:**\n\n${YEAR}\n\n`+
                             `**Latest Trailer:**\n\n${TRAILER}\n\n`
                             );
-
     } catch (error) {
         console.error('Error:', error.message);
     }
@@ -60,7 +59,7 @@ module.exports = {
         try {
             //Gets anime ID from ID get function. 
             const animeID = await getAnimeIDFromString(message, passedAnimeName);
-            //Gets anime information Info get function. 
+            //Gets additional anime information. 
             getInfo(message, animeID);
         } catch (error) {
             console.error('Error:', error.message);

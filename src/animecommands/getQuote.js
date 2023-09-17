@@ -5,10 +5,16 @@ require('dotenv').config();
 
 //AXIOS 
 const axios = require('axios');
-
+//QUOTE API URL 
 const QUOTE_URL = "https://waifu.it/api/quote";
+//QUOTE API ACCESS TOKEN 
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN
 
+/**
+ * Gets data object from quote api. 
+ * 
+ * @returns data.
+ */
 async function getData() {
     try {
         const { data } = await axios.get(QUOTE_URL, {

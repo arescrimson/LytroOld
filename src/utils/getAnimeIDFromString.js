@@ -22,8 +22,8 @@ const client = new Jikan.Client();
  */
 async function getAnimeIDFromString(message, searchString) {
     try {
-        const searchResults = await client.anime.search(searchString)
 
+        const searchResults = await client.anime.search(searchString)
 
         const bestMatch = searchResults.reduce((best, anime) => {
             const similarity = stringSimilarity.compareTwoStrings(searchString, anime.title.default);

@@ -1,14 +1,18 @@
 function commandManager() {
-    //COMMAND IMPORTS 
+
+    //ANIME COMMAND LIST 
     const commandNames = [
         'getHelp',
         'getAnime',
         'getCharacter',
         'getImages',
         'getRandom', 
-        'getQuote'
+        'getQuote',
+        'getHelp', 
+        'getInfo'
     ];
 
+    //MANGA COMMAND LIST 
     const commandMNames = [ 
         'getManga',
         'getMCharacter',
@@ -16,6 +20,7 @@ function commandManager() {
         'getMRandom', 
     ]
 
+    //COMMAND LIST CONTAINING ALL POSSIBLE COMMANDS
     const commandList = [];
 
     for (const commandName of commandNames) {

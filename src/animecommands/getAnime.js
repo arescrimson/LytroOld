@@ -88,11 +88,10 @@ module.exports = {
         //Gets passed manga name. 
         const passedMangaName = args.join(' ');
 
-
         try {
             //Gets anime ID from ID get function. 
             const animeID = await getAnimeIDFromString(message, passedMangaName);
-            //Gets anime information Info get function. 
+            //Gets Anime Information. 
             getAnimeInfo(message, animeID);
         } catch (error) {
             console.error('Error:', error.message);
