@@ -15,6 +15,8 @@ Currently features simple commands for anime and manga. Currently planning to ex
 
 **!a [anime name]:** returns information like synopsis, rating based off total votes, genre, and url. 
 
+**!info [anime name]** returns additional information. 
+
 **!chr [prefix] [anime name]:** depending on prefix, returns either 'main' main characters, 'sup' supporting characters, or a specified character name. Provides information like character role and voice actor. 
 
 **!img [anime name]:** returns a random image pertaining to the picture gallery of the specific anime. 
@@ -22,6 +24,8 @@ Currently features simple commands for anime and manga. Currently planning to ex
 **!rand:** returns information identical to !info with a random anime.
 
 **!quote:** returns a random quote, the character, and the anime/manga it came from. 
+
+**!info
 
 ## Manga Commands
 
