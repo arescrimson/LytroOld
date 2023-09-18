@@ -38,14 +38,14 @@ async function getAnimeImages(message, animeID) {
 module.exports = {
     name: 'img',
     description: '!img [anime_name] Returns a single image from anime gallery.',
-    async execute(message, args) {
+    async execute(message, args, currentSearchName) {
 
-        //Gets passed manga name. 
-        const passedMangaName = args.join(' ');
+        //Gets passed anime name. 
+        const passedAnimeName = currentSearchName;
 
         try {
             //Gets anime ID from ID get function. 
-            const animeID = await getAnimeIDFromString(message, passedMangaName);
+            const animeID = await getAnimeIDFromString(message, passedAnimeName);
             //Gets anime images. 
             getAnimeImages(message, animeID)
         } catch (error) {

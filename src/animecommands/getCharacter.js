@@ -81,14 +81,17 @@ async function getAnimeCharacters(message, animeID, characterName) {
 module.exports = {
     name: 'chr',
     description: '!chr [main, sup, character_name] [anime_name] Returns Character Information. Use main for main characters, sup for supporting characters, and specify name for a specific character.',
-    async execute(message, args) {
+    async execute(message, args, animeName) {
         //takes character name from zero index. Needs reworking for 2 word character names. 
         const characterName = args[0].toLowerCase();
-        //takes manga name from index one. Needs reworking for 2 word character names. 
-        const passedMangaName = args.slice(1).join(' ');
+        //takes anime name from index one. Needs reworking for 2 word character names. 
+        const passedAnimeName = animeName;
+
+        //console.log(characterName); 
+        //console.log(passedAnimeName);
 
         try {
-            const animeID = await getAnimeIDFromString(message, passedMangaName);
+            const animeID = await getAnimeIDFromString(message, passedAnimeName);
             getAnimeCharacters(message, animeID, characterName)
         } catch (error) {
             console.error('Error:', error.message);

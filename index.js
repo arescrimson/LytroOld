@@ -5,9 +5,10 @@ require('dotenv').config();
 const { Client, IntentsBitField } = require('discord.js');
 
 //IMPORT COMMAND LIST 
-const {commandManager} = require('./src/manage/commandManager')
+const { commandManager } = require('./src/manage/commandManager')
 const commandList = commandManager();
 
+const { getSearch } = require('./src/utils/getSearch')
 //COMMAND PREFIX
 const PREFIX = '!';
 
@@ -26,23 +27,35 @@ client.on('ready', (c) => {
     console.log(`${c.user.tag + " is ready."}`);
 })
 
+let currentSearchName = '';
+
 //STARTS BOT FUNCTION ON MESSAGE CREATE 
 client.on('messageCreate', async (message) => {
 
     if (message.author.bot) return;
 
     if (message.content.startsWith(PREFIX)) {
-        //args is the argument, i.e. !url One Piece would be One Piece
+
+        /**
+         * Returns all words after command in an array. 
+         * ex. !a one piece would return ['one', 'piece']
+         * ex. !chr luffy would return ['luffy']
+         * 
+         */
         const args = message.content.slice(PREFIX.length).trim().split(/ +/);
+
         //command is the command i.e. !url One Piece would be url 
         const command = args.shift().toLowerCase();
+
+        currentSearchName = await getSearch(args, command, currentSearchName);
 
         let found = false;
 
         //Loops through command List to find command
         for (const commandType of commandList) {
             if (commandType.name === command) {
-                commandType.execute(message, args, commandList);
+                message.channel.send(`Currently Searching: ${currentSearchName}\n\n`)
+                commandType.execute(message, args, currentSearchName, commandList);
                 found = true;
                 break;
             }

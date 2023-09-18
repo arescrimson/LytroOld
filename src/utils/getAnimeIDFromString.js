@@ -45,7 +45,7 @@ async function getAnimeIDFromString(message, searchString) {
         }
 
     } catch (error) {
-        console.error('Error:', error.message);
+        console.error('Error in getting AnimeIDFromString:', error.message);
     }
 }
 

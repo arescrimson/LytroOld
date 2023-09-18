@@ -32,15 +32,26 @@ async function getInfo(message, animeID) {
 
         //GETS ANIME INFORMATION
         const anime = await client.anime.get(animeID);
+        const rec = await client.anime.getRecommendations(animeID);
+
+        const recList = []; 
+        recList.push(rec[0].entry.title);
+        recList.push(rec[1].entry.title);
+
+        const recListString = recList.map(item => item).join(', ');
 
         //SYNOPSIS, URL, EPISODES, RANK, GENRES, RATINGS
         const BACKGROUND = commandNullCheck(anime.background, 'Background not found.');
         const YEAR = commandNullCheck(anime.year, 'Year not found.');
         const TRAILER = commandNullCheck(anime.trailer?.embedUrl.href, 'Trailer not found.');
+        const STUDIO = commandNullCheck(anime.studios[0].name, 'Studios not found.');
+        const RECOMMENDATIONS = commandNullCheck(recListString, 'Recommendations not found.')
 
         //FORMATTED SENT MESSAGE 
         message.channel.send(`**Background:**\n\n${BACKGROUND}\n\n`+
                             `**Year Released:**\n\n${YEAR}\n\n`+
+                            `**Animation Studio:**\n\n${STUDIO}\n\n`+
+                            `**Related Animes:**\n\n${RECOMMENDATIONS}\n\n`+
                             `**Latest Trailer:**\n\n${TRAILER}\n\n`
                             );
     } catch (error) {
@@ -51,10 +62,10 @@ async function getInfo(message, animeID) {
 module.exports = {
     name: 'info',
     description: '!info [anime_name] Returns Anime Information.',
-    async execute(message, args) {
+    async execute(message, args, currentSearchName) {
 
         //Gets passed manga name. 
-        const passedAnimeName = args.join(' ');
+        const passedAnimeName = currentSearchName;
 
         try {
             //Gets anime ID from ID get function. 
@@ -62,8 +73,8 @@ module.exports = {
             //Gets additional anime information. 
             getInfo(message, animeID);
         } catch (error) {
-            console.error('Error:', error.message);
-            message.channel.send('An error occurred: ' + error.message);
+            console.error('Error in getInfo:', error.message);
+            message.channel.send('An error occurred in getInfo: ' + error.message);
         }
     }
 }
