@@ -41,6 +41,7 @@ async function getAnimeCharacters(message, animeID, characterName) {
 
         let maxIndex = 0;
         let characterFound = false;
+
         for (let i = 0; i < ch.length; i++) {
 
             //if character name is main, indexes and returns ALL MAIN CHARACTERS.
@@ -59,7 +60,7 @@ async function getAnimeCharacters(message, animeID, characterName) {
                     characterFound = true;
                 }
             }
-            //if character name is specified as a name, \extracts first name and compares it to 
+            //if character name is specified as a name, extracts first name and compares it to 
             //passed characterName .toLowerCase() because of case sensitivity in equality. 
             else {
                 if (getFirstName(message, characterName, (ch[i].character.name).toLowerCase())) {
@@ -91,6 +92,7 @@ module.exports = {
         const passedAnimeName = animeName;
 
         try {
+            message.channel.send(`**Currently Searching:** ${passedAnimeName}`)
             const animeID = await getAnimeIDFromString(message, passedAnimeName);
             getAnimeCharacters(message, animeID, characterName)
         } catch (error) {

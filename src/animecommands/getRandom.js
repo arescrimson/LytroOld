@@ -57,8 +57,8 @@ async function getRandomAnime(message) {
         message.channel.send(`**Synopsis:**\n\n${SYNOPSIS}\n\n`+ 
                             `**Rank:** ${RANK}\n\n`+ 
                             `**Episodes:**\n\n${EPISODES}\n\n`+ 
-                            `**Ratings**\n\n${RATINGS}\n\n `+ 
-                            `**Genres:**\n\n${GENRES}\n\n `+
+                            `**Ratings**\n\n${RATINGS}\n\n`+ 
+                            `**Genres:**\n\n${GENRES}\n\n`+
                             `**MyAnimeList URL:**\n\n ${URL}
                             `)     
     } catch (error) {
