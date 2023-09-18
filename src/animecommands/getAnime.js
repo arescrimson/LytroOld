@@ -49,7 +49,7 @@ async function getAnimeInfo(message, animeID) {
         //RATINGS AS AN AVERAGED SCORE STRING 
         let totalScore = 0;
         let totalVotes = 0;
-
+        
         for (const obj of stats.scores) {
             totalScore += obj.score * obj.votes;
             totalVotes += obj.votes;
@@ -88,6 +88,7 @@ module.exports = {
         const passedAnimeName = nameArgs
 
         try {
+            message.channel.send(`**Currently Searching:** ${passedAnimeName}`)
             const animeID = await getAnimeIDFromString(message, passedAnimeName);
             getAnimeInfo(message, animeID);
         } catch (error) {
