@@ -19,11 +19,11 @@ const client = new Jikan.Client();
 async function getAnimeImages(message, animeID) {
 
     try {
-        const ch = await client.anime.getPictures(animeID);
+        const pictures = await client.anime.getPictures(animeID);
 
-        const randomImageIndex = Math.floor(Math.random() * ch.length);
+        const randomImageIndex = Math.floor(Math.random() * pictures.length);
 
-        const testlink = ch[randomImageIndex].jpg.default.href
+        const testlink = pictures[randomImageIndex].jpg.default.href
 
         message.channel.send({
             files: [{ 
@@ -40,13 +40,10 @@ module.exports = {
     description: '!img [anime_name] Returns a single image from anime gallery.',
     async execute(message, args, currentSearchName) {
 
-        //Gets passed anime name. 
         const passedAnimeName = currentSearchName;
 
         try {
-            //Gets anime ID from ID get function. 
             const animeID = await getAnimeIDFromString(message, passedAnimeName);
-            //Gets anime images. 
             getAnimeImages(message, animeID)
         } catch (error) {
             console.error('Error:', error.message);

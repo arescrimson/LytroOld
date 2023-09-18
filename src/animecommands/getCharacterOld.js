@@ -53,7 +53,7 @@ module.exports = {
         const mangaName = args.join(' ');
 
         try {
-            const url = await getCharacter(mangaName, characterName);
+            //const url = await getCharacter(mangaName, characterName);
             //message.channel.send(`Manga URL: ${url}`);
         } catch (error) {
             console.error('Error:', error.message);

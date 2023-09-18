@@ -24,7 +24,6 @@ async function getMangaIDFromString(message, searchString) {
     try {
         const searchResults = await client.manga.search(searchString)
 
-
         const bestMatch = searchResults.reduce((best, manga) => {
             const similarity = stringSimilarity.compareTwoStrings(searchString, manga.title.default);
             if (similarity > best.similarity) {

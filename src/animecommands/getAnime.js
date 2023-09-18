@@ -85,13 +85,10 @@ module.exports = {
     description: '!a [anime_name] Returns Anime Information.',
     async execute(message, args, nameArgs) {
 
-        //Gets passed manga name. 
         const passedAnimeName = nameArgs
 
         try {
-            //Gets anime ID from ID get function. 
             const animeID = await getAnimeIDFromString(message, passedAnimeName);
-            //Gets Anime Information. 
             getAnimeInfo(message, animeID);
         } catch (error) {
             console.error('Error:', error.message);

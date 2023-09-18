@@ -18,8 +18,10 @@ const client = new Jikan.Client();
  * @returns the first name. 
  */
 function getFirstName(message, characterName, databaseNames) {
+    //splits by nameParts, i.e Monkey D., Luffy, and sets to lowercase for comparison purposes. 
     const nameParts = databaseNames.split(',').map(part => part.trim().toLowerCase());
 
+    //returns true if characterName matches either first or last name. 
     if (nameParts.includes(characterName.toLowerCase())) {
         return true;
     } 
@@ -41,14 +43,15 @@ async function getAnimeCharacters(message, animeID, characterName) {
         let characterFound = false;
         for (let i = 0; i < ch.length; i++) {
 
-            //if character name is main, indexes ALL MAIN CHARACTERS.
+            //if character name is main, indexes and returns ALL MAIN CHARACTERS.
             if (characterName === 'main') {
                 if (ch[i].role === 'Main') {
                     message.channel.send(`Main Characters: ${ch[i].character.url}`)
                     characterFound = true;
                 }
             }
-            //if character name is sup, indexes ALL SUPPORTING CHARACTERS. 
+            //if character name is sup, indexes ALL SUPPORTING CHARACTERS. Temporary limit of 5 indexes until 
+            //functionality to advance indexes is added.  
             else if (characterName === 'sup') {
                 if (ch[i].role === 'Supporting' && maxIndex < 5) {
                     message.channel.send(`Supporting Characters: ${ch[i].character.url}`)
@@ -56,8 +59,8 @@ async function getAnimeCharacters(message, animeID, characterName) {
                     characterFound = true;
                 }
             }
-            //if character name is specified as a name, first extracts first name and compares it to 
-            //passed characterName. toLowerCase because of case sensitivity in equality. 
+            //if character name is specified as a name, \extracts first name and compares it to 
+            //passed characterName .toLowerCase() because of case sensitivity in equality. 
             else {
                 if (getFirstName(message, characterName, (ch[i].character.name).toLowerCase())) {
                     message.channel.send(`**Character Name:** ${ch[i].character.name}\n\n` +
@@ -86,9 +89,6 @@ module.exports = {
         const characterName = args[0].toLowerCase();
         //takes anime name from index one. Needs reworking for 2 word character names. 
         const passedAnimeName = animeName;
-
-        //console.log(characterName); 
-        //console.log(passedAnimeName);
 
         try {
             const animeID = await getAnimeIDFromString(message, passedAnimeName);

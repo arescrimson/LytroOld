@@ -11,7 +11,7 @@ const QUOTE_URL = "https://waifu.it/api/quote";
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN
 
 /**
- * Gets data object from quote api. 
+ * Gets data object from quote API. 
  * 
  * @returns data.
  */
