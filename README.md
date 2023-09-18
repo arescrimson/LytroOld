@@ -7,7 +7,7 @@ Open Source Anime Discord Bot.
 
 Currently features simple commands for anime and manga. Currently planning to expand to include more API integration, as well as embed and streaming information support.
 
-Now supports title caching; any command with an [anime_name] identifier will stay within the searched title directory. Commands pertaining to that directory can be entered without the [anime name] for convenience. 
+Now supports title caching; any command with an **[anime name]** identifier will stay within the searched title directory. Commands pertaining to that directory can be entered without the **[anime name]**.
 
 **Data Source:** This bot uses the [MyAnimeList (MAL) API](https://myanimelist.net/apiconfig/references/api/v2) to fetch anime and manga information. You can visit the [MyAnimeList website](https://myanimelist.net/) for more details.
 
