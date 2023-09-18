@@ -69,11 +69,11 @@ async function getMangaInfo(message, mangaID) {
 
         //FORMATTED SENT MESSAGE 
         message.channel.send(`**Synopsis:**\n\n${SYNOPSIS}\n\n` +
-            `**Manga Rank:**\n\n${RANK}\n\n` +
-            `**Chapters:**\n\n${EPISODES}\n\n` +
-            `**Ratings**\n\n${RATINGS}\n\n` +
-            `**Genres:**\n\n${GENRES}\n\n` +
-            `**MyAnimeList URL:**\n\n${URL}
+                            `**Manga Rank:**\n\n${RANK}\n\n` +
+                            `**Chapters:**\n\n${EPISODES}\n\n` +
+                            `**Ratings**\n\n${RATINGS}\n\n` +
+                            `**Genres:**\n\n${GENRES}\n\n` +
+                            `**MyAnimeList URL:**\n\n${URL}
                             `)
     } catch (error) {
         console.error('Error:', error.message);
@@ -83,10 +83,10 @@ async function getMangaInfo(message, mangaID) {
 module.exports = {
     name: 'm',
     description: '!m [manga_name] Returns manga Information.',
-    async execute(message, args) {
+    async execute(message, args, searchedName) {
 
         //Gets passed manga name. 
-        const passedMangaName = args.join(' ');
+        const passedMangaName = searchedName;
 
         try {
             //Gets manga ID from ID get function. 

@@ -38,10 +38,10 @@ async function getMangaImages(message, mangaID) {
 module.exports = {
     name: 'mimg',
     description: '!img [manga_name] Returns a single image from manga gallery.',
-    async execute(message, args) {
+    async execute(message, args, searchName) {
 
         //Gets passed manga name. 
-        const passedMangaName = args.join(' ');
+        const passedMangaName = searchName;
 
         try {
             //Gets manga ID from ID get function. 

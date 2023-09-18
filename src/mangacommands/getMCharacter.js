@@ -81,12 +81,14 @@ async function getMangaCharacters(message, mangaID, characterName) {
 module.exports = {
     name: 'mchr',
     description: '!mchr [main, sup, character_name] [manga_name] Returns Character Information. Use main for main characters, sup for supporting characters, and specify name for a specific character.',
-    async execute(message, args) {
+    async execute(message, args, searchedName) {
         //takes character name from zero index. Needs reworking for 2 word character names. 
         const characterName = args[0].toLowerCase();
         //takes manga name from index one. Needs reworking for 2 word character names. 
-        const passedMangaName = args.slice(1).join(' ');
+        const passedMangaName = searchedName;
 
+        console.log(characterName); 
+        console.log(searchedName);
         try {
             const mangaID = await getMangaIDFromString(message, passedMangaName);
             getMangaCharacters(message, mangaID, characterName)
