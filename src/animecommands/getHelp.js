@@ -24,7 +24,7 @@ async function getHelp(message, commandList) {
 module.exports = {
     name: 'help',
     description: 'Gets Discord Command Info.',
-    async execute(message, args, commandList) {
+    async execute(message, args, searchName, commandList) {
         try {
             await getHelp(message, commandList)
         } catch (error) {
