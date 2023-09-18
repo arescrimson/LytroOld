@@ -8,7 +8,9 @@ const { Client, IntentsBitField } = require('discord.js');
 const { commandManager } = require('./src/manage/commandManager')
 const commandList = commandManager();
 
+//IMPORT COMMAND SEARCH 
 const { getSearch } = require('./src/utils/getSearch')
+
 //COMMAND PREFIX
 const PREFIX = '!';
 
@@ -51,7 +53,7 @@ client.on('messageCreate', async (message) => {
 
         let found = false;
 
-        //Loops through command List to find command
+        //Iterates through command list to find command
         for (const commandType of commandList) {
             if (commandType.name === command) {
                 message.channel.send(`Currently Searching: ${currentSearchName}\n\n`)

@@ -34,6 +34,7 @@ async function getInfo(message, animeID) {
         const anime = await client.anime.get(animeID);
         const rec = await client.anime.getRecommendations(animeID);
 
+        //TEMPORARY WAY OF DISPLAYING RECOMMENDATION TITLES
         const recList = []; 
         recList.push(rec[0].entry.title);
         recList.push(rec[1].entry.title);
