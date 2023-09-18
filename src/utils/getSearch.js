@@ -22,11 +22,11 @@ async function getSearch(args, command, currentSearchName) {
         //else if args has length, currentSearchName is assigned to other identifiers in the discord command. 
         else {
             //since !chr command requires a character name/prefix, takes the anime identifier after the name if one is provided.
-            if (command === 'chr' && args.length > 1) {
+            if ((command === 'chr' || command === 'mchr') && args.length > 1) {
                 currentSearchName = args.slice(1).join(' ')
             } 
             //if !chr is provided with only a character identifier, uses currentSearchName as the anime name. 
-            else if (command === 'chr') {
+            else if (command === 'chr' || command === 'mchr')  {
                 currentSearchName = currentSearchName;
             } 
             //if not !chr, will be a command like !a anime name, so return anime name as the current search name. 
