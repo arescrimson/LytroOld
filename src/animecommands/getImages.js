@@ -3,11 +3,14 @@
 //IMPORTS
 
 //IMPORT GETID 
-const {getAnimeIDFromString} = require('../utils/getAnimeIDFromString')
+const { getAnimeIDFromString } = require('../utils/getAnimeIDFromString')
 //JIKAN API LIBRARY 
 const Jikan = require('jikan4.js')
 //JIKANJS WRAPPER LIBRARY
 const client = new Jikan.Client();
+
+//Set of searched Set indexes. 
+const searchedSet = new Set();
 
 /**
  * Gets anime images from the animeID passed, and sends a random image 
@@ -19,17 +22,35 @@ const client = new Jikan.Client();
 async function getAnimeImages(message, animeID) {
 
     try {
+
+        let randomImageIndex; 
+
         const pictures = await client.anime.getPictures(animeID);
 
-        const randomImageIndex = Math.floor(Math.random() * pictures.length);
+        //randomly search index of picture gallery 
+        do { 
+            randomImageIndex = Math.floor(Math.random() * pictures.length);
+        }
+        //If set contains an index it's already searched, runs random search again. 
+        while (searchedSet.has(randomImageIndex));
 
-        const testlink = pictures[randomImageIndex].jpg.default.href
+        //If searched images Set exceeds the length of picture gallery array, clear values from Set. 
+        if ( searchedSet.size >= pictures.length) { 
+            searchedSet.clear(); 
+        } 
+        //Else, add index to searched index Set. 
+        else { 
+            searchedSet.add(randomImageIndex);
+        }
+
+        const pictureLink = pictures[randomImageIndex].jpg.default.href;
 
         message.channel.send({
-            files: [{ 
-                attachment: testlink
+            files: [{
+                attachment: pictureLink
             }]
         })
+
     } catch (error) {
         console.error('Error:', error.message);
     }
