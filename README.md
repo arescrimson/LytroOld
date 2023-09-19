@@ -1,13 +1,14 @@
 # Lytro
 <div style="text-align:center">
 <img src="https://t4.ftcdn.net/jpg/04/04/73/39/360_F_404733910_2mIXr6RbC5G3WZJFjopVsBaR3EOM6Bqy.jpg" alt="" width="1500" height="200">
-Anime discord bot built for anime/manga information functionality. Fully open-source. 
 </div>
+
+<p align="center">Discord.js based discord bot for anime/manga information</p>
 
 <!-- PROJECT ABOUT !-->
 ## About
 
-Currently features simple commands for anime and manga. Currently planning to expand to include more API integration, as well as embed and streaming information support. Permanent hosting support also on the way. 
+Currently features commands for anime and manga. Currently planning to expand to include more API integration, as well as embed and streaming information support. Permanent hosting support also on the way. 
 
 Now supports title caching; any command with an **[anime name]** identifier will stay within the searched title directory. Commands pertaining to that directory can be entered without the **[anime name]**.
 
