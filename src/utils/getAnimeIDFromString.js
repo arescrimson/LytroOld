@@ -7,12 +7,9 @@ const Jikan = require('jikan4.js')
 //JIKANJS WRAPPER LIBRARY
 const client = new Jikan.Client();
 
-async function getAnimeFromList(message, nameArray) {
-    message.channel.send(`${nameArray}`);
-}
-
 /**
- * Gets Anime ID from String. I actually feel kinda big brain for this. Basically...
+ * Gets Anime ID from String. 
+ * 
  * Firstly, Math.ceil rounds to the nearest integer greater to or equal to that number, preventing 
  * any cases where the returned array of search string are less than 4. Although, I think that 
  * MAL search will always return more than 4 entries, but this is also there since the anime that 
@@ -34,14 +31,18 @@ async function getAnimeFromList(message, nameArray) {
 async function getAnimeIDFromString(message, searchString) {
     try {
 
+        //array of anime objects returned from the searched string. 
         const searchResults = await client.anime.search(searchString)
 
+        //takes the first quarter indexes of  searchResults array. 
         const quarterLength = Math.ceil(searchResults.length / 4);
 
+        //initializes the ID of found anime. 
         let foundID;
 
         for (let i = 0; i < quarterLength; i++) {
             const animeName = (searchResults[i].title.default).toLowerCase();
+
 
             if (searchString === animeName) {
                 return searchResults[i].id;
