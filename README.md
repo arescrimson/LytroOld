@@ -1,6 +1,6 @@
 # Lytro
 
-![](https://github.com/arescrimson/Lytro/img/profile.jpg)
+![](https://github.com/arescrimson/Lytro/blob/master/img/profile.jpg)
 Open Source Anime Discord Bot. 
 
 <!-- PROJECT ABOUT !-->
