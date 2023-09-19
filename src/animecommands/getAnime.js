@@ -82,7 +82,7 @@ async function getAnimeInfo(message, animeID) {
 
 module.exports = {
     name: 'a',
-    description: '!a [anime_name] Returns Anime Information.',
+    description: '!a [anime_name] Returns anime information.',
     async execute(message, args, nameArgs) {
 
         const passedAnimeName = nameArgs

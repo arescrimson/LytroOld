@@ -4,12 +4,12 @@ function commandManager() {
     const commandNames = [
         'getHelp',
         'getAnime',
+        'getInfo',
         'getCharacter',
         'getImages',
         'getRandom', 
         'getQuote',
         'getHelp', 
-        'getInfo'
     ];
 
     //MANGA COMMAND LIST 

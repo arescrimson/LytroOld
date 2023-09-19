@@ -33,7 +33,7 @@ async function getData() {
 
 module.exports = {
     name: 'quote',
-    description: '!quote [character_name] [anime_name] Returns a quote from the character.',
+    description: '!quote [character_name] [anime_name] Returns a quote from a character in a random anime.',
     async execute(message, args) {      
         try {
             const quoteData = await getData();
