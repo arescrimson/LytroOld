@@ -68,6 +68,8 @@ module.exports = {
         const passedAnimeName = currentSearchName;
 
         try {
+            message.channel.send(`**Currently Searching:** ${passedAnimeName}`);
+            message.channel.send(`** **`); //blank message for formatting
             const animeID = await getAnimeIDFromString(message, passedAnimeName);
             getInfo(message, animeID);
         } catch (error) {

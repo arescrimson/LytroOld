@@ -34,7 +34,7 @@ function getFirstName(message, characterName, databaseNames) {
  * @param {*} animeID is the animeID passed. 
  * @param {*} characterName is the lowercased character Name being searched. 
  */
-async function getAnimeCharacters(message, animeID, characterName) {
+async function getAnimeCharacters(message, animeID, characterName, animeName) {
 
     try {
         const ch = await client.anime.getCharacters(animeID);
@@ -64,10 +64,10 @@ async function getAnimeCharacters(message, animeID, characterName) {
             //passed characterName .toLowerCase() because of case sensitivity in equality. 
             else {
                 if (getFirstName(message, characterName, (ch[i].character.name).toLowerCase())) {
-                    message.channel.send(`**Character Name:** ${ch[i].character.name}\n\n` +
-                    `**Role:** ${ch[i].role}\n\n` +
-                    `**Voice Actor:** ${ch[i].voiceActors[0].person.name} (${ch[i].voiceActors[0].language})\n\n` +
-                    `${ch[i].character.url}`);                    
+                    message.channel.send(`**Character Name:** ${ch[i].character.name}\n\n`+
+                                         `**Role:** ${ch[i].role}\n\n`+
+                                         `**Voice Actor:** ${ch[i].voiceActors[0].person.name} (${ch[i].voiceActors[0].language})\n\n`+
+                                         `${ch[i].character.url}`);                    
                     characterFound = true;
                     break;
                 }
@@ -85,16 +85,17 @@ async function getAnimeCharacters(message, animeID, characterName) {
 module.exports = {
     name: 'chr',
     description: '!chr [main, sup, character_name] [anime_name] Returns Character Information. Use main for main characters, sup for supporting characters, and specify name for a specific character.',
-    async execute(message, args, animeName) {
+    async execute(message, args, searchName) {
         //takes character name from zero index. Needs reworking for 2 word character names. 
         const characterName = args[0].toLowerCase();
         //takes anime name from index one. Needs reworking for 2 word character names. 
-        const passedAnimeName = animeName;
+        const animeName = searchName;
 
         try {
-            message.channel.send(`**Currently Searching:** ${passedAnimeName}`)
-            const animeID = await getAnimeIDFromString(message, passedAnimeName);
-            getAnimeCharacters(message, animeID, characterName)
+            message.channel.send(`**Currently Searching for: ${characterName}** in **${animeName}**`);
+            message.channel.send(`** **`); //blank message for formatting
+            const animeID = await getAnimeIDFromString(message, animeName);
+            getAnimeCharacters(message, animeID, characterName, animeName)
         } catch (error) {
             console.error('Error:', error.message);
             message.channel.send('An error occurred: ' + error.message);

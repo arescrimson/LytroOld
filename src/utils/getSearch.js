@@ -27,7 +27,8 @@ async function getSearch(args, command, currentSearchName) {
             } 
             //if !chr is provided with only a character identifier, uses currentSearchName as the anime name. 
             else if (command === 'chr' || command === 'mchr')  {
-                currentSearchName = currentSearchName;
+                animeName = currentSearchName;
+                currentSearchName = animeName;
             } 
             //if not !chr, will be a command like !a anime name, so return anime name as the current search name. 
             else {
@@ -35,7 +36,7 @@ async function getSearch(args, command, currentSearchName) {
                 currentSearchName = animeName;
             }
         } 
-
+        
     return currentSearchName
 }
 

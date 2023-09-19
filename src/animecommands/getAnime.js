@@ -3,9 +3,9 @@
 //IMPORTS
 
 //IMPORT GETID 
-const { getAnimeIDFromString } = require('../utils/getAnimeIDFromString')
+const { getAnimeIDFromString } = require('../utils/getAnimeIDFromString');
 //JIKAN API LIBRARY 
-const Jikan = require('jikan4.js')
+const Jikan = require('jikan4.js');
 //JIKANJS WRAPPER LIBRARY
 const client = new Jikan.Client();
 
@@ -64,8 +64,8 @@ async function getAnimeInfo(message, animeID) {
         const URL = commandNullCheck(anime.url, 'URL not found.');
         const EPISODES = commandNullCheck(anime.episodes, 'Episodes not found.');
         const RANK = commandNullCheck(anime.rank, 'Rank not found.');
-        const GENRES = commandNullCheck(genres, 'Genres not found.')
-        const RATINGS = commandNullCheck(ratings, 'Ratings not found.')
+        const GENRES = commandNullCheck(genres, 'Genres not found.');
+        const RATINGS = commandNullCheck(ratings, 'Ratings not found.');
 
         //FORMATTED SENT MESSAGE 
         message.channel.send(`**Synopsis:**\n\n${SYNOPSIS}\n\n` +
@@ -88,7 +88,8 @@ module.exports = {
         const passedAnimeName = nameArgs
 
         try {
-            message.channel.send(`**Currently Searching:** ${passedAnimeName}`)
+            message.channel.send(`**Currently Searching:** ${passedAnimeName}`);
+            message.channel.send(`** **`); //blank message for formatting
             const animeID = await getAnimeIDFromString(message, passedAnimeName);
             getAnimeInfo(message, animeID);
         } catch (error) {
