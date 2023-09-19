@@ -56,7 +56,6 @@ client.on('messageCreate', async (message) => {
         //Iterates through command list to find command
         for (const commandType of commandList) {
             if (commandType.name === command) {
-                message.channel.send(`Currently Searching: ${currentSearchName}\n\n`)
                 commandType.execute(message, args, currentSearchName, commandList);
                 found = true;
                 break;
