@@ -1,7 +1,7 @@
 # Lytro
 
 <div style="text-align:left">
-<img src="https://github.com/arescrimson/Lytro/blob/master/img/profile.jpg" alt="" width="200" height="150">
+<img src="https://github.com/arescrimson/Lytro/blob/master/img/banner.jpg" alt="" width="1000" height="200">
 </div>
 
 Open Source Anime Discord Bot. 
