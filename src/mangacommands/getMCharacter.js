@@ -86,9 +86,7 @@ module.exports = {
         const characterName = args[0].toLowerCase();
         //takes manga name from index one. Needs reworking for 2 word character names. 
         const passedMangaName = searchedName;
-
-        console.log(characterName); 
-        console.log(searchedName);
+        
         try {
             const mangaID = await getMangaIDFromString(message, passedMangaName);
             getMangaCharacters(message, mangaID, characterName)
