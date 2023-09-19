@@ -16,7 +16,8 @@ async function getHelp(message, commandList) {
                      `${commandList[2].description}\n\n` +
                      `${commandList[3].description}\n\n` + 
                      `${commandList[4].description}\n\n` +
-                     `${commandList[5].description}\n\n`
+                     `${commandList[5].description}\n\n` + 
+                     `${commandList[6].description}\n\n` 
                      );
 
 }
