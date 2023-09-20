@@ -2,6 +2,7 @@
 
 //IMPORTS
 
+const { EmbedBuilder } = require('discord.js')
 //IMPORT GETID 
 const { getAnimeIDFromString } = require('../utils/getAnimeIDFromString')
 //JIKAN API LIBRARY 
@@ -24,7 +25,7 @@ function getFirstName(message, characterName, databaseNames) {
     //returns true if characterName matches either first or last name. 
     if (nameParts.includes(characterName.toLowerCase())) {
         return true;
-    } 
+    }
 }
 
 /**
@@ -47,7 +48,7 @@ async function getAnimeCharacters(message, animeID, characterName, animeName) {
             //if character name is main, indexes and returns ALL MAIN CHARACTERS.
             if (characterName === 'main') {
                 if (ch[i].role === 'Main') {
-                    message.channel.send(`Main Characters: ${ch[i].character.url}`)
+                    message.channel.send(`Main Characters: ${ch[i].character.url}`);
                     characterFound = true;
                 }
             }
@@ -55,7 +56,7 @@ async function getAnimeCharacters(message, animeID, characterName, animeName) {
             //functionality to advance indexes is added.  
             else if (characterName === 'sup') {
                 if (ch[i].role === 'Supporting' && maxIndex < 5) {
-                    message.channel.send(`Supporting Characters: ${ch[i].character.url}`)
+                    message.channel.send(`Supporting Characters: ${ch[i].character.url}`);
                     maxIndex++;
                     characterFound = true;
                 }
@@ -64,18 +65,31 @@ async function getAnimeCharacters(message, animeID, characterName, animeName) {
             //passed characterName .toLowerCase() because of case sensitivity in equality. 
             else {
                 if (getFirstName(message, characterName, (ch[i].character.name).toLowerCase())) {
-                    message.channel.send(`**Character Name:** ${ch[i].character.name}\n\n`+
-                                         `**Role:** ${ch[i].role}\n\n`+
-                                         `**Voice Actor:** ${ch[i].voiceActors[0].person.name} (${ch[i].voiceActors[0].language})\n\n`+
-                                         `${ch[i].character.url}`);                    
-                    characterFound = true;
-                    break;
+                    const characterName = ch[i].character;
+
+                    const exampleEmbed = new EmbedBuilder()
+                        .setColor(0x0099FF)
+                        .setTitle(`${characterName.name}`)
+                        .setURL(`${characterName.url}`)
+                        .setAuthor({ name: `Found ${characterName.name} in ${animeName}`})
+                        .setThumbnail('https://github.com/arescrimson/Lytro/blob/master/img/profile.jpg?raw=true')
+                        .addFields(
+                            { name: 'Role:', value: `${ch[i].role}` },
+                            { name: 'Japanese Voice Actor:', value: `${ch[i].voiceActors[0].person.name}`, inline: true },
+                        )
+                        .setImage(`${characterName.image.webp.default}`)
+                        .setTimestamp()
+                        .setFooter({ text: 'Information from Lytro' });
+
+                    message.channel.send({ embeds: [exampleEmbed] });
+                    characterFound = true; 
+                    break; 
                 }
             }
         }
 
         if (!characterFound) {
-            message.channel.send('Character not found :(')
+            message.channel.send('Character not found :(');
         }
     } catch (error) {
         console.error('Error:', error.message);
@@ -92,8 +106,6 @@ module.exports = {
         const animeName = searchName;
 
         try {
-            message.channel.send(`**Currently Searching for: ${characterName}** in **${animeName}**`);
-            message.channel.send(`** **`); //blank message for formatting
             const animeID = await getAnimeIDFromString(message, animeName);
             getAnimeCharacters(message, animeID, characterName, animeName)
         } catch (error) {
