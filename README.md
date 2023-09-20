@@ -1,9 +1,9 @@
 # Lytro
 <div style="text-align:center">
-<img src="https://t4.ftcdn.net/jpg/04/04/73/39/360_F_404733910_2mIXr6RbC5G3WZJFjopVsBaR3EOM6Bqy.jpg" alt="" width="1500" height="200">
+<img src="https://as2.ftcdn.net/v2/jpg/02/43/06/71/1000_F_243067171_LP1nmo921ZIivxzxFUFqMD9ZaQXP67vI.jpg" alt="" width="1500" height="200">
 </div>
 
-<p align="center">Discord.js based discord bot for anime/manga information</p>
+<p align="center">Discord.js based discord bot for anime/manga information.</p>
 
 <!-- PROJECT ABOUT !-->
 ## About
@@ -26,10 +26,6 @@ Now supports title caching; any command with an **[anime name]** identifier will
 
 **!img [anime name]:** returns a random image pertaining to the picture gallery of the specific anime. 
 
-**!rand:** returns information identical to !info with a random anime.
-
-**!quote:** returns a random quote, the character, and the anime/manga it came from. 
-
 ## Manga Commands
 
 **!m [manga name]:** returns information like synopsis, rating based off total votes, genre, and url. 
@@ -38,7 +34,14 @@ Now supports title caching; any command with an **[anime name]** identifier will
 
 **!mimg [manga name]:** returns a random image pertaining to the picture gallery of the specific manga. 
 
+## Misc Commands
+
+**!rand:** returns information identical to !info with a random anime.
+
 **!mrand:** returns information identical to !info with a random manga.
+
+**!quote:** returns a random quote, the character, and the anime/manga it came from. 
+
 
 ## Built With 
 
