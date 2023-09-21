@@ -10,6 +10,8 @@ const Jikan = require('jikan4.js')
 //JIKANJS WRAPPER LIBRARY
 const client = new Jikan.Client();
 
+const ICON_URL = 'https://avatarfiles.alphacoders.com/281/281168.png';
+
 const maxLength = 1020
 
 // DEFAULT ERROR MESSAGES
@@ -92,10 +94,10 @@ async function getInfo(message, animeID) {
                     { name: 'Year:', value: `${YEAR}`, inline: true },
                     { name: 'Studio:', value: `${STUDIO}`, inline: true },
                 )
-                .addFields({ name: 'Recommendations:', value: `${RECOMMENDATIONS}`, inline: true })
+                .addFields({ name: 'Related:', value: `${RECOMMENDATIONS}`, inline: true })
                 .setImage(`${anime.image.webp.default}`)
                 .setTimestamp()
-                .setFooter({ text: 'Information from Lytro' });
+                .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL});
 
             message.channel.send({ embeds: [exampleEmbed] });
         }
@@ -113,10 +115,10 @@ async function getInfo(message, animeID) {
                     { name: 'Year:', value: `${YEAR}`, inline: true },
                     { name: 'Studio:', value: `${STUDIO}`, inline: true },
                 )
-                .addFields({ name: 'Recommendations:', value: `${RECOMMENDATIONS}`, inline: true })
+                .addFields({ name: 'Related:', value: `${RECOMMENDATIONS}`, inline: true })
                 .setImage(`${anime.image.webp.default}`)
                 .setTimestamp()
-                .setFooter({ text: 'Information from Lytro' });
+                .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL });
 
             message.channel.send({ embeds: [exampleEmbed] });
         }
