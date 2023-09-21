@@ -11,6 +11,15 @@ const client = new Jikan.Client();
 
 const maxLength = 1020;
 
+const ICON_URL = 'https://avatarfiles.alphacoders.com/281/281168.png';
+
+// Default ERROR MESSAGES
+const SYNOPSIS_NOT_FOUND = 'Synopsis not found.';
+const URL_NOT_FOUND = 'URL not found.';
+const EPISODES_NOT_FOUND = 'Episodes not found.';
+const GENRES_NOT_FOUND = 'Genres not found.';
+const RATINGS_NOT_FOUND = 'Ratings not found.';
+
 /**
  * Checks if value passed is null. If null, instead returns error Message 
  * as to display 'Value not found.' instead of null in message response. 
@@ -35,7 +44,7 @@ async function getAnimeInfo(message, animeID) {
         //GETS ANIME INFORMATION
         const anime = await client.anime.get(animeID);
         const stats = await client.anime.getStatistics(animeID);
-        const genres = anime.genres.map(genre => genre.name).join(', ');
+        const genres = commandNullCheck(anime.genres.map(genre => genre.name).join(', '), GENRES_NOT_FOUND);
 
         //INITIALIZES SPLIT FOR SYNOPSIS THAT ARE OVER 1020 CHARACTERS 
         let split = false;
@@ -44,29 +53,22 @@ async function getAnimeInfo(message, animeID) {
         let synopsis3 = '';
         
         //SPLITS SYNOPSIS IF TOO LONG INTO 2-3 PARAGRAPHS. 
-        if (anime.synopsis.length > maxLength) {
-            const splitSynopsis = anime.synopsis.split('\n');
-            //Because some synopsis are too long, yet are only 2 paragraphs, use ternary to check. 
-            //However, this means that if a synopsis is too long yet contains say, 4 paragraphs, this will not work. 
-            synopsis = splitSynopsis[0];
-            synopsis2 = (splitSynopsis[2] !== null) ? splitSynopsis[2] : '';
-            synopsis3 = (splitSynopsis[4] !== null) ? splitSynopsis[4] : '';
-            split = true;
-        } 
-        //else, simply assign synopsis to the anime synopsis. 
-        else {
-            synopsis = anime.synopsis;
-        }
-
-        //GENRES AS A STRING LIST WITH COMMAS 
-        let genreText = "";
-
-        for (let i = 0; i < anime.genres.length; i++) {
-            genreText += anime.genres[i].name;
-
-            if (i < anime.genres.length - 1) {
-                genreText += ", "; // Adds a comma and space between genres
+        if (anime.synopsis !== null) { 
+            if (anime.synopsis.length > maxLength) {
+                const splitSynopsis = anime.synopsis.split('\n');
+                //Because some synopsis are too long, yet are only 2 paragraphs, use ternary to check. 
+                //However, this means that if a synopsis is too long yet contains say, 4 paragraphs, this will not work. 
+                synopsis = splitSynopsis[0];
+                synopsis2 = (splitSynopsis[2] !== null) ? splitSynopsis[2] : '';
+                synopsis3 = (splitSynopsis[4] !== null) ? splitSynopsis[4] : '';
+                split = true;
+            } 
+            //else, simply assign synopsis to the anime synopsis. 
+            else {
+                synopsis = anime.synopsis;
             }
+        } else { 
+            synopsis = SYNOPSIS_NOT_FOUND; 
         }
 
         //RATINGS AS AN AVERAGED SCORE STRING 
@@ -83,11 +85,11 @@ async function getAnimeInfo(message, animeID) {
         const ratings = `Average score based off ${totalVotes.toLocaleString()} votes: ${averageScore.toFixed(2) + ' / 10'}`;
 
         //SYNOPSIS, URL, EPISODES, GENRES, RATINGS
-        const SYNOPSIS = commandNullCheck(synopsis, 'Synopsis not found.');
-        const URL = commandNullCheck(anime.url, 'URL not found.');
-        const EPISODES = commandNullCheck(anime.episodes, 'Episodes not found.');
-        const GENRES = commandNullCheck(genres, 'Genres not found.');
-        const RATINGS = commandNullCheck(ratings, 'Ratings not found.');
+        const SYNOPSIS = synopsis;
+        const URL = ( anime.url !== null ) ? anime.url : URL_NOT_FOUND;
+        const EPISODES = ( anime.episodes !== null ) ? anime.episodes : EPISODES_NOT_FOUND;
+        const GENRES = genres;
+        const RATINGS = commandNullCheck(ratings, RATINGS_NOT_FOUND);
 
         //if synopsis has been split, use the split synopsis' as embed does not support more than 1024 characters per value. 
         if (split) {
@@ -108,7 +110,7 @@ async function getAnimeInfo(message, animeID) {
                 .addFields({ name: 'Ratings:', value: `${RATINGS}`, inline: true })
                 .setImage(`${anime.image.webp.default}`)
                 .setTimestamp()
-                .setFooter({ text: 'Information from Lytro' });
+                .setFooter({ text: 'Information from Lytro' , iconURL: ICON_URL});
 
             message.channel.send({ embeds: [exampleEmbed] });
         } 
@@ -129,21 +131,11 @@ async function getAnimeInfo(message, animeID) {
                 .addFields({ name: 'Ratings:', value: `${RATINGS}`, inline: true })
                 .setImage(`${anime.image.webp.default}`)
                 .setTimestamp()
-                .setFooter({ text: 'Information from Lytro' });
+                .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL });
 
             message.channel.send({ embeds: [exampleEmbed] });
         }
 
-        //FORMATTED SENT MESSAGE 
-        /*
-message.channel.send(`**Synopsis:**\n\n${SYNOPSIS}\n\n` +
-    `**Anime Rank:**\n\n${RANK}\n\n` +
-    `**Episodes:**\n\n${EPISODES}\n\n` +
-    `**Ratings**\n\n${RATINGS}\n\n` +
-    `**Genres:**\n\n${GENRES}\n\n` +
-    `**MyAnimeList URL:**\n\n${URL}
-                    `)
-                    */
     } catch (error) {
         console.error('Error:', error.message);
     }
