@@ -3,11 +3,11 @@
  * i.e. !a one piece will set the user's currently searched anime to one piece, and 
  * they will only need to do !img or !chr name to search within their searched show. 
  * Of course, this also allows for users to change shows with any command, such as 
- * !chr gon hunter x hunter will switch the searched name to hunter x hunter. 
+ * !chr gon hunter x hunter will switch the searched anime to hunter x hunter. 
  * 
  * @param {string} args is the array of strings of individual words from the discord command. 
  * @param {string} command is the actual command, i.e. 'a' or 'chr'.
- * @param {string} currentSearchName is the currently cached searched name. 
+ * @param {string} currentSearchName is the currently cached searched anime. 
  * @returns currentSearchName after it has been correctly assigned depending on context. 
  */
 

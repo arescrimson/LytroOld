@@ -46,7 +46,9 @@ async function getMangaIDFromString(message, searchString) {
 
             if (searchString === mangaName) {
                 return searchResults[i].id;
-            } else {
+            } 
+            
+            else {
                 foundID = searchResults[0].id;
             }
         }
@@ -54,6 +56,7 @@ async function getMangaIDFromString(message, searchString) {
         if (foundID !== undefined || null) {
             return foundID;
         } 
+        
         else {
             message.channel.send('manga not found.');
         }

@@ -15,7 +15,7 @@ const Jikan = require('jikan4.js')
 const client = new Jikan.Client();
 
 //LYTRO FOOTER ICON, MAX VALUE LENGTH FOR EMBEDS
-const { ICON_URL, MAX_VALUE_LENGTH } = require('../../config')
+const { THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH } = require('../../config')
 
 //ERROR MESSAGES
 const { BACKGROUND_NOT_FOUND, YEAR_NOT_FOUND, TRAILER_NOT_FOUND, STUDIO_NOT_FOUND, RECOMMENDATIONS_NOT_FOUND} = require('../../config')
@@ -87,7 +87,7 @@ async function getInfo(message, animeID) {
                 .setTitle(`${anime.title.default}`)
                 .setURL(`${anime.url}`)
                 .setAuthor({ name: `Currently Searching: ${anime.title.default}` })
-                .setThumbnail('https://github.com/arescrimson/Lytro/blob/master/img/profile.jpg?raw=true')
+                .setThumbnail(THUMBNAIL)
                 .addFields(
                     { name: '\n\u200b', value: '\n\u200b' },
                     { name: 'Background: \n\u200b', value: `${BACKGROUND}` },
@@ -109,7 +109,7 @@ async function getInfo(message, animeID) {
                 .setTitle(`${anime.title.default}`)
                 .setURL(`${anime.url}`)
                 .setAuthor({ name: `Currently Searching: ${anime.title.default}` })
-                .setThumbnail('https://github.com/arescrimson/Lytro/blob/master/img/profile.jpg?raw=true')
+                .setThumbnail(THUMBNAIL)
                 .addFields(
                     { name: '\n\u200b', value: '\n\u200b' },
                     { name: 'Background: \n\u200b', value: `${BACKGROUND}` },

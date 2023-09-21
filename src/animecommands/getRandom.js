@@ -10,7 +10,7 @@ const Jikan = require('jikan4.js');
 //JIKANJS WRAPPER LIBRARY
 const client = new Jikan.Client();
 
-const { MAX_VALUE_LENGTH } = require('../../config')
+const { THUMBNAIL, MAX_VALUE_LENGTH, ICON_URL } = require('../../config')
 
 /**
  * Checks if value passed is null. If null, instead returns error Message 
@@ -100,7 +100,7 @@ async function getRandomAnime(message) {
                 .setTitle(`${anime.title.default}`)
                 .setURL(`${URL}`)
                 .setAuthor({ name: `Currently Searching: ${anime.title.default}` })
-                .setThumbnail('https://github.com/arescrimson/Lytro/blob/master/img/profile.jpg?raw=true')
+                .setThumbnail(THUMBNAIL)
                 .addFields(
                     { name: '\n\u200b', value: '\n\u200b' },
                     { name: 'Synopsis: \n\u200b', value: `${SYNOPSIS}` },
@@ -112,7 +112,7 @@ async function getRandomAnime(message) {
                 .addFields({ name: 'Ratings:', value: `${RATINGS}`, inline: true })
                 .setImage(`${anime.image.webp.default}`)
                 .setTimestamp()
-                .setFooter({ text: 'Information from Lytro' });
+                .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL });
 
             message.channel.send({ embeds: [exampleEmbed] });
         }
@@ -123,7 +123,7 @@ async function getRandomAnime(message) {
                 .setTitle(`${anime.title.default}`)
                 .setURL(`${URL}`)
                 .setAuthor({ name: `Currently Searching: ${anime.title.default}` })
-                .setThumbnail('https://github.com/arescrimson/Lytro/blob/master/img/profile.jpg?raw=true')
+                .setThumbnail(THUMBNAIL)
                 .addFields(
                     { name: '\n\u200b', value: '\n\u200b' },
                     { name: 'Synopsis: \n\u200b', value: `${SYNOPSIS}\n\u200b` },
@@ -133,7 +133,7 @@ async function getRandomAnime(message) {
                 .addFields({ name: 'Ratings:', value: `${RATINGS}`, inline: true })
                 .setImage(`${anime.image.webp.default}`)
                 .setTimestamp()
-                .setFooter({ text: 'Information from Lytro' });
+                .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL });
 
             message.channel.send({ embeds: [exampleEmbed] });
         }

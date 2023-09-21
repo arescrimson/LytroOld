@@ -46,7 +46,9 @@ async function getAnimeIDFromString(message, searchString) {
 
             if (searchString === animeName) {
                 return searchResults[i].id;
-            } else {
+            } 
+            
+            else {
                 foundID = searchResults[0].id;
             }
         }
@@ -54,6 +56,7 @@ async function getAnimeIDFromString(message, searchString) {
         if (foundID !== undefined || null) {
             return foundID;
         } 
+        
         else {
             message.channel.send('anime not found.');
         }

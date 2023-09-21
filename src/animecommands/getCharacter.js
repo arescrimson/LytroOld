@@ -14,7 +14,7 @@ const Jikan = require('jikan4.js')
 const client = new Jikan.Client();
 
 //LYTRO FOOTER ICON
-const { ICON_URL } = require('../../config')
+const { THUMBNAIL, ICON_URL } = require('../../config')
 
 /**
  * Gets first name from either a single first name, or a lastname, firstname format. 
@@ -79,7 +79,7 @@ async function getAnimeCharacters(message, animeID, characterName) {
                         .setTitle(`${characterName.name}`)
                         .setURL(`${characterName.url}`)
                         .setAuthor({ name: `Currently Searching: ${anime.title.default}`})
-                        .setThumbnail('https://github.com/arescrimson/Lytro/blob/master/img/profile.jpg?raw=true')
+                        .setThumbnail(THUMBNAIL)
                         .addFields(
                             { name: 'Role:', value: `${ch[i].role}` },
                             { name: 'Japanese Voice Actor:', value: `${ch[i].voiceActors[0].person.name}`, inline: true },

@@ -8,7 +8,7 @@ require('dotenv').config();
 const axios = require('axios');
 
 //QUOTE API URL 
-const QUOTE_URL = "https://waifu.it/api/quote";
+const { QUOTE_URL } = require('../../config')
 
 //QUOTE API ACCESS TOKEN 
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN
