@@ -35,9 +35,10 @@ function getFirstName(message, characterName, databaseNames) {
  * @param {*} animeID is the animeID passed. 
  * @param {*} characterName is the lowercased character Name being searched. 
  */
-async function getAnimeCharacters(message, animeID, characterName, animeName) {
+async function getAnimeCharacters(message, animeID, characterName) {
 
     try {
+        const anime = await client.anime.get(animeID);
         const ch = await client.anime.getCharacters(animeID);
 
         let maxIndex = 0;
@@ -71,7 +72,7 @@ async function getAnimeCharacters(message, animeID, characterName, animeName) {
                         .setColor(0x0099FF)
                         .setTitle(`${characterName.name}`)
                         .setURL(`${characterName.url}`)
-                        .setAuthor({ name: `Found ${characterName.name} in ${animeName}`})
+                        .setAuthor({ name: `Currently Searching: ${anime.title.default}`})
                         .setThumbnail('https://github.com/arescrimson/Lytro/blob/master/img/profile.jpg?raw=true')
                         .addFields(
                             { name: 'Role:', value: `${ch[i].role}` },
@@ -107,7 +108,7 @@ module.exports = {
 
         try {
             const animeID = await getAnimeIDFromString(message, animeName);
-            getAnimeCharacters(message, animeID, characterName, animeName)
+            getAnimeCharacters(message, animeID, characterName)
         } catch (error) {
             console.error('Error:', error.message);
             message.channel.send('An error occurred: ' + error.message);
