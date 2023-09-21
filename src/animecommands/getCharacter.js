@@ -3,14 +3,18 @@
 //IMPORTS
 
 const { EmbedBuilder } = require('discord.js')
+
 //IMPORT GETID 
 const { getAnimeIDFromString } = require('../utils/getAnimeIDFromString')
+
 //JIKAN API LIBRARY 
 const Jikan = require('jikan4.js')
+
 //JIKANJS WRAPPER LIBRARY
 const client = new Jikan.Client();
 
-const ICON_URL = 'https://avatarfiles.alphacoders.com/281/281168.png';
+//LYTRO FOOTER ICON
+const { ICON_URL } = require('../../config')
 
 /**
  * Gets first name from either a single first name, or a lastname, firstname format. 

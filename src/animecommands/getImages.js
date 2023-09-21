@@ -4,8 +4,10 @@
 
 //IMPORT GETID 
 const { getAnimeIDFromString } = require('../utils/getAnimeIDFromString')
+
 //JIKAN API LIBRARY 
 const Jikan = require('jikan4.js')
+
 //JIKANJS WRAPPER LIBRARY
 const client = new Jikan.Client();
 
@@ -23,23 +25,23 @@ async function getAnimeImages(message, animeID) {
 
     try {
 
-        let randomImageIndex; 
+        let randomImageIndex;     
 
         const pictures = await client.anime.getPictures(animeID);
 
         //randomly search index of picture gallery 
-        do { 
+        do {
             randomImageIndex = Math.floor(Math.random() * pictures.length);
         }
         //If set contains an index it's already searched, runs random search again. 
         while (searchedSet.has(randomImageIndex));
 
         //If searched images Set exceeds the length of picture gallery array, clear values from Set. 
-        if ( searchedSet.size >= pictures.length) { 
-            searchedSet.clear(); 
-        } 
+        if (searchedSet.size >= pictures.length) {
+            searchedSet.clear();
+        }
         //Else, add index to searched index Set. 
-        else { 
+        else {
             searchedSet.add(randomImageIndex);
         }
 
@@ -59,12 +61,12 @@ async function getAnimeImages(message, animeID) {
 module.exports = {
     name: 'img',
     description: '!img [anime_name] Returns a single image from anime gallery.',
-    async execute(message, args, currentSearchName) {
+    async execute(message, args, searchAnime) {
 
-        const passedAnimeName = currentSearchName;
+        const animeName = searchAnime;
 
         try {
-            const animeID = await getAnimeIDFromString(message, passedAnimeName);
+            const animeID = await getAnimeIDFromString(message, animeName);
             getAnimeImages(message, animeID)
         } catch (error) {
             console.error('Error:', error.message);

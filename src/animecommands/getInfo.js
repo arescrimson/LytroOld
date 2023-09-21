@@ -2,24 +2,23 @@
 
 //IMPORTS
 
+//EMBEDBUILDER 
 const { EmbedBuilder } = require('discord.js');
-//IMPORT GETID 
+
+//GETID 
 const { getAnimeIDFromString } = require('../utils/getAnimeIDFromString')
+
 //JIKAN API LIBRARY 
 const Jikan = require('jikan4.js')
+
 //JIKANJS WRAPPER LIBRARY
 const client = new Jikan.Client();
 
-const ICON_URL = 'https://avatarfiles.alphacoders.com/281/281168.png';
+//LYTRO FOOTER ICON, MAX VALUE LENGTH FOR EMBEDS
+const { ICON_URL, MAX_VALUE_LENGTH } = require('../../config')
 
-const maxLength = 1020
-
-// DEFAULT ERROR MESSAGES
-const BACKGROUND_NOT_FOUND = 'Background not found.';
-const YEAR_NOT_FOUND = 'Year not found.';
-const TRAILER_NOT_FOUND = 'Trailer not found.';
-const STUDIO_NOT_FOUND = 'Studios not found.';
-const RECOMMENDATIONS_NOT_FOUND = 'Recommendations not found.';
+//ERROR MESSAGES
+const { BACKGROUND_NOT_FOUND, YEAR_NOT_FOUND, TRAILER_NOT_FOUND, STUDIO_NOT_FOUND, RECOMMENDATIONS_NOT_FOUND} = require('../../config')
 
 /**
  * Gets additional information from the animeID passed. 
@@ -34,14 +33,14 @@ async function getInfo(message, animeID) {
         const anime = await client.anime.get(animeID);
         const rec = await client.anime.getRecommendations(animeID);
 
-        //INITIALIZES SPLIT FOR background THAT ARE OVER 1020 CHARACTERS 
+        //INITIALIZES SPLIT FOR BACKGROUNDS THAT ARE OVER 1020 CHARACTERS 
         let split = false;
         let background = '';
         let background2 = '';
 
         //SPLITS BACKGROUND IF TOO LONG INTO 2 PARAGRAPHS.  
         if (anime.background !== null) {
-            if (anime.background.length > maxLength) {
+            if (anime.background.length > MAX_VALUE_LENGTH) {
                 const midPoint = anime.background.length / 2;
                 const backgroundFirstPart = anime.background.substring(0, midPoint);
                 const backgroundSecondPart = anime.background.substring(midPoint);
@@ -53,22 +52,24 @@ async function getInfo(message, animeID) {
             else {
                 background = anime.background;
             }
-        } else {
+        } 
+        //if background is null, error message. 
+        else {
             background = BACKGROUND_NOT_FOUND;
         }
 
-        //TEMPORARY WAY OF DISPLAYING RECOMMENDATION TITLES
-
+        //DISPLAY RECOMMENDED TITLES 
         let recList = [];
         let recListString = '';
 
+        //If at least 2 indexes in recommendation array, add them to recList String. 
         if (rec.length > 2) {
             recList.push(rec[0].entry.title);
             recList.push(rec[1].entry.title);
-
             recListString = recList.map(item => item).join(', ');
-        } else {
-            recList = RECOMMENDATIONS_NOT_FOUND;
+        } 
+        //If no length on recList, i.e. null, recommendation string becomes not found error message.  
+        else {
             recListString = RECOMMENDATIONS_NOT_FOUND;
         }
 
@@ -133,10 +134,10 @@ module.exports = {
     description: '!info [anime_name] Returns additional anime information.',
     async execute(message, args, searchAnime) {
 
-        const passedAnimeName = searchAnime;
+        const animeName = searchAnime;
 
         try {
-            const animeID = await getAnimeIDFromString(message, passedAnimeName);
+            const animeID = await getAnimeIDFromString(message, animeName);
             getInfo(message, animeID);
         } catch (error) {
             console.error('Error in info:', error.message);

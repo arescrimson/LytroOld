@@ -2,23 +2,21 @@
 
 //IMPORTS
 const { EmbedBuilder } = require('discord.js');
+
 //IMPORT GETID 
 const { getAnimeIDFromString } = require('../utils/getAnimeIDFromString');
+
 //JIKAN API LIBRARY 
 const Jikan = require('jikan4.js');
+
 //JIKANJS WRAPPER LIBRARY
 const client = new Jikan.Client();
 
-const maxLength = 1020;
+//LYTRO FOOTER ICON, MAX VALUE LENGTH FOR EMBEDS
+const { THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH } = require('../../config')
 
-const ICON_URL = 'https://avatarfiles.alphacoders.com/281/281168.png';
-
-// Default ERROR MESSAGES
-const SYNOPSIS_NOT_FOUND = 'Synopsis not found.';
-const URL_NOT_FOUND = 'URL not found.';
-const EPISODES_NOT_FOUND = 'Episodes not found.';
-const GENRES_NOT_FOUND = 'Genres not found.';
-const RATINGS_NOT_FOUND = 'Ratings not found.';
+//ERROR MESSAGES
+const {SYNOPSIS_NOT_FOUND, URL_NOT_FOUND, EPISODES_NOT_FOUND, GENRES_NOT_FOUND, RATINGS_NOT_FOUND } = require('../../config')
 
 /**
  * Checks if value passed is null. If null, instead returns error Message 
@@ -28,7 +26,7 @@ const RATINGS_NOT_FOUND = 'Ratings not found.';
  * @param {*} errMessage is the message if value is null.  
  * @returns either value or error Message depending on if value is null. 
  */
-function commandNullCheck(value, errMessage) {
+function nullCheck(value, errMessage) {
     return (value !== null) ? value : errMessage;
 }
 
@@ -44,7 +42,7 @@ async function getAnimeInfo(message, animeID) {
         //GETS ANIME INFORMATION
         const anime = await client.anime.get(animeID);
         const stats = await client.anime.getStatistics(animeID);
-        const genres = commandNullCheck(anime.genres.map(genre => genre.name).join(', '), GENRES_NOT_FOUND);
+        const genres = nullCheck(anime.genres.map(genre => genre.name).join(', '), GENRES_NOT_FOUND);
 
         //INITIALIZES SPLIT FOR SYNOPSIS THAT ARE OVER 1020 CHARACTERS 
         let split = false;
@@ -54,7 +52,7 @@ async function getAnimeInfo(message, animeID) {
         
         //SPLITS SYNOPSIS IF TOO LONG INTO 2-3 PARAGRAPHS. 
         if (anime.synopsis !== null) { 
-            if (anime.synopsis.length > maxLength) {
+            if (anime.synopsis.length > MAX_VALUE_LENGTH) {
                 const splitSynopsis = anime.synopsis.split('\n');
                 //Because some synopsis are too long, yet are only 2 paragraphs, use ternary to check. 
                 //However, this means that if a synopsis is too long yet contains say, 4 paragraphs, this will not work. 
@@ -67,29 +65,39 @@ async function getAnimeInfo(message, animeID) {
             else {
                 synopsis = anime.synopsis;
             }
-        } else { 
+        } 
+        
+        else { 
             synopsis = SYNOPSIS_NOT_FOUND; 
         }
 
         //RATINGS AS AN AVERAGED SCORE STRING 
+        let ratings = ''; 
         let totalScore = 0;
         let totalVotes = 0;
 
-        for (const obj of stats.scores) {
-            totalScore += obj.score * obj.votes;
-            totalVotes += obj.votes;
+        if ( stats.scores !== null ) { 
+            for (const obj of stats.scores) {
+                totalScore += obj.score * obj.votes;
+                totalVotes += obj.votes;
+            }
+    
+            const averageScore = totalScore / totalVotes;
+    
+            ratings = `Average score based off ${totalVotes.toLocaleString()} votes: ${averageScore.toFixed(2) + ' / 10'}`;
+        } 
+        
+        else { 
+            ratings = RATINGS_NOT_FOUND;
         }
-
-        const averageScore = totalScore / totalVotes;
-
-        const ratings = `Average score based off ${totalVotes.toLocaleString()} votes: ${averageScore.toFixed(2) + ' / 10'}`;
+        
 
         //SYNOPSIS, URL, EPISODES, GENRES, RATINGS
         const SYNOPSIS = synopsis;
         const URL = ( anime.url !== null ) ? anime.url : URL_NOT_FOUND;
         const EPISODES = ( anime.episodes !== null ) ? anime.episodes : EPISODES_NOT_FOUND;
         const GENRES = genres;
-        const RATINGS = commandNullCheck(ratings, RATINGS_NOT_FOUND);
+        const RATINGS = ratings;
 
         //if synopsis has been split, use the split synopsis' as embed does not support more than 1024 characters per value. 
         if (split) {
@@ -98,7 +106,7 @@ async function getAnimeInfo(message, animeID) {
                 .setTitle(`${anime.title.default}`)
                 .setURL(`${URL}`)
                 .setAuthor({ name: `Currently Searching: ${anime.title.default}` })
-                .setThumbnail('https://github.com/arescrimson/Lytro/blob/master/img/profile.jpg?raw=true')
+                .setThumbnail(THUMBNAIL)
                 .addFields(
                     { name: '\n\u200b', value: '\n\u200b' },
                     { name: 'Synopsis: \n\u200b', value: `${SYNOPSIS}` },
@@ -121,7 +129,7 @@ async function getAnimeInfo(message, animeID) {
                 .setTitle(`${anime.title.default}`)
                 .setURL(`${URL}`)
                 .setAuthor({ name: `Currently Searching: ${anime.title.default}` })
-                .setThumbnail('https://github.com/arescrimson/Lytro/blob/master/img/profile.jpg?raw=true')
+                .setThumbnail(THUMBNAIL)
                 .addFields(
                     { name: '\n\u200b', value: '\n\u200b' },
                     { name: 'Synopsis: \n\u200b', value: `${SYNOPSIS}\n\u200b` },
@@ -144,9 +152,9 @@ async function getAnimeInfo(message, animeID) {
 module.exports = {
     name: 'a',
     description: '!a [anime_name] Returns anime information.',
-    async execute(message, args, nameArgs) {
+    async execute(message, args, searchName) {
 
-        const passedAnimeName = nameArgs
+        const passedAnimeName = searchName
 
         try {
             const animeID = await getAnimeIDFromString(message, passedAnimeName);

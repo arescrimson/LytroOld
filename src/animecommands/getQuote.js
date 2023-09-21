@@ -1,12 +1,15 @@
 // getQuote.js
+
 require('dotenv').config();
 
 //IMPORTS
 
 //AXIOS 
 const axios = require('axios');
+
 //QUOTE API URL 
 const QUOTE_URL = "https://waifu.it/api/quote";
+
 //QUOTE API ACCESS TOKEN 
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN
 

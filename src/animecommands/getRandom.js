@@ -3,12 +3,14 @@
 //IMPORTS
 
 const { EmbedBuilder } = require('discord.js');
+
 //JIKAN API LIBRARY 
 const Jikan = require('jikan4.js');
+
 //JIKANJS WRAPPER LIBRARY
 const client = new Jikan.Client();
 
-const maxLength = 1024;
+const { MAX_VALUE_LENGTH } = require('../../config')
 
 /**
  * Checks if value passed is null. If null, instead returns error Message 
@@ -46,7 +48,7 @@ async function getRandomAnime(message) {
         let synopsis3 = '';
 
         //SPLITS SYNOPSIS IF TOO LONG INTO 2-3 PARAGRAPHS. 
-        if (anime.synopsis.length > maxLength) {
+        if (anime.synopsis.length > MAX_VALUE_LENGTH) {
             const splitSynopsis = anime.synopsis.split('\n');
             //Because some synopsis are too long, yet are only 2 paragraphs, use ternary to check. 
             //However, this means that if a synopsis is too long yet contains say, 4 paragraphs, this will not work. 
