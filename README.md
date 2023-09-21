@@ -3,12 +3,12 @@
 <img src="https://github.com/arescrimson/Lytro/blob/master/img/newbanner.jpg" alt="" width="1500" height="200">
 </div>
 
-<p align="center">Discord.js based discord bot for anime/manga information.</p>
+<p align="center"> Discord.js based discord bot for anime/manga information.</p>
 
 <!-- PROJECT ABOUT !-->
 ## About
 
-Currently features commands for anime and manga. Currently planning to expand to include more API integration, as well as embed and streaming information support. Permanent hosting support also on the way. 
+Currently features commands for anime and manga. Currently planning to expand to include more APIs, as well as embed and streaming information support. Permanent hosting support also on the way. 
 
 Now supports title caching; any command with an **[anime name]** identifier will stay within the searched title directory. Commands pertaining to that directory can be entered without the **[anime name]**.
 
@@ -20,7 +20,7 @@ Now supports title caching; any command with an **[anime name]** identifier will
 
 **!a [anime name]:** returns information like synopsis, rating based off total votes, genre, and url. 
 
-**!info [anime name]** returns additional information. 
+**!info [anime name]** returns additional information like background, studio, related animes and release year. 
 
 **!chr [prefix] [anime name]:** depending on prefix, returns either 'main' main characters, 'sup' supporting characters, or a specified character name. Provides information like character role and voice actor. 
 
@@ -42,11 +42,9 @@ Now supports title caching; any command with an **[anime name]** identifier will
 
 **!quote:** returns a random quote, the character, and the anime/manga it came from. 
 
-
 ## Built With 
 
 [![Discord.js](https://img.shields.io/badge/Discord.js-v15.0.0-blue.svg)](https://discord.js.org/) [![Jikan API](https://img.shields.io/badge/Jikan%20API-Latest-green.svg)](https://jikan.docs.apiary.io/) [![JikanJS](https://img.shields.io/badge/JikanJS-v4.0.0-blue.svg)](https://github.com/xy137/jikanjs) [![Axios](https://img.shields.io/badge/Axios-v1.5.0-blue)](https://github.com/axios/axios)
-
 
 <!-- LICENSE -->
 ## License
