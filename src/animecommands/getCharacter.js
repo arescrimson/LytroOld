@@ -10,6 +10,8 @@ const Jikan = require('jikan4.js')
 //JIKANJS WRAPPER LIBRARY
 const client = new Jikan.Client();
 
+const ICON_URL = 'https://avatarfiles.alphacoders.com/281/281168.png';
+
 /**
  * Gets first name from either a single first name, or a lastname, firstname format. 
  * Ex. !chr gon hunter x hunter would return gon, even though the api lists it as Freecss, Gon. 
@@ -80,7 +82,7 @@ async function getAnimeCharacters(message, animeID, characterName) {
                         )
                         .setImage(`${characterName.image.webp.default}`)
                         .setTimestamp()
-                        .setFooter({ text: 'Information from Lytro' });
+                        .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL});
 
                     message.channel.send({ embeds: [exampleEmbed] });
                     characterFound = true; 
