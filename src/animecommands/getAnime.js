@@ -95,7 +95,7 @@ async function getAnimeInfo(message, animeID) {
                 .setColor(0x0099FF)
                 .setTitle(`${anime.title.default}`)
                 .setURL(`${URL}`)
-                .setAuthor({ name: 'Lytro', url: 'https://github.com/arescrimson/Lytro' })
+                .setAuthor({ name: `Currently Searching: ${anime.title.default}` })
                 .setThumbnail('https://github.com/arescrimson/Lytro/blob/master/img/profile.jpg?raw=true')
                 .addFields(
                     { name: '\n\u200b', value: '\n\u200b' },
@@ -118,7 +118,7 @@ async function getAnimeInfo(message, animeID) {
                 .setColor(0x0099FF)
                 .setTitle(`${anime.title.default}`)
                 .setURL(`${URL}`)
-                .setAuthor({ name: 'Lytro', url: 'https://github.com/arescrimson/Lytro' })
+                .setAuthor({ name: `Currently Searching: ${anime.title.default}` })
                 .setThumbnail('https://github.com/arescrimson/Lytro/blob/master/img/profile.jpg?raw=true')
                 .addFields(
                     { name: '\n\u200b', value: '\n\u200b' },
@@ -157,8 +157,6 @@ module.exports = {
         const passedAnimeName = nameArgs
 
         try {
-            message.channel.send(`**Currently Searching:** ${passedAnimeName}`);
-            message.channel.send(`** **`); //blank message for formatting
             const animeID = await getAnimeIDFromString(message, passedAnimeName);
             getAnimeInfo(message, animeID);
         } catch (error) {
