@@ -12,24 +12,12 @@ const client = new Jikan.Client();
 
 const maxLength = 1020
 
-// Default ERROR MESSAGES
+// DEFAULT ERROR MESSAGES
 const BACKGROUND_NOT_FOUND = 'Background not found.';
 const YEAR_NOT_FOUND = 'Year not found.';
 const TRAILER_NOT_FOUND = 'Trailer not found.';
 const STUDIO_NOT_FOUND = 'Studios not found.';
 const RECOMMENDATIONS_NOT_FOUND = 'Recommendations not found.';
-
-/**
- * Checks if value passed is null. If null, instead returns error Message 
- * as to display 'Value not found.' instead of null in message response. 
- * 
- * @param {*} value is the Jikan get value. 
- * @param {*} errMessage is the message if value is null.  
- * @returns either value or error Message depending on if value is null. 
- */
-function commandNullCheck(value, errMessage) {
-    return (value !== null) ? value : errMessage;
-}
 
 /**
  * Gets additional information from the animeID passed. 
@@ -49,17 +37,14 @@ async function getInfo(message, animeID) {
         let background = '';
         let background2 = '';
 
-        //SPLITS background IF TOO LONG INTO 2-3 PARAGRAPHS. 
+        //SPLITS BACKGROUND IF TOO LONG INTO 2 PARAGRAPHS.  
         if (anime.background !== null) {
             if (anime.background.length > maxLength) {
-                console.log('yes');
                 const midPoint = anime.background.length / 2;
                 const backgroundFirstPart = anime.background.substring(0, midPoint);
                 const backgroundSecondPart = anime.background.substring(midPoint);
                 background = backgroundFirstPart;
                 background2 = backgroundSecondPart;
-                console.log(background.length);
-                console.log(background2.length);
                 split = true;
             }
             //else, simply assign background to the anime background. 
@@ -92,7 +77,7 @@ async function getInfo(message, animeID) {
         const STUDIO = (anime.studios[0].name !== null) ? anime.studios[0].name : STUDIO_NOT_FOUND;
         const RECOMMENDATIONS = recListString
 
-        //if background has been split, use the split background' as embed does not support more than 1024 characters per value. 
+        //if background has been split, use the split background as embed does not support more than 1024 characters per value. 
         if (split) {
             const exampleEmbed = new EmbedBuilder()
                 .setColor(0x0099FF)
@@ -144,9 +129,9 @@ async function getInfo(message, animeID) {
 module.exports = {
     name: 'info',
     description: '!info [anime_name] Returns additional anime information.',
-    async execute(message, args, currentSearchName) {
+    async execute(message, args, searchAnime) {
 
-        const passedAnimeName = currentSearchName;
+        const passedAnimeName = searchAnime;
 
         try {
             const animeID = await getAnimeIDFromString(message, passedAnimeName);
