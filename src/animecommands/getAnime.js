@@ -6,14 +6,8 @@ const { EmbedBuilder } = require('discord.js');
 //IMPORT GETID 
 const { getAnimeIDFromString } = require('../utils/getAnimeIDFromString');
 
-//JIKAN API LIBRARY 
-const Jikan = require('jikan4.js');
-
-//JIKANJS WRAPPER LIBRARY
-const client = new Jikan.Client();
-
 //LYTRO FOOTER ICON, MAX VALUE LENGTH FOR EMBEDS
-const { THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH } = require('../../config')
+const { client, THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH } = require('../../config')
 
 //ERROR MESSAGES
 const {SYNOPSIS_NOT_FOUND, URL_NOT_FOUND, EPISODES_NOT_FOUND, GENRES_NOT_FOUND, RATINGS_NOT_FOUND } = require('../../config')

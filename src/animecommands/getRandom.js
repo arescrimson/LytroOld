@@ -4,13 +4,7 @@
 
 const { EmbedBuilder } = require('discord.js');
 
-//JIKAN API LIBRARY 
-const Jikan = require('jikan4.js');
-
-//JIKANJS WRAPPER LIBRARY
-const client = new Jikan.Client();
-
-const { THUMBNAIL, MAX_VALUE_LENGTH, ICON_URL } = require('../../config')
+const { client, THUMBNAIL, MAX_VALUE_LENGTH, ICON_URL } = require('../../config')
 
 /**
  * Checks if value passed is null. If null, instead returns error Message 

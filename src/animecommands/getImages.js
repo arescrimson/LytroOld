@@ -2,14 +2,13 @@
 
 //IMPORTS
 
+const { EmbedBuilder } = require('discord.js')
+
 //IMPORT GETID 
 const { getAnimeIDFromString } = require('../utils/getAnimeIDFromString')
 
-//JIKAN API LIBRARY 
-const Jikan = require('jikan4.js')
-
-//JIKANJS WRAPPER LIBRARY
-const client = new Jikan.Client();
+//IMPORT CLIENT
+const { client , ICON_URL} = require('../../config')
 
 //Set of searched Set indexes. 
 const searchedSet = new Set();
@@ -27,6 +26,7 @@ async function getAnimeImages(message, animeID) {
 
         let randomImageIndex;     
 
+        const anime = await client.anime.get(animeID);
         const pictures = await client.anime.getPictures(animeID);
 
         //randomly search index of picture gallery 
@@ -45,13 +45,18 @@ async function getAnimeImages(message, animeID) {
             searchedSet.add(randomImageIndex);
         }
 
-        const pictureLink = pictures[randomImageIndex].jpg.default.href;
+        const pictureLink = pictures[randomImageIndex].webp.default;
 
-        message.channel.send({
-            files: [{
-                attachment: pictureLink
-            }]
-        })
+        const embedMessage = new EmbedBuilder()
+                .setColor(0x0099FF)
+                .setTitle(`${anime.title.default}`)
+                .setURL(`${anime.url}`)
+                .setAuthor({ name: `Currently Searching: ${anime.title.default}` })
+                .setImage(`${pictureLink}`)
+                .setTimestamp()
+                .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL});
+
+        message.channel.send({ embeds: [embedMessage] });
 
     } catch (error) {
         console.error('Error:', error.message);

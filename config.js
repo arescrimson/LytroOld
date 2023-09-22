@@ -1,3 +1,6 @@
+//JIKAN API LIBRARY 
+const Jikan = require('jikan4.js')
+
 module.exports = {
     THUMBNAIL: 'https://github.com/arescrimson/Lytro/blob/master/img/profile.jpg?raw=true',
     ICON_URL: 'https://avatarfiles.alphacoders.com/281/281168.png',
@@ -17,5 +20,8 @@ module.exports = {
     TRAILER_NOT_FOUND: 'Trailer not found.',
     STUDIO_NOT_FOUND: 'Studios not found.',
     RECOMMENDATIONS_NOT_FOUND: 'Recommendations not found.',
+
+    //JIKANJS WRAPPER LIBRARY
+    client: new Jikan.Client()
   };
   
