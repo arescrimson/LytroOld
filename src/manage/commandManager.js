@@ -9,7 +9,6 @@ function commandManager() {
         'getImages',
         'getRandom', 
         'getQuote',
-        'getHelp', 
     ];
 
     //MANGA COMMAND LIST 
