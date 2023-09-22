@@ -7,7 +7,7 @@ const { EmbedBuilder } = require('discord.js');
 const { getMangaIDFromString } = require('../utils/getMangaIDFromString');
 
 //LYTRO FOOTER ICON, MAX VALUE LENGTH FOR EMBEDS
-const { client, THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH } = require('../../config')
+const { client, MANGA_MODE, THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH } = require('../../config')
 
 //ERROR MESSAGES
 const { SYNOPSIS_NOT_FOUND, URL_NOT_FOUND, AUTHOR_NOT_FOUND, VOLUMES_NOT_FOUND, GENRES_NOT_FOUND, RATINGS_NOT_FOUND } = require('../../config')
@@ -25,12 +25,11 @@ function nullCheck(value, errMessage) {
 }
 
 function createEmbed(TITLE, URL, THUMBNAIL, AUTHOR, SYNOPSIS, SYNOPSIS2, SYNOPSIS3, VOLUMES, GENRES, RATINGS, image) {
-
     const createdEmbed = new EmbedBuilder()
         .setColor(0x0099FF)
         .setTitle(`${TITLE}`)
         .setURL(`${URL}`)
-        .setAuthor({ name: `Currently Searching : ${TITLE}`, iconURL: ICON_URL })
+        .setAuthor({ name: `Currently Searching ${MANGA_MODE}: ${TITLE}`, iconURL: ICON_URL })
         .setThumbnail(THUMBNAIL)
         .addFields(
             //{ name: '\n\u200b', value: '\n\u200b' },
@@ -55,7 +54,7 @@ function createEmbed(TITLE, URL, THUMBNAIL, AUTHOR, SYNOPSIS, SYNOPSIS2, SYNOPSI
  * @param {*} message is the discord message. 
  * @param {*} mangaID is the mangaID passed. 
  */
-async function getmangaInfo(message, mangaID) {
+async function getMangaInfo(message, mangaID) {
     try {
 
         //GETS manga INFORMATION
@@ -144,12 +143,11 @@ module.exports = {
     name: 'm',
     description: '!m [manga_name] Returns manga information.',
     async execute(message, args, searchName) {
-
         const passedMangaName = searchName
 
         try {
             const mangaID = await getMangaIDFromString(message, passedMangaName);
-            getmangaInfo(message, mangaID);
+            getMangaInfo(message, mangaID);
         } catch (error) {
             console.error('Error:', error.message);
             message.channel.send('An error occurred: ' + error.message);

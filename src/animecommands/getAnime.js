@@ -7,7 +7,7 @@ const { EmbedBuilder } = require('discord.js');
 const { getAnimeIDFromString } = require('../utils/getAnimeIDFromString');
 
 //LYTRO FOOTER ICON, MAX VALUE LENGTH FOR EMBEDS
-const { client, THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH } = require('../../config')
+const { client, THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH, ANIME_MODE } = require('../../config')
 
 //ERROR MESSAGES
 const { SYNOPSIS_NOT_FOUND, URL_NOT_FOUND, EPISODES_NOT_FOUND, GENRES_NOT_FOUND, RATINGS_NOT_FOUND } = require('../../config')
@@ -30,7 +30,7 @@ function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, SYNOPSIS3, EPIS
         .setColor(0x0099FF)
         .setTitle(`${TITLE}`)
         .setURL(`${URL}`)
-        .setAuthor({ name: `Currently Searching : ${TITLE}`, iconURL: ICON_URL })
+        .setAuthor({ name: `Currently Searching ${ANIME_MODE} : ${TITLE}`, iconURL: ICON_URL })
         .setThumbnail(THUMBNAIL)
         .addFields(
             { name: '\n\u200b', value: '\n\u200b' },

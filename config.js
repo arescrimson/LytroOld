@@ -6,6 +6,10 @@ module.exports = {
     ICON_URL: 'https://avatarfiles.alphacoders.com/281/281168.png',
     QUOTE_URL: "https://waifu.it/api/quote",
     MAX_VALUE_LENGTH: 1020,
+
+    //ID
+    ANIME_MODE: 'Anime', 
+    MANGA_MODE: 'Manga',
   
     // ERROR MESSAGES FOR GETANIME
     SYNOPSIS_NOT_FOUND: 'Synopsis not found.',

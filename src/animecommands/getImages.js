@@ -8,7 +8,7 @@ const { EmbedBuilder } = require('discord.js')
 const { getAnimeIDFromString } = require('../utils/getAnimeIDFromString')
 
 //IMPORT CLIENT
-const { client , ICON_URL} = require('../../config')
+const { client , ICON_URL, ANIME_MODE} = require('../../config')
 
 //Set of searched Set indexes. 
 const searchedSet = new Set();
@@ -45,18 +45,23 @@ async function getAnimeImages(message, animeID) {
             searchedSet.add(randomImageIndex);
         }
 
-        const pictureLink = pictures[randomImageIndex].webp.default;
+        const pictureLink = pictures[randomImageIndex].webp.default.href;
 
         const embedMessage = new EmbedBuilder()
-                .setColor(0x0099FF)
-                .setTitle(`${anime.title.default}`)
-                .setURL(`${anime.url}`)
-                .setAuthor({ name: `Currently Searching: ${anime.title.default}` })
-                .setImage(`${pictureLink}`)
-                .setTimestamp()
-                .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL});
+            .setColor(0x0099FF)
+            .setAuthor({ name: `Currently Searching ${ANIME_MODE} : ${anime.title.default}` })
+            .setTimestamp()
+            .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL });
 
-        message.channel.send({ embeds: [embedMessage] });
+        message.channel.send({
+            embeds: [embedMessage]
+        })
+
+        message.channel.send({
+            files: [{
+                attachment: pictureLink
+            }],
+        });
 
     } catch (error) {
         console.error('Error:', error.message);

@@ -8,7 +8,7 @@ const { EmbedBuilder } = require('discord.js')
 const { getMangaIDFromString } = require('../utils/getMangaIDFromString')
 
 //IMPORT CLIENT
-const { client, ICON_URL } = require('../../config')
+const { client, ICON_URL, MANGA_MODE } = require('../../config')
 
 //Set of searched Set indexes. 
 const searchedSet = new Set();
@@ -49,7 +49,7 @@ async function getmangaImages(message, mangaID) {
 
         const embedMessage = new EmbedBuilder()
             .setColor(0x0099FF)
-            .setAuthor({ name: `Currently Searching: ${manga.title.default}` })
+            .setAuthor({ name: `Currently Searching ${MANGA_MODE} : ${manga.title.default}` })
             .setTimestamp()
             .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL });
 
@@ -77,7 +77,7 @@ module.exports = {
 
         try {
             const mangaID = await getMangaIDFromString(message, mangaName);
-            getmangaImages(message, mangaID)
+            getmangaImages(message, mangaID);
         } catch (error) {
             console.error('Error:', error.message);
             message.channel.send('An error occurred: ' + error.message);

@@ -4,7 +4,7 @@
 
 const { EmbedBuilder } = require('discord.js');
 
-const { client, THUMBNAIL, MAX_VALUE_LENGTH, ICON_URL } = require('../../config')
+const { client, THUMBNAIL, MAX_VALUE_LENGTH, ICON_URL, ANIME_MODE } = require('../../config')
 
 /**
  * Checks if value passed is null. If null, instead returns error Message 
@@ -25,7 +25,7 @@ function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, SYNOPSIS3, EPIS
         .setColor(0x0099FF)
         .setTitle(`${TITLE}`)
         .setURL(`${URL}`)
-        .setAuthor({ name: `Currently Searching : ${TITLE}`, iconURL: ICON_URL })
+        .setAuthor({ name: `Currently Searching ${ANIME_MODE} : ${TITLE}`, iconURL: ICON_URL })
         .setThumbnail(THUMBNAIL)
         .addFields(
             { name: '\n\u200b', value: '\n\u200b' },

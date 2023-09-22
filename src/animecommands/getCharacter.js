@@ -8,7 +8,7 @@ const { EmbedBuilder } = require('discord.js')
 const { getAnimeIDFromString } = require('../utils/getAnimeIDFromString')
 
 //LYTRO FOOTER ICON
-const { client, THUMBNAIL, ICON_URL } = require('../../config')
+const { client, THUMBNAIL, ICON_URL, ANIME_MODE } = require('../../config')
 
 /**
  * Gets first name from either a single first name, or a lastname, firstname format. 
@@ -33,7 +33,7 @@ function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, VOICEACTOR, IMA
         .setColor(0x0099FF)
         .setTitle(`${NAME}`)
         .setURL(`${URL}`)
-        .setAuthor({ name: `Currently Searching: ${TITLE}`, iconURL: ICON_URL })
+        .setAuthor({ name: `Currently Searching ${ANIME_MODE} : ${TITLE}`, iconURL: ICON_URL })
         .setThumbnail(THUMBNAIL)
         .addFields(
             { name: 'Role:', value: `${ROLE}` },
