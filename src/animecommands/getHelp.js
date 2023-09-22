@@ -1,5 +1,6 @@
 // getHelp.js
 
+const { EmbedBuilder } = require('discord.js')
 /**
  * Gets list of possible commands. REWRITE ENTIRE COMMAND MANAGER SYSTEM TO BE ABLE TO ACCESS COMMAND DESCRIPTIONS INSTEAD 
  * OF INDEXES!
@@ -11,15 +12,16 @@ async function getHelp(message, commandList) {
 
     //console.log(commandList.length); // Temporary counter of command list. 
 
-    message.channel.send(`**Available Commands:**\n\n` +
-                     `${commandList[1].description}\n\n` +
-                     `${commandList[2].description}\n\n` +
-                     `${commandList[3].description}\n\n` + 
-                     `${commandList[4].description}\n\n` +
-                     `${commandList[5].description}\n\n` + 
-                     `${commandList[6].description}\n\n` 
-                     );
+    const embedMessage = new EmbedBuilder()
+        .setTitle('Available Commands')
+        .setDescription(
+            commandList
+                .slice(1) // Skip the first item (assuming it's a placeholder)
+                .map((command, index) => `${index + 1}. ${command.description}`)
+                .join('\n')
+        );
 
+    message.channel.send({ embeds: [embedMessage] });
 }
 
 module.exports = {
