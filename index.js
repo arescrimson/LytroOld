@@ -5,8 +5,7 @@ require('dotenv').config();
 const { Client, IntentsBitField } = require('discord.js');
 
 //IMPORT COMMAND LIST 
-const { commandManager } = require('./src/manage/commandManager')
-const commandList = commandManager();
+const { commandList } = require('./src/manage/commandManager')
 
 //IMPORT COMMAND SEARCH 
 const { getSearch } = require('./src/utils/getSearch')
@@ -29,42 +28,47 @@ client.on('ready', (c) => {
     console.log(`${c.user.tag + " is ready."}`);
 })
 
+let currentCommandType = '';
 let currentSearchName = '';
 
 //STARTS BOT FUNCTION ON MESSAGE CREATE 
 client.on('messageCreate', async (message) => {
+    try {
 
-    if (message.author.bot) return;
+        if (message.author.bot) return;
 
-    if (message.content.startsWith(PREFIX)) {
+        if (message.content.startsWith(PREFIX)) {
 
-        /**
-         * Returns all words after command in an array. 
-         * ex. !a one piece would return ['one', 'piece']
-         * ex. !chr luffy would return ['luffy']
-         * 
-         */
-        const args = message.content.slice(PREFIX.length).trim().split(/ +/);
+            /**
+             * Returns all words after command in an array. 
+             * ex. !a one piece would return ['one', 'piece']
+             * ex. !chr luffy would return ['luffy']
+             * 
+             */
+            const args = message.content.slice(PREFIX.length).trim().split(/ +/);
 
-        //command is the command i.e. !url One Piece would be url 
-        const command = args.shift().toLowerCase();
+            //command is the command i.e. !url One Piece would be url 
+            const command = args.shift().toLowerCase();
 
-        currentSearchName = await getSearch(args, command, currentSearchName);
+            currentSearchName = await getSearch(args, command, currentSearchName);
 
-        let found = false;
+            let found = false;
 
-        //Iterates through command list to find command
-        for (const commandType of commandList) {
-            if (commandType.name === command) {
-                commandType.execute(message, args, currentSearchName, commandList);
-                found = true;
-                break;
+            //Iterates through command list to find command
+            for (const commandType of commandList) {
+                if (commandType.name === command) {
+                    commandType.execute(message, args, currentSearchName, commandList);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                message.channel.send('Command not found :(');
             }
         }
-
-        if (!found) {
-            message.channel.send('Command not found :(');
-        }
+    } catch (error) {
+        console.error('error in index', error.message);
     }
 })
 
