@@ -21,6 +21,9 @@ module.exports = {
     STUDIO_NOT_FOUND: 'Studios not found.',
     RECOMMENDATIONS_NOT_FOUND: 'Recommendations not found.',
 
+    // ERROR MESSAGES FOR GETMANGA 
+    VOLUMES_NOT_FOUND: 'Volumes not found.',
+    AUTHOR_NOT_FOUND: 'Author not found.',
     //JIKANJS WRAPPER LIBRARY
     client: new Jikan.Client()
   };
