@@ -88,8 +88,8 @@ async function getInfo(message, animeID) {
                     { name: '\n', value: `${background2}` },
                     { name: 'Year:', value: `${YEAR}`, inline: true },
                     { name: 'Studio:', value: `${STUDIO}`, inline: true },
+                    { name: 'Related:', value: `${RECOMMENDATIONS}`, inline: true }
                 )
-                .addFields({ name: 'Related:', value: `${RECOMMENDATIONS}`, inline: true })
                 .setImage(`${anime.image.webp.default}`)
                 .setTimestamp()
                 .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL});
@@ -109,8 +109,8 @@ async function getInfo(message, animeID) {
                     { name: 'Background: \n\u200b', value: `${BACKGROUND}` },
                     { name: 'Year:', value: `${YEAR}`, inline: true },
                     { name: 'Studio:', value: `${STUDIO}`, inline: true },
+                    { name: 'Related:', value: `${RECOMMENDATIONS}`, inline: true }
                 )
-                .addFields({ name: 'Related:', value: `${RECOMMENDATIONS}`, inline: true })
                 .setImage(`${anime.image.webp.default}`)
                 .setTimestamp()
                 .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL });
