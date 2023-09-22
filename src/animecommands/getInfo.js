@@ -23,10 +23,9 @@ function createEmbed(TITLE, URL, THUMBNAIL, BACKGROUND, BACKGROUND2, YEAR, STUDI
         .setAuthor({ name: `Currently Searching ${ANIME_MODE} : ${TITLE}`, iconURL: ICON_URL })
         .setThumbnail(THUMBNAIL)
         .addFields(
-            { name: '\n\u200b', value: '\n\u200b' },
             { name: 'Background: \n\u200b', value: `${BACKGROUND}` },
             { name: '\n', value: `${BACKGROUND2}\n\u200b` },
-            { name: 'Year:', value: `${YEAR}`, inline: true },
+            { name: 'Release Date:', value: `${YEAR}`, inline: true },
             { name: 'Studio:', value: `${STUDIO}`, inline: true },
             { name: 'Related:', value: `${RELATED}`, inline: true }
         )

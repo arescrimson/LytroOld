@@ -20,7 +20,7 @@ const searchedSet = new Set();
  * @param {*} message is the discord message. 
  * @param {*} mangaID is the mangaID passed. 
  */
-async function getmangaImages(message, mangaID) {
+async function getMangaImages(message, mangaID) {
 
     try {
 
@@ -77,7 +77,7 @@ module.exports = {
 
         try {
             const mangaID = await getMangaIDFromString(message, mangaName);
-            getmangaImages(message, mangaID);
+            getMangaImages(message, mangaID);
         } catch (error) {
             console.error('Error:', error.message);
             message.channel.send('An error occurred: ' + error.message);

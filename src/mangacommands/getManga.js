@@ -32,7 +32,6 @@ function createEmbed(TITLE, URL, THUMBNAIL, AUTHOR, SYNOPSIS, SYNOPSIS2, SYNOPSI
         .setAuthor({ name: `Currently Searching ${MANGA_MODE}: ${TITLE}`, iconURL: ICON_URL })
         .setThumbnail(THUMBNAIL)
         .addFields(
-            //{ name: '\n\u200b', value: '\n\u200b' },
             { name: 'Author: \n\u200b', value: `**${AUTHOR}** \n\u200b` },
             { name: 'Synopsis: \n\u200b', value: `${SYNOPSIS}` },
             { name: '\n', value: `${SYNOPSIS2}` },
