@@ -68,7 +68,7 @@ async function getRandomManga(message) {
 
 module.exports = {
     name: 'mrand',
-    description: '!rand Returns Random Manga',
+    description: '!mrand Returns Random Manga',
     async execute(message) {
         try {
             await getRandomManga(message)
