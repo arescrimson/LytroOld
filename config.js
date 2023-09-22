@@ -1,7 +1,8 @@
 //JIKAN API LIBRARY 
 const Jikan = require('jikan4.js')
-
+const ACCESS_TOKEN = process.env.ACCESS_TOKEN
 module.exports = {
+    ACCESS_TOKEN, 
     THUMBNAIL: 'https://github.com/arescrimson/Lytro/blob/master/img/profile.jpg?raw=true',
     ICON_URL: 'https://avatarfiles.alphacoders.com/281/281168.png',
     QUOTE_URL: "https://waifu.it/api/quote",
@@ -28,6 +29,8 @@ module.exports = {
     // ERROR MESSAGES FOR GETMANGA 
     VOLUMES_NOT_FOUND: 'Volumes not found.',
     AUTHOR_NOT_FOUND: 'Author not found.',
+    POPULARITY_NOT_FOUND: 'Popularity not found.',
+    SERIAL_NOT_FOUND: 'Serialization not found.',
     //JIKANJS WRAPPER LIBRARY
     client: new Jikan.Client()
   };
