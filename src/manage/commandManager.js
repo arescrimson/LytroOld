@@ -1,38 +1,42 @@
-function commandManager() {
+//ANIME COMMAND LIST 
+const commandNames = [
+    'getAnime',
+    'getInfo',
+    'getCharacter',
+    'getImages',
+    'getRandom'
+];
 
-    //ANIME COMMAND LIST 
-    const commandNames = [
-        'getHelp',
-        'getAnime',
-        'getInfo',
-        'getCharacter',
-        'getImages',
-        'getRandom', 
-        'getQuote',
-    ];
+//MANGA COMMAND LIST 
+const commandMNames = [
+    'getManga',
+    'getMCharacter',
+    'getMImages',
+    'getMInfo',
+    'getMRandom'
+]
 
-    //MANGA COMMAND LIST 
-    const commandMNames = [ 
-        'getManga',
-        'getMCharacter',
-        'getMImages',
-        'getMRandom', 
-    ]
+const commandMisc = [
+    'getQuote',
+    'getHelp',
+]
 
-    //COMMAND LIST CONTAINING ALL POSSIBLE COMMANDS
-    const commandList = [];
+//COMMAND LIST CONTAINING ALL POSSIBLE COMMANDS
+const commandList = [];
 
-    for (const commandName of commandNames) {
-        const command = require(`../animecommands/${commandName}`);
-        commandList.push(command);
-    }
-
-    for (const commandName of commandMNames) { 
-        const command = require(`../mangacommands/${commandName}`); 
-        commandList.push(command);
-    }
-
-    return commandList; 
+for (const commandName of commandNames) {
+    const command = require(`../animecommands/${commandName}`);
+    commandList.push(command);
 }
 
-module.exports = { commandManager }
+for (const commandName of commandMNames) {
+    const command = require(`../mangacommands/${commandName}`);
+    commandList.push(command);
+}
+
+for (const commandName of commandMisc) {
+    const command = require(`../misccommands/${commandName}`);
+    commandList.push(command);
+}
+
+module.exports = { commandList}
