@@ -18,6 +18,31 @@ function commandNullCheck(value, errMessage) {
     return (value !== null) ? value : errMessage;
 }
 
+
+function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, SYNOPSIS3, EPISODES, GENRES, RATINGS, image) {
+
+    const createdEmbed = new EmbedBuilder()
+        .setColor(0x0099FF)
+        .setTitle(`${TITLE}`)
+        .setURL(`${URL}`)
+        .setAuthor({ name: `Currently Searching : ${TITLE}`, iconURL: ICON_URL })
+        .setThumbnail(THUMBNAIL)
+        .addFields(
+            { name: '\n\u200b', value: '\n\u200b' },
+            { name: 'Synopsis: \n\u200b', value: `${SYNOPSIS}` },
+            { name: '\n', value: `${SYNOPSIS2}` },
+            { name: '\n', value: `${SYNOPSIS3}\n\u200b` },
+            { name: 'Episodes:', value: `${EPISODES}`, inline: true },
+            { name: 'Genres:', value: `${GENRES}`, inline: true },
+            { name: 'Ratings:', value: `${RATINGS}`, inline: true }
+        )
+        .setImage(`${image}`)
+        .setTimestamp()
+        .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL });
+
+    return createdEmbed;
+}
+
 /**
  * Gets Random Anime. Returns information identical to getAnime. 
  * 
@@ -36,10 +61,9 @@ async function getRandomAnime(message) {
         const genres = anime.genres.map(genre => genre.name).join(', ');
 
         //INITIALIZES SPLIT FOR SYNOPSIS THAT ARE OVER 1020 CHARACTERS 
-        let split = false;
         let synopsis = '';
-        let synopsis2 = '';
-        let synopsis3 = '';
+        let synopsis2 = '\n';
+        let synopsis3 = '\n';
 
         //SPLITS SYNOPSIS IF TOO LONG INTO 2-3 PARAGRAPHS. 
         if (anime.synopsis.length > MAX_VALUE_LENGTH) {
@@ -49,7 +73,6 @@ async function getRandomAnime(message) {
             synopsis = splitSynopsis[0];
             synopsis2 = (splitSynopsis[2] !== null) ? splitSynopsis[2] : '';
             synopsis3 = (splitSynopsis[4] !== null) ? splitSynopsis[4] : '';
-            split = true;
         }
         //else, simply assign synopsis to the anime synopsis. 
         else {
@@ -82,55 +105,29 @@ async function getRandomAnime(message) {
 
         //SYNOPSIS, URL, EPISODES, GENRES, RATINGS
         const SYNOPSIS = commandNullCheck(synopsis, 'Synopsis not found.');
+        const SYNOPSIS2 = synopsis2;
+        const SYNOPSIS3 = synopsis3;
         const URL = commandNullCheck(anime.url, 'URL not found.');
         const EPISODES = commandNullCheck(anime.episodes, 'Episodes not found.');
         const GENRES = commandNullCheck(genres, 'Genres not found.');
         const RATINGS = commandNullCheck(ratings, 'Ratings not found.');
 
         //if synopsis has been split, use the split synopsis' as embed does not support more than 1024 characters per value. 
-        if (split) {
-            const exampleEmbed = new EmbedBuilder()
-                .setColor(0x0099FF)
-                .setTitle(`${anime.title.default}`)
-                .setURL(`${URL}`)
-                .setAuthor({ name: `Currently Searching: ${anime.title.default}` })
-                .setThumbnail(THUMBNAIL)
-                .addFields(
-                    { name: '\n\u200b', value: '\n\u200b' },
-                    { name: 'Synopsis: \n\u200b', value: `${SYNOPSIS}` },
-                    { name: '\n', value: `${synopsis2}` },
-                    { name: '\n', value: `${synopsis3}\n\u200b` },
-                    { name: 'Episodes:', value: `${EPISODES}`, inline: true },
-                    { name: 'Genres:', value: `${GENRES}`, inline: true },
-                )
-                .addFields({ name: 'Ratings:', value: `${RATINGS}`, inline: true })
-                .setImage(`${anime.image.webp.default}`)
-                .setTimestamp()
-                .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL });
+        const embedMessage = createEmbed(
+            anime.title.default,
+            URL,
+            THUMBNAIL,
+            SYNOPSIS,
+            SYNOPSIS2,
+            SYNOPSIS3,
+            EPISODES,
+            GENRES,
+            RATINGS,
+            anime.image.webp.default
+        )
 
-            message.channel.send({ embeds: [exampleEmbed] });
-        }
-        // if not split, simply just use the regular synopsis that was assigned to the anime synopsis. 
-        else {
-            const exampleEmbed = new EmbedBuilder()
-                .setColor(0x0099FF)
-                .setTitle(`${anime.title.default}`)
-                .setURL(`${URL}`)
-                .setAuthor({ name: `Currently Searching: ${anime.title.default}` })
-                .setThumbnail(THUMBNAIL)
-                .addFields(
-                    { name: '\n\u200b', value: '\n\u200b' },
-                    { name: 'Synopsis: \n\u200b', value: `${SYNOPSIS}\n\u200b` },
-                    { name: 'Episodes:', value: `${EPISODES}`, inline: true },
-                    { name: 'Genres:', value: `${GENRES}`, inline: true },
-                )
-                .addFields({ name: 'Ratings:', value: `${RATINGS}`, inline: true })
-                .setImage(`${anime.image.webp.default}`)
-                .setTimestamp()
-                .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL });
+        message.channel.send({ embeds: [embedMessage] });
 
-            message.channel.send({ embeds: [exampleEmbed] });
-        }
     } catch (error) {
         console.error('Error:', error.message);
     }

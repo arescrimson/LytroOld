@@ -28,6 +28,23 @@ function getFirstName(message, characterName, databaseNames) {
     }
 }
 
+function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, VOICEACTOR, IMAGE) {
+    return new EmbedBuilder()
+        .setColor(0x0099FF)
+        .setTitle(`${NAME}`)
+        .setURL(`${URL}`)
+        .setAuthor({ name: `Currently Searching: ${TITLE}`, iconURL: ICON_URL })
+        .setThumbnail(THUMBNAIL)
+        .addFields(
+            { name: 'Role:', value: `${ROLE}` },
+            { name: 'Japanese Voice Actor:', value: `${VOICEACTOR}`, inline: true },
+        )
+        .setImage(`${IMAGE}`)
+        .setTimestamp()
+        .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL });
+}
+
+
 /**
  * Gets Anime Characters from the animeID passed. 
  * 
@@ -68,23 +85,19 @@ async function getAnimeCharacters(message, animeID, characterName) {
                 if (getFirstName(message, characterName, (ch[i].character.name).toLowerCase())) {
                     const characterName = ch[i].character;
 
-                    const exampleEmbed = new EmbedBuilder()
-                        .setColor(0x0099FF)
-                        .setTitle(`${characterName.name}`)
-                        .setURL(`${characterName.url}`)
-                        .setAuthor({ name: `Currently Searching: ${anime.title.default}`})
-                        .setThumbnail(THUMBNAIL)
-                        .addFields(
-                            { name: 'Role:', value: `${ch[i].role}` },
-                            { name: 'Japanese Voice Actor:', value: `${ch[i].voiceActors[0].person.name}`, inline: true },
-                        )
-                        .setImage(`${characterName.image.webp.default}`)
-                        .setTimestamp()
-                        .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL});
+                    const exampleEmbed = createCharacterEmbed(
+                        characterName.name,
+                        characterName.url,
+                        anime.title.default,
+                        THUMBNAIL,
+                        ch[i].role, 
+                        ch[i].voiceActors[0].person.name, 
+                        characterName.image.webp.default
+                    );
 
                     message.channel.send({ embeds: [exampleEmbed] });
-                    characterFound = true; 
-                    break; 
+                    characterFound = true;
+                    break;
                 }
             }
         }
