@@ -130,8 +130,8 @@ async function getAnimeInfo(message, animeID) {
             anime.image.webp.default
         )
 
-        message.channel.send({ embeds: [embedMessage] });
-
+       message.channel.send({ embeds: [embedMessage] });           
+    
     } catch (error) {
         console.error('Error:', error.message);
     }

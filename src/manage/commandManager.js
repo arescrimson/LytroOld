@@ -39,4 +39,4 @@ for (const commandName of commandMisc) {
     commandList.push(command);
 }
 
-module.exports = { commandList}
+module.exports = { commandList }
