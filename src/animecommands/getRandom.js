@@ -4,7 +4,7 @@
 
 const { EmbedBuilder } = require('discord.js');
 
-const { client, THUMBNAIL, MAX_VALUE_LENGTH, ICON_URL, ANIME_MODE } = require('../../config')
+const { jikanClient, THUMBNAIL, MAX_VALUE_LENGTH, ICON_URL, ANIME_MODE } = require('../../config')
 
 /**
  * Checks if value passed is null. If null, instead returns error Message 
@@ -52,12 +52,12 @@ async function getRandomAnime(message) {
 
     try {
 
-        let random = await client.anime.random(true);
+        let random = await jikanClient.anime.random(true);
         const animeID = random.id;
 
         //GETS ANIME INFORMATION
         const anime = random;
-        const stats = await client.anime.getStatistics(animeID);
+        const stats = await jikanClient.anime.getStatistics(animeID);
         const genres = anime.genres.map(genre => genre.name).join(', ');
 
         //INITIALIZES SPLIT FOR SYNOPSIS THAT ARE OVER 1020 CHARACTERS 

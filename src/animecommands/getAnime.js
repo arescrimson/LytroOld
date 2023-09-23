@@ -7,7 +7,7 @@ const { EmbedBuilder } = require('discord.js');
 const { getAnimeIDFromString } = require('../utils/getAnimeIDFromString');
 
 //LYTRO FOOTER ICON, MAX VALUE LENGTH FOR EMBEDS
-const { client, THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH, ANIME_MODE } = require('../../config')
+const { jikanClient, THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH, ANIME_MODE } = require('../../config')
 
 //ERROR MESSAGES
 const { SYNOPSIS_NOT_FOUND, URL_NOT_FOUND, EPISODES_NOT_FOUND, GENRES_NOT_FOUND, RATINGS_NOT_FOUND } = require('../../config')
@@ -57,8 +57,8 @@ async function getAnimeInfo(message, animeID) {
     try {
 
         //GETS ANIME INFORMATION
-        const anime = await client.anime.get(animeID);
-        const stats = await client.anime.getStatistics(animeID);
+        const anime = await jikanClient.anime.get(animeID);
+        const stats = await jikanClient.anime.getStatistics(animeID);
         const genres = nullCheck(anime.genres.map(genre => genre.name).join(', '), GENRES_NOT_FOUND);
 
         //INITIALIZES SPLIT FOR SYNOPSIS THAT ARE OVER 1020 CHARACTERS 

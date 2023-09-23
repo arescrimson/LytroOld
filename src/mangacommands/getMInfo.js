@@ -9,7 +9,7 @@ const { EmbedBuilder } = require('discord.js');
 const { getMangaIDFromString } = require('../utils/getMangaIDFromString')
 
 //LYTRO FOOTER ICON, MAX VALUE LENGTH FOR EMBEDS
-const { client, THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH, MANGA_MODE, YEAR_NOT_FOUND, POPULARITY_NOT_FOUND } = require('../../config')
+const { jikanClient, THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH, MANGA_MODE, YEAR_NOT_FOUND, POPULARITY_NOT_FOUND } = require('../../config')
 
 //ERROR MESSAGES
 const { BACKGROUND_NOT_FOUND, RANK_NOT_FOUND, SERIAL_NOT_FOUND, AUTHOR_NOT_FOUND} = require('../../config')
@@ -47,7 +47,7 @@ async function getInfo(message, mangaID) {
     try {
 
         //GETS MANGA INFORMATION
-        const manga = await client.manga.get(mangaID);
+        const manga = await jikanClient.manga.get(mangaID);
 
         //INITIALIZES SPLIT FOR BACKGROUNDS THAT ARE OVER 1020 CHARACTERS 
         let background = '';

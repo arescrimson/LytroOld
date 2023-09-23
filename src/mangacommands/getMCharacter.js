@@ -8,7 +8,7 @@ const { EmbedBuilder } = require('discord.js')
 const { getMangaIDFromString } = require('../utils/getMangaIDFromString')
 
 //LYTRO FOOTER ICON
-const { discordClient, client, rightArrow, leftArrow, MANGA_MODE, THUMBNAIL, ICON_URL } = require('../../config')
+const { discordClient, jikanClient, rightArrow, leftArrow, MANGA_MODE, THUMBNAIL, ICON_URL } = require('../../config')
 
 /**
  * Gets first name from either a single first name, or a lastname, firstname format. 
@@ -56,8 +56,8 @@ function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, IMAGE) {
 async function getMangaCharacters(message, mangaID, characterName) {
 
     try {
-        const manga = await client.manga.get(mangaID);
-        const ch = await client.manga.getCharacters(mangaID);
+        const manga = await jikanClient.manga.get(mangaID);
+        const ch = await jikanClient.manga.getCharacters(mangaID);
 
         const mangaName = manga.title.default; 
 

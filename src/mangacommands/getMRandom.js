@@ -4,7 +4,7 @@
 
 const { EmbedBuilder } = require('discord.js');
 
-const { client, THUMBNAIL, VOLUMES_NOT_FOUND, MAX_VALUE_LENGTH, ICON_URL, MANGA_MODE } = require('../../config')
+const { jikanClient, THUMBNAIL, VOLUMES_NOT_FOUND, MAX_VALUE_LENGTH, ICON_URL, MANGA_MODE } = require('../../config')
 
 /**
  * Checks if value passed is null. If null, instead returns error Message 
@@ -17,7 +17,6 @@ const { client, THUMBNAIL, VOLUMES_NOT_FOUND, MAX_VALUE_LENGTH, ICON_URL, MANGA_
 function commandNullCheck(value, errMessage) {
     return (value !== null) ? value : errMessage;
 }
-
 
 function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, SYNOPSIS3, VOLUMES, GENRES, RATINGS, image) {
 
@@ -52,12 +51,12 @@ async function getRandomManga(message) {
 
     try {
 
-        let random = await client.manga.random(true);
+        let random = await jikanClient.manga.random(true);
         const mangaID = random.id;
 
         //GETS manga INFORMATION
         const manga = random;
-        const stats = await client.manga.getStatistics(mangaID);
+        const stats = await jikanClient.manga.getStatistics(mangaID);
         const genres = manga.genres.map(genre => genre.name).join(', ');
 
         //INITIALIZES SPLIT FOR SYNOPSIS THAT ARE OVER 1020 CHARACTERS 

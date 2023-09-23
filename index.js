@@ -1,7 +1,7 @@
 //IMPORT DOTENV FOR TOKEN 
 require('dotenv').config();
 
-const { discordClient } = require('./config');
+const { discordClient, DISCORD_TOKEN } = require('./config');
 //IMPORT COMMAND LIST 
 const { commandList } = require('./src/manage/commandManager')
 
@@ -29,8 +29,6 @@ discordClient.on('ready', (c) => {
 
 let currentCommandType = '';
 let currentSearchName = '';
-
-
 
 //STARTS BOT FUNCTION ON MESSAGE CREATE 
 discordClient.on('messageCreate', async (message) => {
@@ -73,7 +71,7 @@ discordClient.on('messageCreate', async (message) => {
 })
 
 //LOGINS USING BOT TOKEN FROM ENV 
-discordClient.login(process.env.TOKEN);
+discordClient.login(DISCORD_TOKEN);
 
 //SHUTS DOWN BOT AND NODE INSTANCES TO PREVENT MULTIPLE RUNNING INSTANCES
 process.on('SIGINT', () => {

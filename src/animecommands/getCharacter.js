@@ -8,7 +8,7 @@ const { EmbedBuilder } = require('discord.js')
 const { getAnimeIDFromString } = require('../utils/getAnimeIDFromString')
 
 //LYTRO FOOTER ICON
-const { discordClient, client, rightArrow, leftArrow, THUMBNAIL, ICON_URL, ANIME_MODE } = require('../../config')
+const { discordClient, jikanClient, rightArrow, leftArrow, THUMBNAIL, ICON_URL, ANIME_MODE } = require('../../config')
 
 let embedMessage = null;
 let characterArr = [];
@@ -60,8 +60,8 @@ async function getAnimeCharacters(message, animeID, characterName) {
 
     try {
 
-        const anime = await client.anime.get(animeID);
-        const ch = await client.anime.getCharacters(animeID);
+        const anime = await jikanClient.anime.get(animeID);
+        const ch = await jikanClient.anime.getCharacters(animeID);
 
         const animeName = anime.title.default;
 

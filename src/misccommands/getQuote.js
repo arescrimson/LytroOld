@@ -1,7 +1,5 @@
 // getQuote.js
 
-require('dotenv').config();
-
 //IMPORTS
 
 const { EmbedBuilder } = require('discord.js');
@@ -10,7 +8,7 @@ const { EmbedBuilder } = require('discord.js');
 const axios = require('axios');
 
 //QUOTE API URL 
-const { QUOTE_URL, ICON_URL , ACCESS_TOKEN} = require('../../config')
+const { QUOTE_URL, ICON_URL , QUOTE_TOKEN } = require('../../config')
 
 /**
  * Gets data object from quote API. 
@@ -21,7 +19,7 @@ async function getData() {
     try {
         const { data } = await axios.get(QUOTE_URL, {
             headers: {
-                Authorization: ACCESS_TOKEN,
+                Authorization: QUOTE_TOKEN,
             }
         });
 

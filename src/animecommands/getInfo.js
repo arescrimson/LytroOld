@@ -9,7 +9,7 @@ const { EmbedBuilder } = require('discord.js');
 const { getAnimeIDFromString } = require('../utils/getAnimeIDFromString')
 
 //LYTRO FOOTER ICON, MAX VALUE LENGTH FOR EMBEDS
-const { client, THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH, ANIME_MODE } = require('../../config')
+const { jikanClient, THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH, ANIME_MODE } = require('../../config')
 
 //ERROR MESSAGES
 const { BACKGROUND_NOT_FOUND, YEAR_NOT_FOUND, TRAILER_NOT_FOUND, STUDIO_NOT_FOUND, RECOMMENDATIONS_NOT_FOUND } = require('../../config')
@@ -46,8 +46,8 @@ async function getInfo(message, animeID) {
     try {
 
         //GETS ANIME INFORMATION
-        const anime = await client.anime.get(animeID);
-        const rec = await client.anime.getRecommendations(animeID);
+        const anime = await jikanClient.anime.get(animeID);
+        const rec = await jikanClient.anime.getRecommendations(animeID);
 
         //INITIALIZES SPLIT FOR BACKGROUNDS THAT ARE OVER 1020 CHARACTERS 
         let background = '';

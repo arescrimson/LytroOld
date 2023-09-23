@@ -7,7 +7,7 @@ const { EmbedBuilder } = require('discord.js');
 const { getMangaIDFromString } = require('../utils/getMangaIDFromString');
 
 //LYTRO FOOTER ICON, MAX VALUE LENGTH FOR EMBEDS
-const { client, MANGA_MODE, THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH } = require('../../config')
+const { jikanClient, MANGA_MODE, THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH } = require('../../config')
 
 //ERROR MESSAGES
 const { SYNOPSIS_NOT_FOUND, URL_NOT_FOUND, AUTHOR_NOT_FOUND, VOLUMES_NOT_FOUND, GENRES_NOT_FOUND, RATINGS_NOT_FOUND } = require('../../config')
@@ -57,8 +57,8 @@ async function getMangaInfo(message, mangaID) {
     try {
 
         //GETS manga INFORMATION
-        const manga = await client.manga.get(mangaID);
-        const stats = await client.manga.getStatistics(mangaID);
+        const manga = await jikanClient.manga.get(mangaID);
+        const stats = await jikanClient.manga.getStatistics(mangaID);
         const genres = nullCheck(manga.genres.map(genre => genre.name).join(', '), GENRES_NOT_FOUND);
 
         //INITIALIZES SPLIT FOR SYNOPSIS THAT ARE OVER 1020 CHARACTERS 
