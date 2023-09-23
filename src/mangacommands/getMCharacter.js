@@ -8,10 +8,7 @@ const { EmbedBuilder } = require('discord.js')
 const { getMangaIDFromString } = require('../utils/getMangaIDFromString')
 
 //LYTRO FOOTER ICON
-const { discordClient, client, MANGA_MODE, THUMBNAIL, ICON_URL } = require('../../config')
-
-const rightArrow = '▶️';
-const leftArrow = '◀️';
+const { discordClient, client, rightArrow, leftArrow, MANGA_MODE, THUMBNAIL, ICON_URL } = require('../../config')
 
 /**
  * Gets first name from either a single first name, or a lastname, firstname format. 

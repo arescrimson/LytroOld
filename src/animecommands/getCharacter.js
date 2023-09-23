@@ -8,10 +8,8 @@ const { EmbedBuilder } = require('discord.js')
 const { getAnimeIDFromString } = require('../utils/getAnimeIDFromString')
 
 //LYTRO FOOTER ICON
-const { discordClient, client, THUMBNAIL, ICON_URL, ANIME_MODE } = require('../../config')
+const { discordClient, client, rightArrow, leftArrow, THUMBNAIL, ICON_URL, ANIME_MODE } = require('../../config')
 
-const rightArrow = '▶️';
-const leftArrow = '◀️';
 
 /**
  * Gets first name from either a single first name, or a lastname, firstname format. 
@@ -22,13 +20,15 @@ const leftArrow = '◀️';
  * @returns the first name. 
  */
 function getFirstName(message, characterName, databaseNames) {
+    let res = false; 
     //splits by nameParts, i.e Monkey D., Luffy, and sets to lowercase for comparison purposes. 
     const nameParts = databaseNames.split(',').map(part => part.trim().toLowerCase());
-
     //returns true if characterName matches either first or last name. 
     if (nameParts.includes(characterName.toLowerCase())) {
-        return true;
+        res = true; 
     }
+
+    return res; 
 }
 
 function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, VOICEACTOR, IMAGE) {
@@ -47,7 +47,6 @@ function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, VOICEACTOR, IMA
         .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL });
 }
 
-
 /**
  * Gets Anime Characters from the animeID passed. 
  * 
@@ -63,7 +62,7 @@ async function getAnimeCharacters(message, animeID, characterName) {
 
         let characterFound = false;
         let characterArr = [];
-        
+
         for (let i = 0; i < ch.length; i++) {
 
             //if character name is main, indexes and returns ALL MAIN CHARACTERS.
@@ -84,10 +83,9 @@ async function getAnimeCharacters(message, animeID, characterName) {
             //if character name is specified as a name, extracts first name and compares it to 
             //passed characterName .toLowerCase() because of case sensitivity in equality. 
             else {
-                if (getFirstName(message, characterName, (ch[i].character.name).toLowerCase())) {
+                if (getFirstName(message, characterName, (ch[i].character.name).toLowerCase())) { 
                     characterArr.push(ch[i]);
                     characterFound = true;
-                    break;
                 }
             }
         }
@@ -122,6 +120,8 @@ async function getAnimeCharacters(message, animeID, characterName) {
             } else {
                 i = (i + 1) % characterArr.length; // Increment and wrap around
             }
+
+            reaction.message.reactions.removeAll().catch(console.error);
 
             const updatedEmbed = createCharacterEmbed(
                 characterArr[i].character.name,
