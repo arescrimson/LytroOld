@@ -8,7 +8,10 @@ const { EmbedBuilder } = require('discord.js')
 const { getAnimeIDFromString } = require('../utils/getAnimeIDFromString')
 
 //LYTRO FOOTER ICON
-const { client, THUMBNAIL, ICON_URL, ANIME_MODE } = require('../../config')
+const { discordClient, client, THUMBNAIL, ICON_URL, ANIME_MODE } = require('../../config')
+
+const rightArrow = '▶️';
+const leftArrow = '◀️';
 
 /**
  * Gets first name from either a single first name, or a lastname, firstname format. 
@@ -58,24 +61,23 @@ async function getAnimeCharacters(message, animeID, characterName) {
         const anime = await client.anime.get(animeID);
         const ch = await client.anime.getCharacters(animeID);
 
-        let maxIndex = 0;
         let characterFound = false;
 
+        let characterArr = [];
         for (let i = 0; i < ch.length; i++) {
 
             //if character name is main, indexes and returns ALL MAIN CHARACTERS.
             if (characterName === 'main') {
                 if (ch[i].role === 'Main') {
-                    message.channel.send(`Main Characters: ${ch[i].character.url}`);
+                    characterArr.push(ch[i]);
                     characterFound = true;
                 }
             }
             //if character name is sup, indexes ALL SUPPORTING CHARACTERS. Temporary limit of 5 indexes until 
             //functionality to advance indexes is added.  
             else if (characterName === 'sup') {
-                if (ch[i].role === 'Supporting' && maxIndex < 5) {
-                    message.channel.send(`Supporting Characters: ${ch[i].character.url}`);
-                    maxIndex++;
+                if (ch[i].role === 'Supporting') {
+                    characterArr.push(ch[i]);
                     characterFound = true;
                 }
             }
@@ -83,29 +85,64 @@ async function getAnimeCharacters(message, animeID, characterName) {
             //passed characterName .toLowerCase() because of case sensitivity in equality. 
             else {
                 if (getFirstName(message, characterName, (ch[i].character.name).toLowerCase())) {
-                    const characterName = ch[i].character;
-
-                    const exampleEmbed = createCharacterEmbed(
-                        characterName.name,
-                        characterName.url,
-                        anime.title.default,
-                        THUMBNAIL,
-                        ch[i].role, 
-                        ch[i].voiceActors[0].person.name, 
-                        characterName.image.webp.default
-                    );
-
-                    message.channel.send({ embeds: [exampleEmbed] });
+                    characterArr.push(ch[i]);
                     characterFound = true;
                     break;
                 }
             }
         }
 
+        let embedMessage;
+        let i = 0;
+
+        const exampleEmbed = createCharacterEmbed(
+            characterArr[i].character.name,
+            characterArr[i].character.url,
+            anime.title.default,
+            THUMBNAIL,
+            characterArr[i].role,
+            characterArr[i].voiceActors[0].person.name,
+            characterArr[i].character.image.webp.default
+        );
+
+        embedMessage = await message.channel.send({ embeds: [exampleEmbed] });
+
+        if (characterArr.length > 1) {
+            embedMessage.react(leftArrow);
+            embedMessage.react(rightArrow);
+        }
+
+        discordClient.on('messageReactionAdd', async (reaction, user) => {
+            if (reaction.message.partial) await reaction.message.fetch();
+
+            if (user.bot) return;
+
+            if (reaction.emoji.name === leftArrow) {
+                i = (i - 1 + characterArr.length) % characterArr.length; // Decrement and wrap around
+            } else {
+                i = (i + 1) % characterArr.length; // Increment and wrap around
+            }
+
+            const updatedEmbed = createCharacterEmbed(
+                characterArr[i].character.name,
+                characterArr[i].character.url,
+                anime.title.default,
+                THUMBNAIL,
+                characterArr[i].role,
+                characterArr[i].voiceActors[0].person.name,
+                characterArr[i].character.image.webp.default
+            );
+
+            embedMessage.edit({ embeds: [updatedEmbed] }).catch(console.error);
+        });
+
         if (!characterFound) {
             message.channel.send('Character not found :(');
+            return;
         }
+
     } catch (error) {
+        message.channel.send('Error with finding anime character.')
         console.error('Error:', error.message);
     }
 }
