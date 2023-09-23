@@ -10,18 +10,7 @@ const { getSearch } = require('./src/utils/getSearch')
 
 //COMMAND PREFIX
 const PREFIX = '!';
-/*
-//CREATE CLIENT 
-const client = new Client({
-    intents: [
-        IntentsBitField.Flags.Guilds,
-        IntentsBitField.Flags.GuildMessages,
-        IntentsBitField.Flags.GuildMembers,
-        IntentsBitField.Flags.MessageContent,
-        IntentsBitField.Flags.GuildMessageReactions,
-    ],
-});
-*/
+
 //DISPLAYS BOT STATUS IN TERMINAL ON START 
 discordClient.on('ready', (c) => {
     console.log(`${c.user.tag + " is ready."}`);
