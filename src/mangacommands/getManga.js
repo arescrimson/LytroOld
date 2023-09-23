@@ -24,7 +24,14 @@ function nullCheck(value, errMessage) {
     return (value !== null) ? value : errMessage;
 }
 
-function createEmbed(TITLE, URL, THUMBNAIL, AUTHOR, SYNOPSIS, SYNOPSIS2, SYNOPSIS3, VOLUMES, GENRES, RATINGS, image) {
+function createEmbed(TITLE, URL, THUMBNAIL, AUTHOR, SYNOPSIS, SYNOPSIS2, VOLUMES, GENRES, RATINGS, image) {
+    console.log("TITLE:", TITLE);
+    console.log("URL:", URL);
+    console.log("SYNOPSIS:", SYNOPSIS);
+    console.log("SYNOPSIS2:", SYNOPSIS2);
+    console.log("VOLUMES:", VOLUMES);
+    console.log("GENRES:", GENRES);
+    console.log("RATINGS:", RATINGS);
     const createdEmbed = new EmbedBuilder()
         .setColor(0x0099FF)
         .setTitle(`${TITLE}`)
@@ -34,8 +41,7 @@ function createEmbed(TITLE, URL, THUMBNAIL, AUTHOR, SYNOPSIS, SYNOPSIS2, SYNOPSI
         .addFields(
             { name: 'Author: \n\u200b', value: `**${AUTHOR}** \n\u200b` },
             { name: 'Synopsis: \n\u200b', value: `${SYNOPSIS}` },
-            { name: '\n', value: `${SYNOPSIS2}` },
-            { name: '\n', value: `${SYNOPSIS3}\n\u200b` },
+            { name: '\n', value: `${SYNOPSIS2}\n\u200b` },
             { name: 'Volumes:', value: `${VOLUMES}`, inline: true },
             { name: 'Genres:', value: `${GENRES}`, inline: true },
             { name: 'Ratings:', value: `${RATINGS}`, inline: true }
@@ -64,17 +70,21 @@ async function getMangaInfo(message, mangaID) {
         //INITIALIZES SPLIT FOR SYNOPSIS THAT ARE OVER 1020 CHARACTERS 
         let synopsis = '';
         let synopsis2 = '\n';
-        let synopsis3 = '\n';
 
         //SPLITS SYNOPSIS IF TOO LONG INTO 2-3 PARAGRAPHS. 
         if (manga.synopsis !== null) {
             if (manga.synopsis.length > MAX_VALUE_LENGTH) {
-                const splitSynopsis = manga.synopsis.split('\n');
-                //Because some synopsis are too long, yet are only 2 paragraphs, use ternary to check. 
-                //However, this means that if a synopsis is too long yet contains say, 4 paragraphs, this will not work. 
-                synopsis = splitSynopsis[0];
-                synopsis2 = (splitSynopsis[2] !== null) ? splitSynopsis[2] : '';
-                synopsis3 = (splitSynopsis[4] !== null) ? splitSynopsis[4] : '';
+                const midPoint = manga.synopsis.lastIndexOf('.', MAX_VALUE_LENGTH);
+                if (midPoint !== -1) {
+                    const synopsisFirstPart = manga.synopsis.substring(0, midPoint + 1);
+                    const synopsisSecondPart = manga.synopsis.substring(midPoint + 1);
+                    synopsis = synopsisFirstPart;
+                    synopsis2 = synopsisSecondPart;
+                }
+
+                if (synopsis2 === undefined) {
+                    synopsis2 = '\n';
+                }
             }
             //else, simply assign synopsis to the manga synopsis. 
             else {
@@ -109,9 +119,8 @@ async function getMangaInfo(message, mangaID) {
 
         //SYNOPSIS, URL, EPISODES, GENRES, RATINGS
         const SYNOPSIS = synopsis;
-        const SYNOPSIS2 = synopsis2; 
-        const SYNOPSIS3 = synopsis3; 
-        const AUTHOR = (manga.authors[0].name !== null) ? manga.authors[0].name : AUTHOR_NOT_FOUND; 
+        const SYNOPSIS2 = synopsis2;
+        const AUTHOR = (manga.authors[0].name !== null) ? manga.authors[0].name : AUTHOR_NOT_FOUND;
         const URL = (manga.url !== null) ? manga.url : URL_NOT_FOUND;
         const VOLUMES = (manga.volumes !== null) ? manga.volumes : VOLUMES_NOT_FOUND;
         const GENRES = genres;
@@ -124,7 +133,6 @@ async function getMangaInfo(message, mangaID) {
             AUTHOR,
             SYNOPSIS,
             SYNOPSIS2,
-            SYNOPSIS3,
             VOLUMES,
             GENRES,
             RATINGS,

@@ -24,7 +24,7 @@ function nullCheck(value, errMessage) {
     return (value !== null) ? value : errMessage;
 }
 
-function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, SYNOPSIS3, EPISODES, GENRES, RATINGS, image) {
+function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, EPISODES, GENRES, RATINGS, image) {
 
     const createdEmbed = new EmbedBuilder()
         .setColor(0x0099FF)
@@ -34,8 +34,7 @@ function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, SYNOPSIS3, EPIS
         .setThumbnail(THUMBNAIL)
         .addFields(
             { name: 'Synopsis: \n\u200b', value: `${SYNOPSIS}` },
-            { name: '\n', value: `${SYNOPSIS2}` },
-            { name: '\n', value: `${SYNOPSIS3}\n\u200b` },
+            { name: '\n', value: `${SYNOPSIS2}\n\u200b` },
             { name: 'Episodes:', value: `${EPISODES}`, inline: true },
             { name: 'Genres:', value: `${GENRES}`, inline: true },
             { name: 'Ratings:', value: `${RATINGS}`, inline: true }
@@ -64,25 +63,23 @@ async function getAnimeInfo(message, animeID) {
         //INITIALIZES SPLIT FOR SYNOPSIS THAT ARE OVER 1020 CHARACTERS 
         let synopsis = '';
         let synopsis2 = '\n';
-        let synopsis3 = '\n';
 
         //SPLITS SYNOPSIS IF TOO LONG INTO 2-3 PARAGRAPHS. 
         if (anime.synopsis !== null) {
             if (anime.synopsis.length > MAX_VALUE_LENGTH) {
-                const splitSynopsis = anime.synopsis.split('\n');
-                //Because some synopsis are too long, yet are only 2 paragraphs, use ternary to check. 
-                //However, this means that if a synopsis is too long yet contains say, 4 paragraphs, this will not work. 
-                synopsis = splitSynopsis[0];
-                synopsis2 = (splitSynopsis[2] !== null) ? splitSynopsis[2] : '';
-                synopsis3 = (splitSynopsis[4] !== null) ? splitSynopsis[4] : '';
+                const midPoint = anime.synopsis.lastIndexOf('.', MAX_VALUE_LENGTH);
+                if (midPoint !== -1) {
+                    const synopsisFirstPart = anime.synopsis.substring(0, midPoint + 1);
+                    const synopsisSecondPart = anime.synopsis.substring(midPoint + 1);
+                    synopsis = synopsisFirstPart;
+                    synopsis2 = synopsisSecondPart;
+                }
             }
             //else, simply assign synopsis to the anime synopsis. 
             else {
                 synopsis = anime.synopsis;
             }
-        }
-
-        else {
+        } else {
             synopsis = SYNOPSIS_NOT_FOUND;
         }
 
@@ -109,13 +106,11 @@ async function getAnimeInfo(message, animeID) {
 
         //SYNOPSIS, URL, EPISODES, GENRES, RATINGS
         const SYNOPSIS = synopsis;
-        const SYNOPSIS2 = synopsis2; 
-        const SYNOPSIS3 = synopsis3; 
+        const SYNOPSIS2 = synopsis2;
         const URL = (anime.url !== null) ? anime.url : URL_NOT_FOUND;
         const EPISODES = (anime.episodes !== null) ? anime.episodes : EPISODES_NOT_FOUND;
         const GENRES = genres;
         const RATINGS = ratings;
-
 
         const embedMessage = createEmbed(
             anime.title.default,
@@ -123,15 +118,14 @@ async function getAnimeInfo(message, animeID) {
             THUMBNAIL,
             SYNOPSIS,
             SYNOPSIS2,
-            SYNOPSIS3,
             EPISODES,
             GENRES,
             RATINGS,
             anime.image.webp.default
         )
 
-       message.channel.send({ embeds: [embedMessage] });           
-    
+        message.channel.send({ embeds: [embedMessage] });
+
     } catch (error) {
         console.error('Error:', error.message);
     }

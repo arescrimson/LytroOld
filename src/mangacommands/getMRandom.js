@@ -4,7 +4,7 @@
 
 const { EmbedBuilder } = require('discord.js');
 
-const { jikanClient, THUMBNAIL, VOLUMES_NOT_FOUND, MAX_VALUE_LENGTH, ICON_URL, MANGA_MODE } = require('../../config')
+const { jikanClient, THUMBNAIL, VOLUMES_NOT_FOUND, MAX_VALUE_LENGTH, ICON_URL, MANGA_MODE, SYNOPSIS_NOT_FOUND, URL_NOT_FOUND, GENRES_NOT_FOUND, RATINGS_NOT_FOUND } = require('../../config')
 
 /**
  * Checks if value passed is null. If null, instead returns error Message 
@@ -18,7 +18,7 @@ function commandNullCheck(value, errMessage) {
     return (value !== null) ? value : errMessage;
 }
 
-function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, SYNOPSIS3, VOLUMES, GENRES, RATINGS, image) {
+function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, VOLUMES, GENRES, RATINGS, image) {
 
     const createdEmbed = new EmbedBuilder()
         .setColor(0x0099FF)
@@ -29,8 +29,7 @@ function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, SYNOPSIS3, VOLU
         .addFields(
             { name: '\n\u200b', value: '\n\u200b' },
             { name: 'Synopsis: \n\u200b', value: `${SYNOPSIS}` },
-            { name: '\n', value: `${SYNOPSIS2}` },
-            { name: '\n', value: `${SYNOPSIS3}\n\u200b` },
+            { name: '\n', value: `${SYNOPSIS2}\n\u200b` },
             { name: 'VOLUMES:', value: `${VOLUMES}`, inline: true },
             { name: 'Genres:', value: `${GENRES}`, inline: true },
             { name: 'Ratings:', value: `${RATINGS}`, inline: true }
@@ -62,31 +61,20 @@ async function getRandomManga(message) {
         //INITIALIZES SPLIT FOR SYNOPSIS THAT ARE OVER 1020 CHARACTERS 
         let synopsis = '';
         let synopsis2 = '\n';
-        let synopsis3 = '\n';
 
         //SPLITS SYNOPSIS IF TOO LONG INTO 2-3 PARAGRAPHS. 
         if (manga.synopsis.length > MAX_VALUE_LENGTH) {
-            const splitSynopsis = manga.synopsis.split('\n');
-            //Because some synopsis are too long, yet are only 2 paragraphs, use ternary to check. 
-            //However, this means that if a synopsis is too long yet contains say, 4 paragraphs, this will not work. 
-            synopsis = splitSynopsis[0];
-            synopsis2 = (splitSynopsis[2] !== null) ? splitSynopsis[2] : '';
-            synopsis3 = (splitSynopsis[4] !== null) ? splitSynopsis[4] : '';
+            const midPoint = manga.synopsis.lastIndexOf('.', MAX_VALUE_LENGTH);
+                if (midPoint !== -1) {
+                    const synopsisFirstPart = manga.synopsis.substring(0, midPoint + 1);
+                    const synopsisSecondPart = manga.synopsis.substring(midPoint + 1);
+                    synopsis = synopsisFirstPart;
+                    synopsis2 = synopsisSecondPart;
+                }
         }
         //else, simply assign synopsis to the manga synopsis. 
         else {
             synopsis = manga.synopsis;
-        }
-
-        //GENRES AS A STRING LIST WITH COMMAS 
-        let genreText = "";
-
-        for (let i = 0; i < manga.genres.length; i++) {
-            genreText += manga.genres[i].name;
-
-            if (i < manga.genres.length - 1) {
-                genreText += ", "; // Adds a comma and space between genres
-            }
         }
 
         //RATINGS AS AN AVERAGED SCORE STRING 
@@ -103,13 +91,12 @@ async function getRandomManga(message) {
         const ratings = `Average score based off ${totalVotes.toLocaleString()} votes: ${averageScore.toFixed(2) + ' / 10'}`;
 
         //SYNOPSIS, URL, EPISODES, GENRES, RATINGS
-        const SYNOPSIS = commandNullCheck(synopsis, 'Synopsis not found.');
+        const SYNOPSIS = commandNullCheck(synopsis, SYNOPSIS_NOT_FOUND);
         const SYNOPSIS2 = synopsis2;
-        const SYNOPSIS3 = synopsis3;
-        const URL = commandNullCheck(manga.url, 'URL not found.');
-        const GENRES = commandNullCheck(genres, 'Genres not found.');
+        const URL = commandNullCheck(manga.url, URL_NOT_FOUND);
+        const GENRES = commandNullCheck(genres, GENRES_NOT_FOUND);
         const VOLUMES = (manga.volumes !== null) ? manga.volumes : VOLUMES_NOT_FOUND;
-        const RATINGS = commandNullCheck(ratings, 'Ratings not found.');
+        const RATINGS = commandNullCheck(ratings, RATINGS_NOT_FOUND);
 
         //if synopsis has been split, use the split synopsis' as embed does not support more than 1024 characters per value. 
         const embedMessage = createEmbed(
@@ -118,7 +105,6 @@ async function getRandomManga(message) {
             THUMBNAIL,
             SYNOPSIS,
             SYNOPSIS2,
-            SYNOPSIS3,
             VOLUMES,
             GENRES,
             RATINGS,

@@ -16,7 +16,6 @@ discordClient.on('ready', (c) => {
     console.log(`${c.user.tag + " is ready."}`);
 })
 
-let currentCommandType = '';
 let currentSearchName = '';
 
 //STARTS BOT FUNCTION ON MESSAGE CREATE 
