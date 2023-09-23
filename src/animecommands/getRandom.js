@@ -65,6 +65,7 @@ async function getRandomAnime(message) {
         const stats = await jikanClient.anime.getStatistics(animeID);
         //console.log('Stats:' + stats);
         let genres = anime.genres.map(genre => genre.name).join(', ');
+
         if (!genres || genres.trim() === '') {
             genres = GENRES_NOT_FOUND;
         }
@@ -75,16 +76,20 @@ async function getRandomAnime(message) {
         let synopsis2 = '\n';
 
         //SPLITS SYNOPSIS IF TOO LONG INTO 2-3 PARAGRAPHS. 
-        if (anime.synopsis !== null && anime.synopsis.length > MAX_VALUE_LENGTH) {
-            const midPoint = anime.synopsis.length / 2;
-            const synopsisFirstPart = anime.synopsis.substring(0, midPoint);
-            const synopsisSecondPart = anime.synopsis.substring(midPoint);
-            synopsis = synopsisFirstPart;
-            synopsis2 = synopsisSecondPart;
-        }
-        //else, simply assign synopsis to the anime synopsis. 
-        else { 
-            synopsis = SYNOPSIS_NOT_FOUND;
+        if (anime.synopsis !== null) {
+            if (anime.synopsis.length > MAX_VALUE_LENGTH) {
+                const midPoint = anime.synopsis.lastIndexOf('.', MAX_VALUE_LENGTH);
+                if (midPoint !== -1) {
+                    const synopsisFirstPart = anime.synopsis.substring(0, midPoint + 1);
+                    const synopsisSecondPart = anime.synopsis.substring(midPoint + 1);
+                    synopsis = synopsisFirstPart;
+                    synopsis2 = synopsisSecondPart;
+                }
+            }
+            //else, simply assign synopsis to the anime synopsis. 
+            else {
+                synopsis = SYNOPSIS_NOT_FOUND;
+            }
         }
 
         //RATINGS AS AN AVERAGED SCORE STRING 

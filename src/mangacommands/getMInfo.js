@@ -56,11 +56,13 @@ async function getInfo(message, mangaID) {
         //SPLITS BACKGROUND IF TOO LONG INTO 2 PARAGRAPHS.  
         if (manga.background !== null) {
             if (manga.background.length > MAX_VALUE_LENGTH) {
-                const midPoint = manga.background.length / 2;
-                const backgroundFirstPart = manga.background.substring(0, midPoint);
-                const backgroundSecondPart = manga.background.substring(midPoint);
-                background = backgroundFirstPart;
-                background2 = backgroundSecondPart;
+                const midPoint = manga.background.lastIndexOf('.', MAX_VALUE_LENGTH);
+                if (midPoint !== -1) {
+                    const backgroundFirstPart = manga.background.substring(0, midPoint + 1);
+                    const backgroundSecondPart = manga.background.substring(midPoint + 1);
+                    background = backgroundFirstPart;
+                    background2 = backgroundSecondPart;
+                }
             }
             //else, simply assign background to the manga background. 
             else {
