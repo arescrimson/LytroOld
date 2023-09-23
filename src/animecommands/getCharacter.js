@@ -62,8 +62,8 @@ async function getAnimeCharacters(message, animeID, characterName) {
         const ch = await client.anime.getCharacters(animeID);
 
         let characterFound = false;
-
         let characterArr = [];
+        
         for (let i = 0; i < ch.length; i++) {
 
             //if character name is main, indexes and returns ALL MAIN CHARACTERS.
