@@ -1,9 +1,7 @@
 //IMPORT DOTENV FOR TOKEN 
 require('dotenv').config();
 
-//IMPORT DISCORDJS / CLIENT AND INTENTS FOR MESSAGE SENDING 
-const { Client, IntentsBitField } = require('discord.js');
-
+const { discordClient } = require('./config');
 //IMPORT COMMAND LIST 
 const { commandList } = require('./src/manage/commandManager')
 
@@ -12,7 +10,7 @@ const { getSearch } = require('./src/utils/getSearch')
 
 //COMMAND PREFIX
 const PREFIX = '!';
-
+/*
 //CREATE CLIENT 
 const client = new Client({
     intents: [
@@ -20,21 +18,23 @@ const client = new Client({
         IntentsBitField.Flags.GuildMessages,
         IntentsBitField.Flags.GuildMembers,
         IntentsBitField.Flags.MessageContent,
+        IntentsBitField.Flags.GuildMessageReactions,
     ],
 });
-
+*/
 //DISPLAYS BOT STATUS IN TERMINAL ON START 
-client.on('ready', (c) => {
+discordClient.on('ready', (c) => {
     console.log(`${c.user.tag + " is ready."}`);
 })
 
 let currentCommandType = '';
 let currentSearchName = '';
 
-//STARTS BOT FUNCTION ON MESSAGE CREATE 
-client.on('messageCreate', async (message) => {
-    try {
 
+
+//STARTS BOT FUNCTION ON MESSAGE CREATE 
+discordClient.on('messageCreate', async (message) => {
+    try {
         if (message.author.bot) return;
 
         if (message.content.startsWith(PREFIX)) {
@@ -73,18 +73,18 @@ client.on('messageCreate', async (message) => {
 })
 
 //LOGINS USING BOT TOKEN FROM ENV 
-client.login(process.env.TOKEN);
+discordClient.login(process.env.TOKEN);
 
 //SHUTS DOWN BOT AND NODE INSTANCES TO PREVENT MULTIPLE RUNNING INSTANCES
 process.on('SIGINT', () => {
     console.log('Received SIGINT signal. Shutting down.');
-    client.destroy(); // Close the Discord.js client connection
+    discordClient.destroy(); // Close the Discord.js client connection
     process.exit(0); // Exit the Node.js process
 });
 
 process.on('SIGTERM', () => {
     console.log('Received SIGTERM signal. Shutting down.');
-    client.destroy(); // Close the Discord.js client connection
+    discordClient.destroy(); // Close the Discord.js client connection
     process.exit(0); // Exit the Node.js process
 });
 

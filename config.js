@@ -1,10 +1,23 @@
-//JIKAN API LIBRARY 
+const { Client, IntentsBitField } = require('discord.js');
+
 const Jikan = require('jikan4.js')
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN
+
+const discordClient = new Client({
+  intents: [
+      IntentsBitField.Flags.Guilds,
+      IntentsBitField.Flags.GuildMessages,
+      IntentsBitField.Flags.GuildMembers,
+      IntentsBitField.Flags.MessageContent,
+      IntentsBitField.Flags.GuildMessageReactions,
+  ],
+});
+
 module.exports = {
+    discordClient,
     ACCESS_TOKEN, 
     THUMBNAIL: 'https://github.com/arescrimson/Lytro/blob/master/img/profile.jpg?raw=true',
-    ICON_URL: 'https://avatarfiles.alphacoders.com/281/281168.png',
+    ICON_URL: 'https://github.com/arescrimson/Lytro/blob/master/img/icon.png?raw=true',
     QUOTE_URL: "https://waifu.it/api/quote",
     MAX_VALUE_LENGTH: 1020,
 
