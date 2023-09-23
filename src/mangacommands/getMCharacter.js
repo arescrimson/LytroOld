@@ -19,13 +19,16 @@ const { discordClient, client, rightArrow, leftArrow, MANGA_MODE, THUMBNAIL, ICO
  * @returns the first name. 
  */
 function getFirstName(message, characterName, databaseNames) {
+    let res = false; 
     //splits by nameParts, i.e Monkey D., Luffy, and sets to lowercase for comparison purposes. 
     const nameParts = databaseNames.split(',').map(part => part.trim().toLowerCase());
 
     //returns true if characterName matches either first or last name. 
     if (nameParts.includes(characterName.toLowerCase())) {
-        return true;
+        res = true; 
     }
+
+    return res; 
 }
 
 function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, IMAGE) {
@@ -43,7 +46,6 @@ function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, IMAGE) {
         .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL });
 }
 
-
 /**
  * Gets manga Characters from the mangaID passed. 
  * 
@@ -56,6 +58,8 @@ async function getMangaCharacters(message, mangaID, characterName) {
     try {
         const manga = await client.manga.get(mangaID);
         const ch = await client.manga.getCharacters(mangaID);
+
+        const mangaName = manga.title.default; 
 
         let characterArr = [];
         let characterFound = false;
@@ -83,57 +87,59 @@ async function getMangaCharacters(message, mangaID, characterName) {
                 if (getFirstName(message, characterName, (ch[i].character.name).toLowerCase())) {
                     characterArr.push(ch[i]);
                     characterFound = true;
-                    break;
                 }
             }
         }
 
-        let embedMessage;
-        let i = 0;
+        if (!characterFound) {
+            message.channel.send('Character not found :(');
+            return;
+        }
 
-        const exampleEmbed = createCharacterEmbed(
+        let i = 0;
+        let embedMessage; 
+
+        const characterEmbed = createCharacterEmbed(
             characterArr[i].character.name,
             characterArr[i].character.url,
-            manga.title.default,
+            mangaName,
             THUMBNAIL,
             characterArr[i].role,
-            characterArr[i].character.image.webp.default
+            characterArr[i].character.image.webp.default,
         );
 
-        embedMessage = await message.channel.send({ embeds: [exampleEmbed] });
+        embedMessage = await message.channel.send({ embeds: [characterEmbed] });
 
         if (characterArr.length > 1) {
             embedMessage.react(leftArrow);
             embedMessage.react(rightArrow);
         }
 
-        discordClient.on('messageReactionAdd', async (reaction, user) => {
-            if (reaction.message.partial) await reaction.message.fetch();
-
+        function handleReaction(reaction, user) {
             if (user.bot) return;
-
+        
             if (reaction.emoji.name === leftArrow) {
                 i = (i - 1 + characterArr.length) % characterArr.length; // Decrement and wrap around
             } else {
                 i = (i + 1) % characterArr.length; // Increment and wrap around
             }
-
+       
             const updatedEmbed = createCharacterEmbed(
                 characterArr[i].character.name,
                 characterArr[i].character.url,
-                manga.title.default,
+                mangaName,
                 THUMBNAIL,
                 characterArr[i].role,
                 characterArr[i].character.image.webp.default
             );
-
+        
             embedMessage.edit({ embeds: [updatedEmbed] }).catch(console.error);
-        });
+        };
 
-        if (!characterFound) {
-            message.channel.send('Character not found :(');
-            return;
-        }
+        discordClient.removeAllListeners('messageReactionAdd');
+        discordClient.on('messageReactionAdd', (reaction, user) => {
+            handleReaction(reaction, user);
+        });
 
     } catch (error) {
         console.error('Error in finding manga character.', error.message);
