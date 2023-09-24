@@ -48,11 +48,7 @@ Now supports title caching; any command with an **[anime name]** identifier will
 
 ## Demo 
 
-
-
 https://github.com/arescrimson/Lytro/assets/66581240/fc257995-02b1-4446-b091-ef94954c33a1
-
-
 
 <p align="center"> Current anime functionalities: featuring !a, !info, !img, !chr, and !quote.</p>
 
@@ -60,6 +56,6 @@ https://github.com/arescrimson/Lytro/assets/66581240/fc257995-02b1-4446-b091-ef9
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Distributed under the MIT License. If you do find this useful, please let me know! :D 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
