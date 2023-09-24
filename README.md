@@ -48,11 +48,13 @@ Now supports title caching; any command with an **[anime name]** identifier will
 
 [![Discord.js](https://img.shields.io/badge/Discord.js-v15.0.0-blue.svg)](https://discord.js.org/) [![Jikan API](https://img.shields.io/badge/Jikan%20API-Latest-green.svg)](https://docs.api.jikan.moe/) [![JikanJS](https://img.shields.io/badge/JikanJS-v4.0.0-blue.svg)](https://github.com/rizzzigit/jikan4.js) [![Axios](https://img.shields.io/badge/Axios-v1.5.0-blue)](https://github.com/axios/axios)
 
-## Demo 
+## Anime Demo 
 
 https://github.com/arescrimson/Lytro/assets/66581240/fc257995-02b1-4446-b091-ef94954c33a1
 
 <p align="center"> Current anime functionalities: featuring !a, !info, !img, !chr, and !quote.</p>
+
+## Manga Demo
 
 https://github.com/arescrimson/Lytro/assets/66581240/79d916cc-af9c-40c7-9be9-449e2433eb02
 
