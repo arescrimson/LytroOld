@@ -20,13 +20,6 @@ function commandNullCheck(value, errMessage) {
 
 
 function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, EPISODES, GENRES, RATINGS, image) {
-    //console.log("TITLE:", TITLE);
-    //console.log("URL:", URL);
-    //console.log("SYNOPSIS:", SYNOPSIS);
-    //console.log("SYNOPSIS2:", SYNOPSIS2);
-    //console.log("EPISODES:", EPISODES);
-    //console.log("GENRES:", GENRES);
-    //console.log("RATINGS:", RATINGS);
     const createdEmbed = new EmbedBuilder()
         .setColor(0x0099FF)
         .setTitle(`${TITLE}`)
@@ -63,13 +56,11 @@ async function getRandomAnime(message) {
         //GETS ANIME INFORMATION
         const anime = random;
         const stats = await jikanClient.anime.getStatistics(animeID);
-        //console.log('Stats:' + stats);
         let genres = anime.genres.map(genre => genre.name).join(', ');
 
         if (!genres || genres.trim() === '') {
             genres = GENRES_NOT_FOUND;
         }
-        //console.log('Genres' + genres);
 
         //INITIALIZES SPLIT FOR SYNOPSIS THAT ARE OVER 1020 CHARACTERS 
         let synopsis = '';

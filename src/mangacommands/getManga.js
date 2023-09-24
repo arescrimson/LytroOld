@@ -25,13 +25,6 @@ function nullCheck(value, errMessage) {
 }
 
 function createEmbed(TITLE, URL, THUMBNAIL, AUTHOR, SYNOPSIS, SYNOPSIS2, VOLUMES, GENRES, RATINGS, image) {
-    console.log("TITLE:", TITLE);
-    console.log("URL:", URL);
-    console.log("SYNOPSIS:", SYNOPSIS);
-    console.log("SYNOPSIS2:", SYNOPSIS2);
-    console.log("VOLUMES:", VOLUMES);
-    console.log("GENRES:", GENRES);
-    console.log("RATINGS:", RATINGS);
     const createdEmbed = new EmbedBuilder()
         .setColor(0x0099FF)
         .setTitle(`${TITLE}`)

@@ -10,8 +10,6 @@ const { EmbedBuilder } = require('discord.js')
  */
 async function getHelp(message, commandList) {
 
-    //console.log(commandList.length); // Temporary counter of command list. 
-
     const embedMessage = new EmbedBuilder()
         .setTitle('Available Commands')
         .setDescription(
