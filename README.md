@@ -30,7 +30,7 @@ Now supports title caching; any command with an **[anime name]** identifier will
 
 **!m [manga name]:** returns information like synopsis, rating based off total votes, genre, and url. 
 
-**!mchr [prefix] [manga name]:** depending on prefix, returns either 'main' main characters, 'sup' supporting characters, or a specified character name. Provides information like character role and voice actor. 
+**!mchr [prefix] [manga name]:** depending on prefix, returns either 'main' main characters, 'sup' supporting characters, or a specified character name. Provides information like character role.
 
 **!mimg [manga name]:** returns a random image pertaining to the picture gallery of the specific manga. 
 
@@ -45,6 +45,13 @@ Now supports title caching; any command with an **[anime name]** identifier will
 ## Built With 
 
 [![Discord.js](https://img.shields.io/badge/Discord.js-v15.0.0-blue.svg)](https://discord.js.org/) [![Jikan API](https://img.shields.io/badge/Jikan%20API-Latest-green.svg)](https://jikan.docs.apiary.io/) [![JikanJS](https://img.shields.io/badge/JikanJS-v4.0.0-blue.svg)](https://github.com/xy137/jikanjs) [![Axios](https://img.shields.io/badge/Axios-v1.5.0-blue)](https://github.com/axios/axios)
+
+## Demo 
+
+
+![Animated GIF](https://github.com/arescrimson/Lytro/assets/66581240/ef3da101-140b-452c-a11a-dcab6d45175d)
+<p align="center"> Current anime functionalities: featuring !a, !info, !img, !chr, and !quote.</p>
+
 
 <!-- LICENSE -->
 ## License
