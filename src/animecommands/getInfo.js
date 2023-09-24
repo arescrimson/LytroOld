@@ -6,7 +6,7 @@
 const { EmbedBuilder } = require('discord.js');
 
 //GETID 
-const { getAnimeIDFromString } = require('../utils/getAnimeIDFromString')
+const { getAnimeID } = require('../utils/getAnimeID')
 
 //LYTRO FOOTER ICON, MAX VALUE LENGTH FOR EMBEDS
 const { jikanClient, THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH, ANIME_MODE } = require('../../config')
@@ -125,7 +125,7 @@ module.exports = {
         const animeName = searchAnime;
 
         try {
-            const animeID = await getAnimeIDFromString(message, animeName);
+            const animeID = await getAnimeID(message, animeName);
             getInfo(message, animeID);
         } catch (error) {
             console.error('Error in info:', error.message);

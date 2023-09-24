@@ -5,7 +5,7 @@
 const { EmbedBuilder } = require('discord.js')
 
 //IMPORT GETID 
-const { getAnimeIDFromString } = require('../utils/getAnimeIDFromString')
+const { getAnimeID } = require('../utils/getAnimeID')
 
 //IMPORT CLIENT
 const { jikanClient , ICON_URL, ANIME_MODE} = require('../../config')
@@ -77,7 +77,7 @@ module.exports = {
         const animeName = searchAnime;
 
         try {
-            const animeID = await getAnimeIDFromString(message, animeName);
+            const animeID = await getAnimeID(message, animeName);
             getAnimeImages(message, animeID)
         } catch (error) {
             console.error('Error:', error.message);
