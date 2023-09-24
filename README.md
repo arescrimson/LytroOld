@@ -16,8 +16,6 @@ Now supports title caching; any command with an **[anime name]** identifier will
 
 ## Anime Commands
 
-**!help** returns a list of possible commands with their descriptions. 
-
 **!a [anime name]:** returns information like synopsis, rating based off total votes, genre, and url. 
 
 **!info [anime name]** returns additional information like background, studio, related animes and release year. 
@@ -30,11 +28,15 @@ Now supports title caching; any command with an **[anime name]** identifier will
 
 **!m [manga name]:** returns information like synopsis, rating based off total votes, genre, and url. 
 
+**!minfo [manga name]** returns additional information like manga rank, serialization, and publish date. 
+
 **!mchr [prefix] [manga name]:** depending on prefix, returns either 'main' main characters, 'sup' supporting characters, or a specified character name. Provides information like character role.
 
 **!mimg [manga name]:** returns a random image pertaining to the picture gallery of the specific manga. 
 
 ## Misc Commands
+
+**!help** returns a list of possible commands with their descriptions. 
 
 **!rand:** returns information identical to !info with a random anime.
 
@@ -52,9 +54,9 @@ https://github.com/arescrimson/Lytro/assets/66581240/fc257995-02b1-4446-b091-ef9
 
 <p align="center"> Current anime functionalities: featuring !a, !info, !img, !chr, and !quote.</p>
 
-https://github.com/arescrimson/Lytro/assets/66581240/772d23aa-8210-4079-bcfb-6d52da039976
+https://github.com/arescrimson/Lytro/assets/66581240/79d916cc-af9c-40c7-9be9-449e2433eb02
 
-<p align="center"> Current manga functionalities: featuring !m, !minfo, !mimg, and !mchr. Bot now also detects identical first/last names, i.e. Gon and his dad, Ging.</p>
+<p align="center"> Current manga functionalities: featuring !m, !minfo, !mimg, and !mchr.</p>
 
 <!-- LICENSE -->
 ## License
