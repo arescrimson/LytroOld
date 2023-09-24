@@ -52,6 +52,9 @@ https://github.com/arescrimson/Lytro/assets/66581240/fc257995-02b1-4446-b091-ef9
 
 <p align="center"> Current anime functionalities: featuring !a, !info, !img, !chr, and !quote.</p>
 
+https://github.com/arescrimson/Lytro/assets/66581240/772d23aa-8210-4079-bcfb-6d52da039976
+
+<p align="center"> Current manga functionalities: featuring !m, !minfo, !mimg, and !mchr. Bot now also detects identical first/last names, i.e. Gon and his dad, Ging.</p>
 
 <!-- LICENSE -->
 ## License
