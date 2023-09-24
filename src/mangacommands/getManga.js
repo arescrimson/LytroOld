@@ -1,29 +1,36 @@
-// getManga.js
+/**
+ * @file getManga.js
+ * @description Retrieve information about a manga.
+ * @license MIT
+ * @author Ares
+ */
 
 //IMPORTS
+
 const { EmbedBuilder } = require('discord.js');
 
-//IMPORT GETID 
-const { getMangaIDFromString } = require('../utils/getMangaIDFromString');
+const { getMangaID } = require('../utils/getMangaID');
 
-//LYTRO FOOTER ICON, MAX VALUE LENGTH FOR EMBEDS
 const { jikanClient, MANGA_MODE, THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH } = require('../../config')
 
 //ERROR MESSAGES
 const { SYNOPSIS_NOT_FOUND, URL_NOT_FOUND, AUTHOR_NOT_FOUND, VOLUMES_NOT_FOUND, GENRES_NOT_FOUND, RATINGS_NOT_FOUND } = require('../../config')
 
 /**
- * Checks if value passed is null. If null, instead returns error Message 
- * as to display 'Value not found.' instead of null in message response. 
- * 
- * @param {*} value is the Jikan get value. 
- * @param {*} errMessage is the message if value is null.  
- * @returns either value or error Message depending on if value is null. 
+ * Create an embed message with manga information.
+ *
+ * @param {string} TITLE - The title of the manga.
+ * @param {string} URL - The URL of the manga.
+ * @param {string} THUMBNAIL - The thumbnail image URL.
+ * @param {string} AUTHOR - The author's name (or "Author not found" if null).
+ * @param {string} SYNOPSIS - The manga's synopsis (first part).
+ * @param {string} SYNOPSIS2 - The manga's synopsis (second part).
+ * @param {string|number} VOLUMES - The number of volumes (or "Volumes not found" if null).
+ * @param {string} GENRES - The genres of the manga (or "Genres not found" if null).
+ * @param {string} RATINGS - The ratings information.
+ * @param {string} image - The image URL.
+ * @returns {MessageEmbed} The created embed message.
  */
-function nullCheck(value, errMessage) {
-    return (value !== null) ? value : errMessage;
-}
-
 function createEmbed(TITLE, URL, THUMBNAIL, AUTHOR, SYNOPSIS, SYNOPSIS2, VOLUMES, GENRES, RATINGS, image) {
     const createdEmbed = new EmbedBuilder()
         .setColor(0x0099FF)
@@ -46,11 +53,12 @@ function createEmbed(TITLE, URL, THUMBNAIL, AUTHOR, SYNOPSIS, SYNOPSIS2, VOLUMES
     return createdEmbed;
 }
 
+
 /**
- * Gets manga Information from the mangaID passed. 
- * 
- * @param {*} message is the discord message. 
- * @param {*} mangaID is the mangaID passed. 
+ * Get information about a manga and send it as an embed message.
+ *
+ * @param {Message} message - The Discord message object.
+ * @param {number} mangaID - The ID of the manga to retrieve information for.
  */
 async function getMangaInfo(message, mangaID) {
     try {
@@ -58,7 +66,11 @@ async function getMangaInfo(message, mangaID) {
         //GETS manga INFORMATION
         const manga = await jikanClient.manga.get(mangaID);
         const stats = await jikanClient.manga.getStatistics(mangaID);
-        const genres = nullCheck(manga.genres.map(genre => genre.name).join(', '), GENRES_NOT_FOUND);
+        const genres = manga.genres.map(genre => genre.name).join(', ');
+
+        if (!genres || genres.trim() === '') {
+            genres = GENRES_NOT_FOUND;
+        }
 
         //INITIALIZES SPLIT FOR SYNOPSIS THAT ARE OVER 1020 CHARACTERS 
         let synopsis = '';
@@ -79,22 +91,21 @@ async function getMangaInfo(message, mangaID) {
                     synopsis2 = '\n';
                 }
             }
-            //else, simply assign synopsis to the manga synopsis. 
             else {
                 synopsis = manga.synopsis;
             }
-        }
-
+        } 
         else {
             synopsis = SYNOPSIS_NOT_FOUND;
         }
 
         //RATINGS AS AN AVERAGED SCORE STRING 
         let ratings = '';
-        let totalScore = 0;
-        let totalVotes = 0;
 
         if (stats.scores !== null) {
+            let totalScore = 0;
+            let totalVotes = 0;
+
             for (const obj of stats.scores) {
                 totalScore += obj.score * obj.votes;
                 totalVotes += obj.votes;
@@ -104,18 +115,16 @@ async function getMangaInfo(message, mangaID) {
 
             ratings = `Average score based off ${totalVotes.toLocaleString()} votes: ${averageScore.toFixed(2) + ' / 10'}`;
         }
-
         else {
             ratings = RATINGS_NOT_FOUND;
         }
 
-
-        //SYNOPSIS, URL, EPISODES, GENRES, RATINGS
+        //SYNOPSIS, AUTHOR, URL, VOLUMES, GENRES, RATINGS
         const SYNOPSIS = synopsis;
         const SYNOPSIS2 = synopsis2;
-        const AUTHOR = (manga.authors[0].name !== null) ? manga.authors[0].name : AUTHOR_NOT_FOUND;
-        const URL = (manga.url !== null) ? manga.url : URL_NOT_FOUND;
-        const VOLUMES = (manga.volumes !== null) ? manga.volumes : VOLUMES_NOT_FOUND;
+        const AUTHOR = manga.authors[0].name ?? AUTHOR_NOT_FOUND;
+        const URL = manga.url ?? URL_NOT_FOUND;
+        const VOLUMES = manga.volumes?.toLocaleString() ?? VOLUMES_NOT_FOUND;
         const GENRES = genres;
         const RATINGS = ratings;
 
@@ -142,11 +151,18 @@ async function getMangaInfo(message, mangaID) {
 module.exports = {
     name: 'm',
     description: '!m [manga_name] Returns manga information.',
+    /**
+     * Execute the !m command.
+     *
+     * @param {Message} message - The Discord message object.
+     * @param {Array<string>} args - Arguments provided with the command.
+     * @param {string} searchName - The name of the manga being searched.
+     */
     async execute(message, args, searchName) {
         const passedMangaName = searchName
 
         try {
-            const mangaID = await getMangaIDFromString(message, passedMangaName);
+            const mangaID = await getMangaID(message, passedMangaName);
             getMangaInfo(message, mangaID);
         } catch (error) {
             console.error('Error:', error.message);
