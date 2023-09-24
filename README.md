@@ -1,6 +1,6 @@
 # Lytro
 <div style="text-align:center">
-<img src="https://github.com/arescrimson/Lytro/blob/master/img/newbanner.jpg" alt="" width="1500" height="200">
+<img src="https://github.com/arescrimson/Lytro/blob/master/media/newbanner.jpg" alt="" width="1500" height="200">
 </div>
 
 <p align="center"> Discord.js based discord bot for anime/manga information.</p>
@@ -49,7 +49,11 @@ Now supports title caching; any command with an **[anime name]** identifier will
 ## Demo 
 
 
-![Animated GIF](https://github.com/arescrimson/Lytro/assets/66581240/ef3da101-140b-452c-a11a-dcab6d45175d)
+
+https://github.com/arescrimson/Lytro/assets/66581240/fc257995-02b1-4446-b091-ef94954c33a1
+
+
+
 <p align="center"> Current anime functionalities: featuring !a, !info, !img, !chr, and !quote.</p>
 
 
