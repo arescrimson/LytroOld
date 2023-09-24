@@ -128,8 +128,6 @@ async function getAnimeCharacters(message, animeID, characterName) {
                 i = (i + 1) % characterArr.length; // Increment and wrap around
             }
         
-            console.log(i);
-        
             const updatedEmbed = createCharacterEmbed(
                 characterArr[i].character.name,
                 characterArr[i].character.url,
@@ -168,7 +166,7 @@ module.exports = {
             getAnimeCharacters(message, animeID, characterName)
         } catch (error) {
             console.error('Error:', error.message);
-            message.channel.send('An error occurred: ' + error.message);
+            message.channel.send('An error occurred: please make sure you are specfiying an anime character and/or anime.');
         }
     }
 }

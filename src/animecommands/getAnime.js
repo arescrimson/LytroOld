@@ -127,6 +127,7 @@ async function getAnimeInfo(message, animeID) {
         message.channel.send({ embeds: [embedMessage] });
 
     } catch (error) {
+        message.channel.send('Error in searching anime.')
         console.error('Error:', error.message);
     }
 }
@@ -143,7 +144,7 @@ module.exports = {
             getAnimeInfo(message, animeID);
         } catch (error) {
             console.error('Error:', error.message);
-            message.channel.send('An error occurred: ' + error.message);
+            message.channel.send('Error: please make sure you have specified an anime.');
         }
     }
 }

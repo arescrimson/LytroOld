@@ -57,9 +57,6 @@ async function getAnimeIDFromString(message, searchString) {
             return foundID;
         } 
         
-        else {
-            message.channel.send('anime not found.');
-        }
 
     } catch (error) {
         console.error('Error in getting AnimeIDFromString:', error.message);

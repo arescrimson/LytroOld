@@ -129,7 +129,7 @@ module.exports = {
             getInfo(message, animeID);
         } catch (error) {
             console.error('Error in info:', error.message);
-            message.channel.send('An error occurred in getInfo: ' + error.message);
+            message.channel.send('Error: please make sure you have specified an anime.');
         }
     }
 }

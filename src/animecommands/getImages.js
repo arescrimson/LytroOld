@@ -64,6 +64,7 @@ async function getAnimeImages(message, animeID) {
         });
 
     } catch (error) {
+        message.channel.send('Error in searching image.')
         console.error('Error:', error.message);
     }
 }
@@ -80,7 +81,7 @@ module.exports = {
             getAnimeImages(message, animeID)
         } catch (error) {
             console.error('Error:', error.message);
-            message.channel.send('An error occurred: ' + error.message);
+            message.channel.send('Error: please make sure you have specified an anime.');
         }
     }
 }

@@ -130,6 +130,7 @@ async function getRandomAnime(message) {
 
     } catch (error) {
         console.error('Error:', error.message);
+        message.channel.send('An error occured: ' + error.message)
     }
 }
 
@@ -141,7 +142,7 @@ module.exports = {
             await getRandomAnime(message)
         } catch (error) {
             console.error('Error:', error.message);
-            message.channel.send('An error occurred: ' + error.message);
+            message.channel.send('An error occurred.');
         }
     }
 }
