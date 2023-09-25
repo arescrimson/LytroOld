@@ -1,24 +1,26 @@
-// getImages.js
+/**
+ * @file getImages.js
+ * @description Retrieve images from an anime. 
+ * @license MIT
+ * @author Ares
+ */
 
 //IMPORTS
 
 const { EmbedBuilder } = require('discord.js')
 
-//IMPORT GETID 
 const { getAnimeID } = require('../utils/getAnimeID')
 
-//IMPORT CLIENT
 const { jikanClient , ICON_URL, ANIME_MODE} = require('../../config')
 
-//Set of searched Set indexes. 
 const searchedSet = new Set();
 
 /**
  * Gets anime images from the animeID passed, and sends a random image 
  * from the anime picture gallery.  
  * 
- * @param {*} message is the discord message. 
- * @param {*} animeID is the animeID passed. 
+ * @param {Message} message is the discord message. 
+ * @param {number} animeID is the animeID passed. 
  */
 async function getAnimeImages(message, animeID) {
 
@@ -72,6 +74,13 @@ async function getAnimeImages(message, animeID) {
 module.exports = {
     name: 'img',
     description: '!img [anime_name] Returns a single image from anime gallery.',
+    /**
+     * Executes the `img` command to retrieve and display a random image from an anime's picture gallery.
+     *
+     * @param {Message} message - The Discord message object representing the user's command.
+     * @param {Array} args - An array of arguments passed with the command, typically containing the anime name.
+     * @param {string} searchAnime - The anime name specified for the search.
+     */
     async execute(message, args, searchAnime) {
 
         const animeName = searchAnime;

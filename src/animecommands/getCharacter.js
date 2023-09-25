@@ -1,13 +1,16 @@
-// getCharacter.js
+/**
+ * @file getCharacter.js
+ * @description Retrieve character info from an anime.
+ * @license MIT
+ * @author Ares
+ */
 
 //IMPORTS
 
 const { EmbedBuilder } = require('discord.js')
 
-//IMPORT GETID 
 const { getAnimeID } = require('../utils/getAnimeID')
 
-//LYTRO FOOTER ICON
 const { discordClient, jikanClient, rightArrow, leftArrow, THUMBNAIL, ICON_URL, ANIME_MODE } = require('../../config')
 
 let embedMessage = null;
@@ -17,8 +20,8 @@ let characterArr = [];
  * Gets first name from either a single first name, or a lastname, firstname format. 
  * Ex. !chr gon hunter x hunter would return gon, even though the api lists it as Freecss, Gon. 
  * 
- * @param {*} message is the discord message. 
- * @param {*} characterName is the character Name. 
+ * @param {Message} message is the discord message. 
+ * @param {string} characterName is the character Name. 
  * @returns the first name. 
  */
 function getFirstName(message, characterName, databaseNames) {
@@ -33,6 +36,18 @@ function getFirstName(message, characterName, databaseNames) {
     return res;
 }
 
+/**
+ * Creates an embedded message for displaying information about an anime character.
+ *
+ * @param {string} NAME - The name of the character.
+ * @param {string} URL - The URL associated with the character.
+ * @param {string} TITLE - The title of the anime the character is from.
+ * @param {string} THUMBNAIL - The URL of the character's thumbnail image.
+ * @param {string} ROLE - The role or position of the character.
+ * @param {string} VOICEACTOR - The Japanese voice actor for the character.
+ * @param {string} IMAGE - The URL of the character's image.
+ * @returns {EmbedBuilder} - An EmbedBuilder object for the character information.
+ */
 function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, VOICEACTOR, IMAGE) {
     return new EmbedBuilder()
         .setColor(0x0099FF)
@@ -52,9 +67,9 @@ function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, VOICEACTOR, IMA
 /**
  * Gets Anime Characters from the animeID passed. 
  * 
- * @param {*} message is the discord message. 
- * @param {*} animeID is the animeID passed. 
- * @param {*} characterName is the lowercased character Name being searched. 
+ * @param {Message} message is the discord message. 
+ * @param {number} animeID is the animeID passed. 
+ * @param {string} characterName is the lowercased character Name being searched. 
  */
 async function getAnimeCharacters(message, animeID, characterName) {
 
@@ -155,6 +170,13 @@ async function getAnimeCharacters(message, animeID, characterName) {
 module.exports = {
     name: 'chr',
     description: '!chr [main, sup, character_name] [anime_name] Returns character information. Use main for main characters, sup for supporting characters, and specify name for a specific character.',
+    /**
+     * Executes the `img` command to retrieve character information. 
+     *
+     * @param {Message} message - The Discord message object representing the user's command.
+     * @param {Array} args - An array of arguments passed with the command, typically containing the anime name.
+     * @param {string} searchAnime - The anime name specified for the search.
+     */
     async execute(message, args, searchName) {
         //takes character name from zero index. Needs reworking for 2 word character names. 
         const characterName = args[0].toLowerCase();

@@ -1,11 +1,40 @@
-// getRandom.js
+/**
+ * @file getRandom.js
+ * @description Retrieve information about a random anime. 
+ * @license MIT
+ * @author Ares
+ */
 
 //IMPORTS
 
 const { EmbedBuilder } = require('discord.js');
 
-const { jikanClient, THUMBNAIL, MAX_VALUE_LENGTH, ICON_URL, ANIME_MODE, SYNOPSIS_NOT_FOUND, GENRES_NOT_FOUND, RATINGS_NOT_FOUND, EPISODES_NOT_FOUND } = require('../../config')
+const {
+    jikanClient,
+    THUMBNAIL,
+    MAX_VALUE_LENGTH,
+    ICON_URL,
+    ANIME_MODE,
+    SYNOPSIS_NOT_FOUND,
+    GENRES_NOT_FOUND,
+    RATINGS_NOT_FOUND,
+    EPISODES_NOT_FOUND,
+} = require('../../config');
 
+/**
+ * Creates an embed message for anime information.
+ *
+ * @param {string} TITLE - The title of the anime.
+ * @param {string} URL - The URL of the anime.
+ * @param {string} THUMBNAIL - The URL of the thumbnail image.
+ * @param {string} SYNOPSIS - The main synopsis of the anime.
+ * @param {string} SYNOPSIS2 - Additional synopsis text (optional).
+ * @param {string} EPISODES - The number of episodes of the anime.
+ * @param {string} GENRES - The genres of the anime.
+ * @param {string} RATINGS - The ratings information of the anime.
+ * @param {string} image - The URL of the anime's image.
+ * @returns {MessageEmbed} - The created embed message.
+ */
 function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, EPISODES, GENRES, RATINGS, image) {
     const createdEmbed = new EmbedBuilder()
         .setColor(0x0099FF)
@@ -31,7 +60,7 @@ function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, EPISODES, GENRE
 /**
  * Gets Random Anime. Returns information identical to getAnime. 
  * 
- * @param {*} message is the discord message. 
+ * @param {Message} message is the discord message. 
  */
 async function getRandomAnime(message) {
 
@@ -119,6 +148,11 @@ async function getRandomAnime(message) {
 module.exports = {
     name: 'rand',
     description: '!rand Returns random anime.',
+    /**
+     * Execute the !rand command.
+     *
+     * @param {Message} message - The Discord message object.
+     */
     async execute(message) {
         try {
             await getRandomAnime(message)

@@ -1,17 +1,47 @@
-// getAnime.js
+/**
+ * @file getAnime.js
+ * @description Retrieve information from an anime. 
+ * @license MIT
+ * @author Ares
+ */
 
-//IMPORTS
+// IMPORTS
+
 const { EmbedBuilder } = require('discord.js');
 
-//IMPORT GETID 
 const { getAnimeID } = require('../utils/getAnimeID');
 
-//LYTRO FOOTER ICON, MAX VALUE LENGTH FOR EMBEDS
-const { jikanClient, THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH, ANIME_MODE } = require('../../config')
+const {
+    jikanClient,
+    THUMBNAIL,
+    ICON_URL,
+    MAX_VALUE_LENGTH,
+    ANIME_MODE,
+} = require('../../config');
 
-//ERROR MESSAGES
-const { SYNOPSIS_NOT_FOUND, URL_NOT_FOUND, EPISODES_NOT_FOUND, GENRES_NOT_FOUND, RATINGS_NOT_FOUND } = require('../../config')
+// ERROR MESSAGES
+const {
+    SYNOPSIS_NOT_FOUND,
+    URL_NOT_FOUND,
+    EPISODES_NOT_FOUND,
+    GENRES_NOT_FOUND,
+    RATINGS_NOT_FOUND,
+} = require('../../config');
 
+/**
+ * Creates an embedded message for displaying information about an anime.
+ *
+ * @param {string} TITLE - The title of the anime.
+ * @param {string} URL - The URL associated with the anime.
+ * @param {string} THUMBNAIL - The URL of the anime's thumbnail image.
+ * @param {string} SYNOPSIS - The synopsis of the anime.
+ * @param {string} SYNOPSIS2 - Additional synopsis if the first is too long.
+ * @param {string} EPISODES - The number of episodes in the anime.
+ * @param {string} GENRES - The genres associated with the anime.
+ * @param {string} RATINGS - The ratings and scores of the anime.
+ * @param {string} image - The URL of the anime's image.
+ * @returns {EmbedBuilder} - An EmbedBuilder object for anime information.
+ */
 function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, EPISODES, GENRES, RATINGS, image) {
 
     const createdEmbed = new EmbedBuilder()
@@ -37,8 +67,8 @@ function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, EPISODES, GENRE
 /**
  * Gets Anime Information from the animeID passed. 
  * 
- * @param {*} message is the discord message. 
- * @param {*} animeID is the animeID passed. 
+ * @param {Message} message is the discord message. 
+ * @param {number} animeID is the animeID passed. 
  */
 async function getAnimeInfo(message, animeID) {
     try {
@@ -97,7 +127,6 @@ async function getAnimeInfo(message, animeID) {
             ratings = RATINGS_NOT_FOUND;
         }
 
-
         //SYNOPSIS, URL, EPISODES, GENRES, RATINGS
         const SYNOPSIS = synopsis;
         const SYNOPSIS2 = synopsis2;
@@ -129,6 +158,13 @@ async function getAnimeInfo(message, animeID) {
 module.exports = {
     name: 'a',
     description: '!a [anime_name] Returns anime information.',
+    /**
+     * Executes the `a` command to retrieve information about an anime. 
+     *
+     * @param {Message} message - The Discord message object representing the user's command.
+     * @param {Array} args - An array of arguments passed with the command, typically containing the anime name.
+     * @param {string} searchAnime - The anime name specified for the search.
+     */
     async execute(message, args, searchName) {
 
         const passedAnimeName = searchName
