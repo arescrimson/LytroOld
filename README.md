@@ -38,9 +38,9 @@ Now supports title caching; any command with an **[anime name]** identifier will
 
 **!help** returns a list of possible commands with their descriptions. 
 
-**!rand:** returns information identical to !info with a random anime.
+**!rand:** returns information identical to !info with a random anime(sfw).
 
-**!mrand:** returns information identical to !info with a random manga.
+**!mrand:** returns information identical to !info with a random manga(sfw).
 
 **!quote:** returns a random quote, the character, and the anime/manga it came from. 
 
