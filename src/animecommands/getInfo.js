@@ -92,9 +92,9 @@ async function getInfo(message, animeID) {
         //BACKGROUND, YEAR, TRAILER, STUDIO, RECOMMENDATIONS
         const BACKGROUND = background;
         const BACKGROUND2 = background2;
-        const YEAR = (anime.year !== null) ? anime.year : YEAR_NOT_FOUND;
+        const YEAR = anime.year ?? YEAR_NOT_FOUND;
         const TRAILER = (anime.trailer?.embedUrl.href !== null) ? anime.trailer.embedUrl.href : TRAILER_NOT_FOUND;
-        const STUDIO = (anime.studios[0].name !== null) ? anime.studios[0].name : STUDIO_NOT_FOUND;
+        const STUDIO = anime.studios[0]?.name ?? STUDIO_NOT_FOUND;
         const RECOMMENDATIONS = recListString
 
         const exampleEmbed = createEmbed(

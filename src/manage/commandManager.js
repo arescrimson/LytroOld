@@ -1,5 +1,5 @@
 //ANIME COMMAND LIST 
-const commandNames = [
+const animeCommands = [
     'getAnime',
     'getInfo',
     'getCharacter',
@@ -8,7 +8,7 @@ const commandNames = [
 ];
 
 //MANGA COMMAND LIST 
-const commandMNames = [
+const mangaCommands = [
     'getManga',
     'getMCharacter',
     'getMImages',
@@ -16,7 +16,8 @@ const commandMNames = [
     'getMRandom'
 ]
 
-const commandMisc = [
+//MISC COMMAND LIST
+const miscCommands = [
     'getQuote',
     'getHelp',
 ]
@@ -24,17 +25,17 @@ const commandMisc = [
 //COMMAND LIST CONTAINING ALL POSSIBLE COMMANDS
 const commandList = [];
 
-for (const commandName of commandNames) {
+for (const commandName of animeCommands) {
     const command = require(`../animecommands/${commandName}`);
     commandList.push(command);
 }
 
-for (const commandName of commandMNames) {
+for (const commandName of mangaCommands) {
     const command = require(`../mangacommands/${commandName}`);
     commandList.push(command);
 }
 
-for (const commandName of commandMisc) {
+for (const commandName of miscCommands) {
     const command = require(`../misccommands/${commandName}`);
     commandList.push(command);
 }

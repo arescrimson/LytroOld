@@ -4,20 +4,7 @@
 
 const { EmbedBuilder } = require('discord.js');
 
-const { jikanClient, THUMBNAIL, MAX_VALUE_LENGTH, ICON_URL, ANIME_MODE, SYNOPSIS_NOT_FOUND, GENRES_NOT_FOUND } = require('../../config')
-
-/**
- * Checks if value passed is null. If null, instead returns error Message 
- * as to display 'Value not found.' instead of null in message response. 
- * 
- * @param {*} value is the Jikan get value. 
- * @param {*} errMessage is the message if value is null.  
- * @returns either value or error Message depending on if value is null. 
- */
-function commandNullCheck(value, errMessage) {
-    return (value !== null) ? value : errMessage;
-}
-
+const { jikanClient, THUMBNAIL, MAX_VALUE_LENGTH, ICON_URL, ANIME_MODE, SYNOPSIS_NOT_FOUND, GENRES_NOT_FOUND, RATINGS_NOT_FOUND, EPISODES_NOT_FOUND } = require('../../config')
 
 function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, EPISODES, GENRES, RATINGS, image) {
     const createdEmbed = new EmbedBuilder()
@@ -50,12 +37,9 @@ async function getRandomAnime(message) {
 
     try {
 
-        let random = await jikanClient.anime.random(true);
-        const animeID = random.id;
+        const anime = await jikanClient.anime.random(true);
 
-        //GETS ANIME INFORMATION
-        const anime = random;
-        const stats = await jikanClient.anime.getStatistics(animeID);
+        const stats = await jikanClient.anime.getStatistics(anime.id);
         let genres = anime.genres.map(genre => genre.name).join(', ');
 
         if (!genres || genres.trim() === '') {
@@ -67,7 +51,7 @@ async function getRandomAnime(message) {
         let synopsis2 = '\n';
 
         //SPLITS SYNOPSIS IF TOO LONG INTO 2-3 PARAGRAPHS. 
-        if (anime.synopsis !== null) {
+        if (anime.synopsis) {
             if (anime.synopsis.length > MAX_VALUE_LENGTH) {
                 const midPoint = anime.synopsis.lastIndexOf('.', MAX_VALUE_LENGTH);
                 if (midPoint !== -1) {
@@ -79,32 +63,39 @@ async function getRandomAnime(message) {
             }
             //else, simply assign synopsis to the anime synopsis. 
             else {
-                synopsis = SYNOPSIS_NOT_FOUND;
+                synopsis = anime.synopsis;
             }
+        } else { 
+            synopsis = SYNOPSIS_NOT_FOUND;
         }
+
+        let ratings = '';
 
         //RATINGS AS AN AVERAGED SCORE STRING 
-        let totalScore = 0;
-        let totalVotes = 0;
+        if (stats.scores !== null) {
+            let totalScore = 0;
+            let totalVotes = 0;
 
-        for (const obj of stats.scores) {
-            totalScore += obj.score * obj.votes;
-            totalVotes += obj.votes;
+            for (const obj of stats.scores) {
+                totalScore += obj.score * obj.votes;
+                totalVotes += obj.votes;
+            }
+
+            const averageScore = totalScore / totalVotes;
+
+            ratings = `Average score based off ${totalVotes.toLocaleString()} votes: ${averageScore.toFixed(2) + ' / 10'}`;
+        } else {
+            ratings = RATINGS_NOT_FOUND;
         }
-
-        const averageScore = totalScore / totalVotes;
-
-        const ratings = `Average score based off ${totalVotes.toLocaleString()} votes: ${averageScore.toFixed(2) + ' / 10'}`;
 
         //SYNOPSIS, URL, EPISODES, GENRES, RATINGS
         const SYNOPSIS = synopsis;
         const SYNOPSIS2 = synopsis2;
-        const URL = commandNullCheck(anime.url, 'URL not found.');
-        const EPISODES = commandNullCheck(anime.episodes, 'Episodes not found.');
+        const URL = anime.url ?? EPISODES_NOT_FOUND;
+        const EPISODES = anime.episodes ?? EPISODES_NOT_FOUND;
         const GENRES = genres;
-        const RATINGS = commandNullCheck(ratings, 'Ratings not found.');
+        const RATINGS = ratings;
 
-        //if synopsis has been split, use the split synopsis' as embed does not support more than 1024 characters per value. 
         const embedMessage = createEmbed(
             anime.title.default,
             URL,

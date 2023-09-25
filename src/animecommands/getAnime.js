@@ -12,18 +12,6 @@ const { jikanClient, THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH, ANIME_MODE } = requi
 //ERROR MESSAGES
 const { SYNOPSIS_NOT_FOUND, URL_NOT_FOUND, EPISODES_NOT_FOUND, GENRES_NOT_FOUND, RATINGS_NOT_FOUND } = require('../../config')
 
-/**
- * Checks if value passed is null. If null, instead returns error Message 
- * as to display 'Value not found.' instead of null in message response. 
- * 
- * @param {*} value is the Jikan get value. 
- * @param {*} errMessage is the message if value is null.  
- * @returns either value or error Message depending on if value is null. 
- */
-function nullCheck(value, errMessage) {
-    return (value !== null) ? value : errMessage;
-}
-
 function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, EPISODES, GENRES, RATINGS, image) {
 
     const createdEmbed = new EmbedBuilder()
@@ -58,7 +46,11 @@ async function getAnimeInfo(message, animeID) {
         //GETS ANIME INFORMATION
         const anime = await jikanClient.anime.get(animeID);
         const stats = await jikanClient.anime.getStatistics(animeID);
-        const genres = nullCheck(anime.genres.map(genre => genre.name).join(', '), GENRES_NOT_FOUND);
+        let genres = anime.genres.map(genre => genre.name).join(', ');
+
+        if (!genres || genres.trim() === '') {
+            genres = GENRES_NOT_FOUND;
+        }
 
         //INITIALIZES SPLIT FOR SYNOPSIS THAT ARE OVER 1020 CHARACTERS 
         let synopsis = '';
@@ -85,10 +77,12 @@ async function getAnimeInfo(message, animeID) {
 
         //RATINGS AS AN AVERAGED SCORE STRING 
         let ratings = '';
-        let totalScore = 0;
-        let totalVotes = 0;
 
         if (stats.scores !== null) {
+
+            let totalScore = 0;
+            let totalVotes = 0;
+
             for (const obj of stats.scores) {
                 totalScore += obj.score * obj.votes;
                 totalVotes += obj.votes;
@@ -107,8 +101,8 @@ async function getAnimeInfo(message, animeID) {
         //SYNOPSIS, URL, EPISODES, GENRES, RATINGS
         const SYNOPSIS = synopsis;
         const SYNOPSIS2 = synopsis2;
-        const URL = (anime.url !== null) ? anime.url : URL_NOT_FOUND;
-        const EPISODES = (anime.episodes !== null) ? anime.episodes : EPISODES_NOT_FOUND;
+        const URL = anime.url ?? URL_NOT_FOUND;
+        const EPISODES = anime.episodes?.toLocalString() ?? EPISODES_NOT_FOUND;
         const GENRES = genres;
         const RATINGS = ratings;
 
