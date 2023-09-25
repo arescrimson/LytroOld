@@ -80,16 +80,12 @@ async function getRandomManga(message) {
 
                 const genres = random.genres.map(genre => genre.name).join(', ');
                 const foundManga = !(bannedList.some(value => genres.includes(value)));
-                //console.log(genres);
+
                 if (foundManga) { 
                     found = true; 
                     break;
-                } else { 
-                    //console.log('skipped' + genres);
-                }
-            } else {
-                //console.log('No Genres Found.')
-            }
+                } 
+            } 
         } while (!found)
 
         const mangaID = random.id;

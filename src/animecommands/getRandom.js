@@ -81,12 +81,8 @@ async function getRandomAnime(message) {
                 if (foundManga) { 
                     found = true; 
                     break;
-                } else { 
-                    console.log('skipped: ' + genres);
-                }
-            } else {
-                //console.log('No Genres Found.')
-            }
+                } 
+            } 
         } while (!found)
 
         const anime = random; 
