@@ -66,7 +66,7 @@ async function getMangaInfo(message, mangaID) {
         //GETS manga INFORMATION
         const manga = await jikanClient.manga.get(mangaID);
         const stats = await jikanClient.manga.getStatistics(mangaID);
-        const genres = manga.genres.map(genre => genre.name).join(', ');
+        let genres = manga.genres.map(genre => genre.name).join(', ');
 
         if (!genres || genres.trim() === '') {
             genres = GENRES_NOT_FOUND;
@@ -144,7 +144,7 @@ async function getMangaInfo(message, mangaID) {
         message.channel.send({ embeds: [embedMessage] });
 
     } catch (error) {
-        console.error('Error:', error.message);
+        console.error('Error in finding Manga:', error.message);
     }
 }
 

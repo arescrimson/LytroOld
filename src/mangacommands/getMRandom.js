@@ -158,7 +158,7 @@ async function getRandomManga(message) {
         message.channel.send({ embeds: [embedMessage] });
     } catch (error) {
         message.channel.send('Error finding random manga.')
-        console.error('Error:', error.message);
+        console.error('Error in finding random manga:', error.message);
     }
 }
 
