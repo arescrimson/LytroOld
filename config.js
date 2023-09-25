@@ -81,5 +81,6 @@ module.exports = {
   POPULARITY_NOT_FOUND: 'Popularity not found.',
   SERIAL_NOT_FOUND: 'Serialization not found.',
 
+  // Banned genres list for random search. 
   bannedList
 };
