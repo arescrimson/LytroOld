@@ -19,6 +19,7 @@ const {
     GENRES_NOT_FOUND,
     RATINGS_NOT_FOUND,
     EPISODES_NOT_FOUND,
+    bannedList
 } = require('../../config');
 
 /**
@@ -43,7 +44,6 @@ function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, EPISODES, GENRE
         .setAuthor({ name: `Currently Searching ${ANIME_MODE} : ${TITLE}`, iconURL: ICON_URL })
         .setThumbnail(THUMBNAIL)
         .addFields(
-            { name: '\n\u200b', value: '\n\u200b' },
             { name: 'Synopsis: \n\u200b', value: `${SYNOPSIS}` },
             { name: '\n', value: `${SYNOPSIS2}\n\u200b` },
             { name: 'Episodes:', value: `${EPISODES}`, inline: true },
@@ -62,11 +62,34 @@ function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, EPISODES, GENRE
  * 
  * @param {Message} message is the discord message. 
  */
+
 async function getRandomAnime(message) {
 
     try {
 
-        const anime = await jikanClient.anime.random(true);
+        let random = ''; 
+        let found = false; 
+
+        do {
+            random = await jikanClient.anime.random();
+
+            if (random.genres) {
+
+                const genres = random.genres.map(genre => genre.name).join(', ');
+                const foundManga = !(bannedList.some(value => genres.includes(value)));
+
+                if (foundManga) { 
+                    found = true; 
+                    break;
+                } else { 
+                    console.log('skipped: ' + genres);
+                }
+            } else {
+                //console.log('No Genres Found.')
+            }
+        } while (!found)
+
+        const anime = random; 
 
         const stats = await jikanClient.anime.getStatistics(anime.id);
         let genres = anime.genres.map(genre => genre.name).join(', ');

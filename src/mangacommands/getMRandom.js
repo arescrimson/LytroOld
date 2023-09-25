@@ -21,20 +21,9 @@ const {
     URL_NOT_FOUND,
     GENRES_NOT_FOUND,
     RATINGS_NOT_FOUND,
-    AUTHOR_NOT_FOUND
+    AUTHOR_NOT_FOUND, 
+    bannedList
 } = require('../../config');
-
-/**
- * Checks if a value passed is null. If null, returns an error message to display 'Value not found.'
- * instead of null in the message response.
- *
- * @param {*} value - The value to check.
- * @param {string} errMessage - The error message to use if the value is null.
- * @returns {*} Either the value or the error message, depending on if the value is null.
- */
-function commandNullCheck(value, errMessage) {
-    return value !== null ? value : errMessage;
-}
 
 /**
  * Create an embed message with manga information.
@@ -77,12 +66,34 @@ function createEmbed(TITLE, URL, THUMBNAIL, AUTHOR, SYNOPSIS, SYNOPSIS2, VOLUMES
  *
  * @param {Message} message - The Discord message object.
  */
+
 async function getRandomManga(message) {
     try {
-        let random = await jikanClient.manga.random(true);
+
+        let random;
+        let found = false; 
+
+        do {
+            random = await jikanClient.manga.random();
+
+            if (random.genres) {
+
+                const genres = random.genres.map(genre => genre.name).join(', ');
+                const foundManga = !(bannedList.some(value => genres.includes(value)));
+                //console.log(genres);
+                if (foundManga) { 
+                    found = true; 
+                    break;
+                } else { 
+                    //console.log('skipped' + genres);
+                }
+            } else {
+                //console.log('No Genres Found.')
+            }
+        } while (!found)
+
         const mangaID = random.id;
 
-        // GET manga INFORMATION
         const manga = random;
         const stats = await jikanClient.manga.getStatistics(mangaID);
         const genres = manga.genres.map(genre => genre.name).join(', ');

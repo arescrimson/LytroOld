@@ -1,12 +1,9 @@
 /**
  * @file config.js
  * @description Configuration file for My Discord Bot.
- * 
  * @license MIT
- * 
  * @author Ares
  */
-
 
 const { Client, IntentsBitField } = require('discord.js');
 const Jikan = require('jikan4.js');
@@ -32,6 +29,10 @@ const discordClient = new Client({
 // Unicode emojis for reactions
 const rightArrow = '▶️';
 const leftArrow = '◀️';
+
+//Explicit genre check array 
+const explicitList = process.env.BANNED_LIST;
+const bannedList = explicitList.split(',')
 
 module.exports = {
   // Access Token for the Quote API
@@ -79,4 +80,6 @@ module.exports = {
   AUTHOR_NOT_FOUND: 'Author not found.',
   POPULARITY_NOT_FOUND: 'Popularity not found.',
   SERIAL_NOT_FOUND: 'Serialization not found.',
+
+  bannedList
 };
