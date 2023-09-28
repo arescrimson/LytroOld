@@ -131,7 +131,7 @@ async function getAnimeInfo(message, animeID) {
         const SYNOPSIS = synopsis;
         const SYNOPSIS2 = synopsis2;
         const URL = anime.url ?? URL_NOT_FOUND;
-        const EPISODES = anime.episodes?.toLocalString() ?? EPISODES_NOT_FOUND;
+        const EPISODES = anime.episodes?.toLocaleString() ?? EPISODES_NOT_FOUND;
         const GENRES = genres;
         const RATINGS = ratings;
 
