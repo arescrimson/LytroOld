@@ -23,7 +23,7 @@ const { SYNOPSIS_NOT_FOUND, URL_NOT_FOUND, EPISODES_NOT_FOUND, GENRES_NOT_FOUND,
 function nullCheck(value, errMessage) {
     return (value !== null) ? value : errMessage;
 }
-
+//Collects all related information based on User's message
 function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, EPISODES, GENRES, RATINGS, image) {
 
     const createdEmbed = new EmbedBuilder()

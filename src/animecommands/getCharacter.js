@@ -32,7 +32,7 @@ function getFirstName(message, characterName, databaseNames) {
 
     return res;
 }
-
+//Collect all related information based off User input
 function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, VOICEACTOR, IMAGE) {
     return new EmbedBuilder()
         .setColor(0x0099FF)

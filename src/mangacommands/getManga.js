@@ -23,7 +23,7 @@ const { SYNOPSIS_NOT_FOUND, URL_NOT_FOUND, AUTHOR_NOT_FOUND, VOLUMES_NOT_FOUND, 
 function nullCheck(value, errMessage) {
     return (value !== null) ? value : errMessage;
 }
-
+//Collects all related information based on User's message
 function createEmbed(TITLE, URL, THUMBNAIL, AUTHOR, SYNOPSIS, SYNOPSIS2, VOLUMES, GENRES, RATINGS, image) {
     console.log("TITLE:", TITLE);
     console.log("URL:", URL);
