@@ -34,9 +34,6 @@ function getFirstName(message, characterName, databaseNames) {
 
     return res; 
 }
-<<<<<<< HEAD
-//Collect all related information based off User input
-=======
 
 /**
  * Creates an embed message with character information.
@@ -49,7 +46,6 @@ function getFirstName(message, characterName, databaseNames) {
  * @param {string} IMAGE - The character's image URL.
  * @returns {MessageEmbed} The created embed message.
  */
->>>>>>> 8cea9853b8271b6e96ab4b74cd7ec9af551fd4e8
 function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, IMAGE) {
     return new EmbedBuilder()
         .setColor(0x0099FF)

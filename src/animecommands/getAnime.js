@@ -42,13 +42,8 @@ const {
  * @param {string} image - The URL of the anime's image.
  * @returns {EmbedBuilder} - An EmbedBuilder object for anime information.
  */
-<<<<<<< HEAD
-function nullCheck(value, errMessage) {
-    return (value !== null) ? value : errMessage;
-}
+
 //Collects all related information based on User's message
-=======
->>>>>>> 8cea9853b8271b6e96ab4b74cd7ec9af551fd4e8
 function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, EPISODES, GENRES, RATINGS, image) {
 
     const createdEmbed = new EmbedBuilder()

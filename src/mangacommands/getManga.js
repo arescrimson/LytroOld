@@ -31,13 +31,6 @@ const { SYNOPSIS_NOT_FOUND, URL_NOT_FOUND, AUTHOR_NOT_FOUND, VOLUMES_NOT_FOUND, 
  * @param {string} image - The image URL.
  * @returns {MessageEmbed} The created embed message.
  */
-<<<<<<< HEAD
-function nullCheck(value, errMessage) {
-    return (value !== null) ? value : errMessage;
-}
-//Collects all related information based on User's message
-=======
->>>>>>> 8cea9853b8271b6e96ab4b74cd7ec9af551fd4e8
 function createEmbed(TITLE, URL, THUMBNAIL, AUTHOR, SYNOPSIS, SYNOPSIS2, VOLUMES, GENRES, RATINGS, image) {
     const createdEmbed = new EmbedBuilder()
         .setColor(0x0099FF)

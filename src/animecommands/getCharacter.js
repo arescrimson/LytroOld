@@ -35,9 +35,6 @@ function getFirstName(message, characterName, databaseNames) {
 
     return res;
 }
-<<<<<<< HEAD
-//Collect all related information based off User input
-=======
 
 /**
  * Creates an embedded message for displaying information about an anime character.
@@ -51,7 +48,6 @@ function getFirstName(message, characterName, databaseNames) {
  * @param {string} IMAGE - The URL of the character's image.
  * @returns {EmbedBuilder} - An EmbedBuilder object for the character information.
  */
->>>>>>> 8cea9853b8271b6e96ab4b74cd7ec9af551fd4e8
 function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, VOICEACTOR, IMAGE) {
     return new EmbedBuilder()
         .setColor(0x0099FF)
