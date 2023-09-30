@@ -34,6 +34,9 @@ function getFirstName(message, characterName, databaseNames) {
 
     return res; 
 }
+<<<<<<< HEAD
+//Collect all related information based off User input
+=======
 
 /**
  * Creates an embed message with character information.
@@ -46,6 +49,7 @@ function getFirstName(message, characterName, databaseNames) {
  * @param {string} IMAGE - The character's image URL.
  * @returns {MessageEmbed} The created embed message.
  */
+>>>>>>> 8cea9853b8271b6e96ab4b74cd7ec9af551fd4e8
 function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, IMAGE) {
     return new EmbedBuilder()
         .setColor(0x0099FF)
@@ -113,7 +117,7 @@ async function getMangaCharacters(message, mangaID, characterName) {
 
         let i = 0;
         let embedMessage; 
-
+        //This function passes all of the information from each character.
         const characterEmbed = createCharacterEmbed(
             characterArr[i].character.name,
             characterArr[i].character.url,
@@ -122,14 +126,14 @@ async function getMangaCharacters(message, mangaID, characterName) {
             characterArr[i].role,
             characterArr[i].character.image.webp.default,
         );
-
+        //Sends message using the information from CharacterEmbed.
         embedMessage = await message.channel.send({ embeds: [characterEmbed] });
 
         if (characterArr.length > 1) {
             embedMessage.react(leftArrow);
             embedMessage.react(rightArrow);
         }
-
+        //This function catches errors. Returns characters to nextline after max length of each setence is reached. 
         function handleReaction(reaction, user) {
             if (user.bot) return;
         
