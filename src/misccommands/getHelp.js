@@ -10,19 +10,24 @@
 // DISCORD EMBEDBUILDER
 const { EmbedBuilder } = require('discord.js');
 
+// COMMAND LISTS
+const { animeCommandList, mangaCommandList, miscCommandList } = require('../manage/commandManager');
+
 /**
  * Display a list of available commands and their descriptions.
  *
  * @param {Message} message - The Discord message object.
- * @param {string[]} commandList - The list of available commands.
  */
-async function getHelp(message, commandList) {
+function getHelp(message) {
     const embedMessage = new EmbedBuilder()
         .setTitle('Available Commands')
         .setDescription(
-            commandList
-                .map((command, index) => `${index + 1}. ${command.description}`)
-                .join('\n')
+            '**Anime Commands**\n\n' + 
+            animeCommandList.map((command, index) => `${index + 1}. ${command.description}`).join('\n') + '\n\n' + 
+            '**Manga Commands**\n\n' + 
+            mangaCommandList.map((command, index) => `${index + 1}. ${command.description}`).join('\n') + '\n\n' +
+            '**Misc Commands**\n\n' + 
+            miscCommandList.map((command, index) => `${index + 1}. ${command.description}`).join('\n') + '\n\n'         
         );
 
     message.channel.send({ embeds: [embedMessage] });
@@ -35,13 +40,10 @@ module.exports = {
      * Execute the !help command.
      *
      * @param {Message} message - The Discord message object.
-     * @param {string[]} args - The command arguments (unused in this command).
-     * @param {string} searchName - The currently cached searched anime or manga name.
-     * @param {Object[]} commandList - The list of available commands with descriptions.
      */
-    async execute(message, args, searchName, commandList) {
+    async execute(message) {
         try {
-            await getHelp(message, commandList);
+            getHelp(message);
         } catch (error) {
             console.error('Error:', error.message);
             message.channel.send('An error occurred: ' + error.message);

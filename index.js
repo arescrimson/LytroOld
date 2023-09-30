@@ -18,6 +18,9 @@ const { commandList } = require('./src/manage/commandManager')
 //IMPORT COMMAND SEARCH 
 const { getSearch } = require('./src/utils/getSearch')
 
+//IMPORT HELP COMMAND 
+const { execute } = require('./src/misccommands/getHelp')
+
 //COMMAND PREFIX
 const PREFIX = '!';
 
@@ -46,6 +49,11 @@ discordClient.on('messageCreate', async (message) => {
             //command is the command i.e. !url One Piece would be url 
             const command = args.shift().toLowerCase();
 
+            if ( command === 'help' ) { 
+                execute(message); 
+                return;
+            }
+
             //sets currently searched name 
             currentSearchName = getSearch(args, command, currentSearchName);
 
@@ -54,7 +62,7 @@ discordClient.on('messageCreate', async (message) => {
             //Iterates through command list to find command
             for (const commandType of commandList) {
                 if (commandType.name === command) {
-                    commandType.execute(message, args, currentSearchName, commandList);
+                    commandType.execute(message, args, currentSearchName);
                     found = true;
                     break;
                 }
