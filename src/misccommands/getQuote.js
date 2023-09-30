@@ -37,7 +37,7 @@ async function getData() {
 
 module.exports = {
     name: 'quote',
-    description: '!quote Returns a quote from a character in a random anime.',
+    description: '!quote returns a quote from a random character.',
     /**
      * Execute the !quote command.
      *

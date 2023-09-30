@@ -166,7 +166,7 @@ async function getRandomAnime(message) {
 
 module.exports = {
     name: 'rand',
-    description: '!rand Returns random anime.',
+    description: '!rand Returns information about a random anime.',
     /**
      * Execute the !rand command.
      *
