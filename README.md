@@ -24,6 +24,8 @@ Now supports title caching; any command with an **[anime name]** identifier will
 
 **!img [anime name]:** returns a random image pertaining to the picture gallery of the specific anime. 
 
+**!rand:** returns information identical to !info with a random anime(sfw).
+
 ## Manga Commands
 
 **!m [manga name]:** returns information like synopsis, rating based off total votes, genre, and url. 
@@ -34,13 +36,11 @@ Now supports title caching; any command with an **[anime name]** identifier will
 
 **!mimg [manga name]:** returns a random image pertaining to the picture gallery of the specific manga. 
 
+**!mrand:** returns information identical to !info with a random manga(sfw).
+
 ## Misc Commands
 
 **!help** returns a list of possible commands with their descriptions. 
-
-**!rand:** returns information identical to !info with a random anime(sfw).
-
-**!mrand:** returns information identical to !info with a random manga(sfw).
 
 **!quote:** returns a random quote, the character, and the anime/manga it came from. 
 
@@ -52,13 +52,13 @@ Now supports title caching; any command with an **[anime name]** identifier will
 
 https://github.com/arescrimson/Lytro/assets/66581240/fc257995-02b1-4446-b091-ef94954c33a1
 
-<p align="center"> Current anime functionalities: featuring !a, !info, !img, !chr, and !quote.</p>
+<p align="center"> Featuring !a, !info, !img, !chr, and !quote.</p>
 
 ## Manga Demo
 
 https://github.com/arescrimson/Lytro/assets/66581240/79d916cc-af9c-40c7-9be9-449e2433eb02
 
-<p align="center"> Current manga functionalities: featuring !m, !minfo, !mimg, and !mchr.</p>
+<p align="center"> Featuring !m, !minfo, !mimg, and !mchr.</p>
 
 ## Installation 
 
