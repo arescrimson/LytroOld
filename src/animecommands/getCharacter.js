@@ -128,6 +128,7 @@ async function getAnimeCharacters(message, animeID, characterName) {
         );
 
         embedMessage = await message.channel.send({ embeds: [characterEmbed] });
+        
 
         if (characterArr.length > 1) {
             embedMessage.react(leftArrow);
@@ -152,13 +153,16 @@ async function getAnimeCharacters(message, animeID, characterName) {
                 characterArr[i].voiceActors[0].person.name,
                 characterArr[i].character.image.webp.default
             );
-        
+
+            reaction.users.remove(user);
+
             embedMessage.edit({ embeds: [updatedEmbed] }).catch(console.error);
         };
 
         discordClient.removeAllListeners('messageReactionAdd');
         discordClient.on('messageReactionAdd', (reaction, user) => {
             handleReaction(reaction, user);
+            
         });
 
     } catch (error) {

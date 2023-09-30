@@ -24,6 +24,7 @@ const { discordClient, jikanClient, rightArrow, leftArrow, MANGA_MODE, THUMBNAIL
  */
 function getFirstName(message, characterName, databaseNames) {
     let res = false; 
+
     //splits by nameParts, i.e Monkey D., Luffy, and sets to lowercase for comparison purposes. 
     const nameParts = databaseNames.split(',').map(part => part.trim().toLowerCase());
 
@@ -147,6 +148,8 @@ async function getMangaCharacters(message, mangaID, characterName) {
                 characterArr[i].role,
                 characterArr[i].character.image.webp.default
             );
+
+            reaction.users.remove(user);
         
             embedMessage.edit({ embeds: [updatedEmbed] }).catch(console.error);
         };
