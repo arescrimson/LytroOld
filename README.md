@@ -52,13 +52,13 @@ Now supports title caching; any command with an **[anime name]** identifier will
 
 https://github.com/arescrimson/Lytro/assets/66581240/fc257995-02b1-4446-b091-ef94954c33a1
 
-<p align="center"> Current anime functionalities: featuring !a, !info, !img, !chr, and !quote.</p>
+<p align="center"> Featuring !a, !info, !img, !chr, and !quote.</p>
 
 ## Manga Demo
 
 https://github.com/arescrimson/Lytro/assets/66581240/79d916cc-af9c-40c7-9be9-449e2433eb02
 
-<p align="center"> Current manga functionalities: featuring !m, !minfo, !mimg, and !mchr.</p>
+<p align="center"> Featuring !m, !minfo, !mimg, and !mchr.</p>
 
 ## Installation 
 
