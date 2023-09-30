@@ -60,6 +60,12 @@ https://github.com/arescrimson/Lytro/assets/66581240/79d916cc-af9c-40c7-9be9-449
 
 <p align="center"> Current manga functionalities: featuring !m, !minfo, !mimg, and !mchr.</p>
 
+## Installation 
+
+**NOTE:** Lytro currently does not have channel restrictions, meaning that this bot will work in any channel. In addition, it currently is not recommmended to be used by multiple people at once, as it is currently primarily designed for a sole user functionality. However, these issues are all in development and are being actively looked into. Please let me know if there's any issues :)) 
+
+Lytro can be installed [here](https://discord.com/api/oauth2/authorize?client_id=1149915243791794186&permissions=59456&scope=bot). 
+
 <!-- LICENSE -->
 ## License
 
