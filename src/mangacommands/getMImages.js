@@ -1,11 +1,16 @@
-// getMImages.js
+/**
+ * @file getMImages.js
+ * @description Retrieve images about a manga. 
+ * @license MIT
+ * @author Ares
+ */
 
 //IMPORTS
 
 const { EmbedBuilder } = require('discord.js')
 
 //IMPORT GETID 
-const { getMangaIDFromString } = require('../utils/getMangaIDFromString')
+const { getMangaID } = require('../utils/getMangaID')
 
 //IMPORT CLIENT
 const { jikanClient, ICON_URL, MANGA_MODE } = require('../../config')
@@ -17,8 +22,8 @@ const searchedSet = new Set();
  * Gets manga images from the mangaID passed, and sends a random image 
  * from the manga picture gallery.  
  * 
- * @param {*} message is the discord message. 
- * @param {*} mangaID is the mangaID passed. 
+ * @param {string} message is the discord message. 
+ * @param {number} mangaID is the mangaID passed. 
  */
 async function getMangaImages(message, mangaID) {
 
@@ -64,6 +69,7 @@ async function getMangaImages(message, mangaID) {
         });
 
     } catch (error) {
+        message.channel.send('Error in getting manga image.')
         console.error('Error:', error.message);
     }
 }
@@ -71,12 +77,19 @@ async function getMangaImages(message, mangaID) {
 module.exports = {
     name: 'mimg',
     description: '!mimg [manga_name] Returns a single image from manga gallery.',
+    /**
+     * Execute the !mimg command.
+     *
+     * @param {Message} message - The Discord message object.
+     * @param {Array<string>} args - Arguments provided with the command.
+     * @param {string} searchManga - The name of the manga being searched.
+     */
     async execute(message, args, searchManga) {
 
         const mangaName = searchManga;
 
         try {
-            const mangaID = await getMangaIDFromString(message, mangaName);
+            const mangaID = await getMangaID(message, mangaName);
             getMangaImages(message, mangaID);
         } catch (error) {
             console.error('Error:', error.message);

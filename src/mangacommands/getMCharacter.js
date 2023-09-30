@@ -1,22 +1,26 @@
-// getMCharacter.js
+/**
+ * @file getMCharacter.js
+ * @description Retrieves character information from a manga.
+ * @license MIT
+ * @author Ares
+ */
 
 //IMPORTS
 
-const { EmbedBuilder } = require('discord.js')
+const { EmbedBuilder, Message } = require('discord.js')
 
-//IMPORT GETID 
-const { getMangaIDFromString } = require('../utils/getMangaIDFromString')
+const { getMangaID } = require('../utils/getMangaID')
 
-//LYTRO FOOTER ICON
 const { discordClient, jikanClient, rightArrow, leftArrow, MANGA_MODE, THUMBNAIL, ICON_URL } = require('../../config')
 
 /**
- * Gets first name from either a single first name, or a lastname, firstname format. 
- * Ex. !chr gon hunter x hunter would return gon, even though the api lists it as Freecss, Gon. 
- * 
- * @param {*} message is the discord message. 
- * @param {*} characterName is the character Name. 
- * @returns the first name. 
+ * Retrieves the first name from either a single first name or a last name, first name format.
+ * Example: !chr gon hunter x hunter would return "gon," even though the API lists it as "Freecss, Gon."
+ *
+ * @param {Message} message - The Discord message object.
+ * @param {string} characterName - The character name to extract the first name from.
+ * @param {string} databaseNames - The database character names for comparison.
+ * @returns {boolean} true if the characterName matches either the first or last name, false otherwise.
  */
 function getFirstName(message, characterName, databaseNames) {
     let res = false; 
@@ -30,7 +34,22 @@ function getFirstName(message, characterName, databaseNames) {
 
     return res; 
 }
+<<<<<<< HEAD
 //Collect all related information based off User input
+=======
+
+/**
+ * Creates an embed message with character information.
+ *
+ * @param {string} NAME - The character's name.
+ * @param {string} URL - The URL of the character's page.
+ * @param {string} TITLE - The title of the manga.
+ * @param {string} THUMBNAIL - The thumbnail image URL.
+ * @param {string} ROLE - The character's role in the manga.
+ * @param {string} IMAGE - The character's image URL.
+ * @returns {MessageEmbed} The created embed message.
+ */
+>>>>>>> 8cea9853b8271b6e96ab4b74cd7ec9af551fd4e8
 function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, IMAGE) {
     return new EmbedBuilder()
         .setColor(0x0099FF)
@@ -47,11 +66,11 @@ function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, IMAGE) {
 }
 
 /**
- * Gets manga Characters from the mangaID passed. 
- * 
- * @param {*} message is the discord message. 
- * @param {*} mangaID is the mangaID passed. 
- * @param {*} characterName is the lowercased character Name being searched. 
+ * Retrieves character information from a manga based on the character's role or name and sends it as an embed message.
+ *
+ * @param {string} message - The Discord message object.
+ * @param {number} mangaID - The ID of the manga to retrieve character information from.
+ * @param {string} characterName - The character's name or role to search for.
  */
 async function getMangaCharacters(message, mangaID, characterName) {
 
@@ -150,6 +169,13 @@ async function getMangaCharacters(message, mangaID, characterName) {
 module.exports = {
     name: 'mchr',
     description: '!mchr [main, sup, character_name] [manga_name] Returns character information. Use main for main characters, sup for supporting characters, and specify name for a specific character.',
+    /**
+     * Execute the !mchr command.
+     *
+     * @param {Message} message - The Discord message object.
+     * @param {Array<string>} args - Arguments provided with the command.
+     * @param {string} searchName - The name of the manga being searched.
+     */
     async execute(message, args, searchName) {
 
         try {
@@ -158,8 +184,7 @@ module.exports = {
             //takes manga name from index one. Needs reworking for 2 word character names. 
             const mangaName = searchName;
 
-
-            const mangaID = await getMangaIDFromString(message, mangaName);
+            const mangaID = await getMangaID(message, mangaName);
             getMangaCharacters(message, mangaID, characterName)
         } catch (error) {
             console.error(`Error: Couldn't find manga character.`);

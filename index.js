@@ -1,7 +1,17 @@
+/**
+ * @file index.js
+ * @description Main entry point for Lytro. 
+ * @license MIT
+ * @author Ares
+ * 
+ */
+
 //IMPORT DOTENV FOR TOKEN 
 require('dotenv').config();
 
+//IMPORT DISCORD CLIENT, DISCORD LOGIN TOKEN
 const { discordClient, DISCORD_TOKEN } = require('./config');
+
 //IMPORT COMMAND LIST 
 const { commandList } = require('./src/manage/commandManager')
 
@@ -36,7 +46,8 @@ discordClient.on('messageCreate', async (message) => {
             //command is the command i.e. !url One Piece would be url 
             const command = args.shift().toLowerCase();
 
-            currentSearchName = await getSearch(args, command, currentSearchName);
+            //sets currently searched name 
+            currentSearchName = getSearch(args, command, currentSearchName);
 
             let found = false;
 

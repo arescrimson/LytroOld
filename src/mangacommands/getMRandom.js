@@ -1,25 +1,45 @@
-// getRandom.js
+/**
+ * @file getMRandom.js
+ * @description Retrieve information about a random manga.
+ * @license MIT
+ * @author Ares
+ */
 
-//IMPORTS
+// IMPORTS
 
 const { EmbedBuilder } = require('discord.js');
 
-const { jikanClient, THUMBNAIL, VOLUMES_NOT_FOUND, MAX_VALUE_LENGTH, ICON_URL, MANGA_MODE, SYNOPSIS_NOT_FOUND, URL_NOT_FOUND, GENRES_NOT_FOUND, RATINGS_NOT_FOUND } = require('../../config')
+
+const {
+    jikanClient,
+    THUMBNAIL,
+    VOLUMES_NOT_FOUND,
+    MAX_VALUE_LENGTH,
+    ICON_URL,
+    MANGA_MODE,
+    SYNOPSIS_NOT_FOUND,
+    URL_NOT_FOUND,
+    GENRES_NOT_FOUND,
+    RATINGS_NOT_FOUND,
+    AUTHOR_NOT_FOUND, 
+    bannedList
+} = require('../../config');
 
 /**
- * Checks if value passed is null. If null, instead returns error Message 
- * as to display 'Value not found.' instead of null in message response. 
- * 
- * @param {*} value is the Jikan get value. 
- * @param {*} errMessage is the message if value is null.  
- * @returns either value or error Message depending on if value is null. 
+ * Create an embed message with manga information.
+ *
+ * @param {string} TITLE - The title of the manga.
+ * @param {string} URL - The URL of the manga.
+ * @param {string} THUMBNAIL - The thumbnail image URL.
+ * @param {string} SYNOPSIS - The manga's synopsis (first part).
+ * @param {string} SYNOPSIS2 - The manga's synopsis (second part).
+ * @param {string|number} VOLUMES - The number of volumes (or "Not found" if null).
+ * @param {string} GENRES - The genres of the manga (or "Not found" if null).
+ * @param {string} RATINGS - The ratings information.
+ * @param {string} image - The image URL.
+ * @returns {MessageEmbed} The created embed message.
  */
-function commandNullCheck(value, errMessage) {
-    return (value !== null) ? value : errMessage;
-}
-
-function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, VOLUMES, GENRES, RATINGS, image) {
-
+function createEmbed(TITLE, URL, THUMBNAIL, AUTHOR, SYNOPSIS, SYNOPSIS2, VOLUMES, GENRES, RATINGS, image) {
     const createdEmbed = new EmbedBuilder()
         .setColor(0x0099FF)
         .setTitle(`${TITLE}`)
@@ -27,10 +47,10 @@ function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, VOLUMES, GENRES
         .setAuthor({ name: `Currently Searching ${MANGA_MODE} : ${TITLE}`, iconURL: ICON_URL })
         .setThumbnail(THUMBNAIL)
         .addFields(
-            { name: '\n\u200b', value: '\n\u200b' },
+            { name: 'Author: \n\u200b', value: `**${AUTHOR}** \n\u200b` },
             { name: 'Synopsis: \n\u200b', value: `${SYNOPSIS}` },
             { name: '\n', value: `${SYNOPSIS2}\n\u200b` },
-            { name: 'VOLUMES:', value: `${VOLUMES}`, inline: true },
+            { name: 'Volumes:', value: `${VOLUMES}`, inline: true },
             { name: 'Genres:', value: `${GENRES}`, inline: true },
             { name: 'Ratings:', value: `${RATINGS}`, inline: true }
         )
@@ -42,85 +62,121 @@ function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, VOLUMES, GENRES
 }
 
 /**
- * Gets Random manga. Returns information identical to getmanga. 
- * 
- * @param {*} message is the discord message. 
+ * Get information about a random manga and send it as an embed message.
+ *
+ * @param {Message} message - The Discord message object.
  */
-async function getRandomManga(message) {
 
+async function getRandomManga(message) {
     try {
 
-        let random = await jikanClient.manga.random(true);
+        let random;
+        let found = false; 
+
+        do {
+            random = await jikanClient.manga.random();
+
+            if (random.genres) {
+
+                const genres = random.genres.map(genre => genre.name).join(', ');
+                const foundManga = !(bannedList.some(value => genres.includes(value)));
+
+                if (foundManga) { 
+                    found = true; 
+                    break;
+                } 
+            } 
+        } while (!found)
+
         const mangaID = random.id;
 
-        //GETS manga INFORMATION
         const manga = random;
         const stats = await jikanClient.manga.getStatistics(mangaID);
         const genres = manga.genres.map(genre => genre.name).join(', ');
 
-        //INITIALIZES SPLIT FOR SYNOPSIS THAT ARE OVER 1020 CHARACTERS 
+        if (!genres || genres.trim() === '') {
+            genres = GENRES_NOT_FOUND;
+        }
+
+        // INITIALIZE SPLIT FOR SYNOPSIS THAT ARE OVER 1020 CHARACTERS
         let synopsis = '';
         let synopsis2 = '\n';
 
-        //SPLITS SYNOPSIS IF TOO LONG INTO 2-3 PARAGRAPHS. 
-        if (manga.synopsis.length > MAX_VALUE_LENGTH) {
-            const midPoint = manga.synopsis.lastIndexOf('.', MAX_VALUE_LENGTH);
+        // SPLIT SYNOPSIS IF TOO LONG INTO 2-3 PARAGRAPHS
+        if (manga.synopsis !== null) {
+            if (manga.synopsis.length > MAX_VALUE_LENGTH) {
+                const midPoint = manga.synopsis.lastIndexOf('.', MAX_VALUE_LENGTH);
                 if (midPoint !== -1) {
                     const synopsisFirstPart = manga.synopsis.substring(0, midPoint + 1);
                     const synopsisSecondPart = manga.synopsis.substring(midPoint + 1);
                     synopsis = synopsisFirstPart;
                     synopsis2 = synopsisSecondPart;
                 }
-        }
-        //else, simply assign synopsis to the manga synopsis. 
-        else {
-            synopsis = manga.synopsis;
-        }
-
-        //RATINGS AS AN AVERAGED SCORE STRING 
-        let totalScore = 0;
-        let totalVotes = 0;
-
-        for (const obj of stats.scores) {
-            totalScore += obj.score * obj.votes;
-            totalVotes += obj.votes;
+            }
+            // ELSE, SIMPLY ASSIGN SYNOPSIS TO THE MANGA SYNOPSIS
+            else {
+                synopsis = manga.synopsis;
+            }
+        } else {
+            synopsis = SYNOPSIS_NOT_FOUND;
         }
 
-        const averageScore = totalScore / totalVotes;
+        // RATINGS AS AN AVERAGED SCORE STRING
+        let ratings = '';
 
-        const ratings = `Average score based off ${totalVotes.toLocaleString()} votes: ${averageScore.toFixed(2) + ' / 10'}`;
+        if (stats.scores !== null) {
+            let totalScore = 0;
+            let totalVotes = 0;
 
-        //SYNOPSIS, URL, EPISODES, GENRES, RATINGS
-        const SYNOPSIS = commandNullCheck(synopsis, SYNOPSIS_NOT_FOUND);
+            for (const obj of stats.scores) {
+                totalScore += obj.score * obj.votes;
+                totalVotes += obj.votes;
+            }
+
+            const averageScore = totalScore / totalVotes;
+            ratings = `Average score based on ${totalVotes.toLocaleString()} votes: ${averageScore.toFixed(2)} / 10`;
+        } else {
+            ratings = RATINGS_NOT_FOUND
+        }
+
+        //SYNOPSIS, AUTHOR, URL, VOLUMES, GENRES, RATINGS
+        const SYNOPSIS = synopsis;
         const SYNOPSIS2 = synopsis2;
-        const URL = commandNullCheck(manga.url, URL_NOT_FOUND);
-        const GENRES = commandNullCheck(genres, GENRES_NOT_FOUND);
-        const VOLUMES = (manga.volumes !== null) ? manga.volumes : VOLUMES_NOT_FOUND;
-        const RATINGS = commandNullCheck(ratings, RATINGS_NOT_FOUND);
+        const AUTHOR = manga.authors[0].name ?? AUTHOR_NOT_FOUND;
+        const URL = manga.url ?? URL_NOT_FOUND;
+        const GENRES = genres;
+        const VOLUMES = manga.volumes?.toLocaleString() ?? VOLUMES_NOT_FOUND;
+        const RATINGS = ratings;
 
-        //if synopsis has been split, use the split synopsis' as embed does not support more than 1024 characters per value. 
+        // IF SYNOPSIS HAS BEEN SPLIT, USE THE SPLIT SYNOPSIS AS EMBED DOES NOT SUPPORT MORE THAN 1024 CHARACTERS PER VALUE
         const embedMessage = createEmbed(
             manga.title.default,
             URL,
             THUMBNAIL,
+            AUTHOR,
             SYNOPSIS,
             SYNOPSIS2,
             VOLUMES,
             GENRES,
             RATINGS,
             manga.image.webp.default
-        )
+        );
 
         message.channel.send({ embeds: [embedMessage] });
-
     } catch (error) {
-        console.error('Error:', error.message);
+        message.channel.send('Error finding random manga.')
+        console.error('Error in finding random manga:', error.message);
     }
 }
 
 module.exports = {
     name: 'mrand',
-    description: '!mrand Returns random manga',
+    description: '!mrand Returns information about a random manga.',
+    /**
+     * Execute the !mrand command.
+     *
+     * @param {Message} message - The Discord message object.
+     */
     async execute(message) {
         try {
             await getRandomManga(message);
@@ -128,5 +184,5 @@ module.exports = {
             console.error('Error:', error.message);
             message.channel.send('An error occurred: ' + error.message);
         }
-    }
-}
+    },
+};
