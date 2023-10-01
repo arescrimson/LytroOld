@@ -11,7 +11,20 @@ const { EmbedBuilder } = require('discord.js')
 
 const { getAnimeID } = require('../utils/getAnimeID')
 
-const { discordClient, jikanClient, rightArrow, leftArrow, THUMBNAIL, ICON_URL, ANIME_MODE, DESCRIPTION_NOT_FOUND, MAX_VALUE_LENGTH } = require('../../config')
+const { 
+    discordClient, 
+    jikanClient, 
+    rightArrow, 
+    leftArrow, 
+    THUMBNAIL, 
+    ICON_URL, 
+    ANIME_MODE, 
+    DESCRIPTION_NOT_FOUND, 
+    MAX_VALUE_LENGTH, 
+    VA_NOT_FOUND, 
+    ROLE_NOT_FOUND 
+} = require('../../config')
+
 
 const { getCharacterUtil } = require('../utils/getCharacterUtil')
 
@@ -63,33 +76,7 @@ function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, DESCRIPTION, VO
         .setTimestamp()
         .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL });
 }
-/*
-let description;
-async function getCharacterObj(characterName) {
 
-    const characterObj = await getCharacterUtil(characterName);
-    
-    if (characterObj) {
-        if (characterObj.description) {
-            if (characterObj.description.length > MAX_VALUE_LENGTH) {
-                const midPoint = characterObj.description.lastIndexOf('.', MAX_VALUE_LENGTH);
-                if (midPoint !== -1) {
-                    const descriptionFirstPart = characterObj.description.substring(0, midPoint + 1);
-                    description = descriptionFirstPart;
-                }
-            } else {
-                description = characterObj.description;
-            }
-        } else {
-            description = characterObj.description;
-        }
-    } else {
-        description = DESCRIPTION_NOT_FOUND;
-    }
-
-    return characterObj;
-}
-*/
 function getDescription(characterDescription) {
     let description;
 
@@ -160,19 +147,24 @@ async function getAnimeCharacters(message, animeID, characterName) {
             return;
         }
 
-
         let i = 0;
+        
         characterObj = await getCharacterUtil(characterArr[i].character.name);
-        description = getDescription(characterObj.description);
+
+        if (characterObj) {
+            description = getDescription(characterObj.description);
+        } else {
+            description = DESCRIPTION_NOT_FOUND;
+        }
 
         const characterEmbed = createCharacterEmbed(
             characterArr[i].character.name,
             characterArr[i].character.url,
             animeName,
             THUMBNAIL,
-            characterArr[i].role,
+            characterArr[i]?.role ?? ROLE_NOT_FOUND,
             description,
-            characterArr[i].voiceActors[0].person.name,
+            characterArr[i]?.voiceActors[0].person.name ?? VA_NOT_FOUND,
             characterArr[i].character.image.webp.default,
         );
 
@@ -193,16 +185,21 @@ async function getAnimeCharacters(message, animeID, characterName) {
             }
 
             characterObj = await getCharacterUtil(characterArr[i].character.name);
-            description = getDescription(characterObj.description);
+
+            if (characterObj) {
+                description = getDescription(characterObj.description);
+            } else {
+                description = DESCRIPTION_NOT_FOUND;
+            }
 
             const updatedEmbed = createCharacterEmbed(
                 characterArr[i].character.name,
                 characterArr[i].character.url,
                 animeName,
                 THUMBNAIL,
-                characterArr[i].role,
+                characterArr[i]?.role ?? ROLE_NOT_FOUND,
                 description,
-                characterArr[i].voiceActors[0].person.name,
+                characterArr[i]?.voiceActors[0]?.person.name ?? VA_NOT_FOUND,
                 characterArr[i].character.image.webp.default
             );
 

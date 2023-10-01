@@ -11,7 +11,7 @@ const { EmbedBuilder, Message } = require('discord.js')
 
 const { getMangaID } = require('../utils/getMangaID')
 
-const { discordClient, jikanClient, rightArrow, leftArrow, MANGA_MODE, THUMBNAIL, ICON_URL } = require('../../config')
+const { discordClient, jikanClient, rightArrow, leftArrow, MANGA_MODE, THUMBNAIL, ICON_URL, ROLE_NOT_FOUND } = require('../../config')
 
 /**
  * Retrieves the first name from either a single first name or a last name, first name format.
@@ -120,7 +120,7 @@ async function getMangaCharacters(message, mangaID, characterName) {
             characterArr[i].character.url,
             mangaName,
             THUMBNAIL,
-            characterArr[i].role,
+            characterArr[i]?.role ?? ROLE_NOT_FOUND,
             characterArr[i].character.image.webp.default,
         );
 

@@ -1,5 +1,7 @@
 import('node-fetch');
 
+const { ANI_API } = require('../../config');
+
 // Define your GraphQL query for character search
 const characterQuery = `
   query ($search: String, $page: Int, $perPage: Int) {
@@ -17,9 +19,6 @@ const characterQuery = `
     }
   }
 `;
-
-// Define the API endpoint
-const apiUrl = 'https://graphql.anilist.co';
 
 // Define the request options function
 function requestOptions(characterName) {
@@ -48,7 +47,7 @@ function handleData(data) {
 
 // Make the GraphQL API request and return a Promise
 async function fetchCharacterInfo(characterName) {
-    return fetch(apiUrl, requestOptions(characterName))
+    return fetch(ANI_API, requestOptions(characterName))
         .then(response => response.json())
         .then(data => {
             return handleData(data)

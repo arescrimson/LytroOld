@@ -54,7 +54,10 @@ module.exports = {
   // Links to embed images
   THUMBNAIL: 'https://github.com/arescrimson/Lytro/blob/master/media/profile.jpg?raw=true',
   ICON_URL: 'https://github.com/arescrimson/Lytro/blob/master/media/icon.png?raw=true',
+
+  // Links to API endpoints
   QUOTE_URL: "https://waifu.it/api/quote",
+  ANI_API: 'https://graphql.anilist.co',
 
   // Maximum length of embed values
   MAX_VALUE_LENGTH: 1020,
@@ -75,6 +78,8 @@ module.exports = {
   STUDIO_NOT_FOUND: 'Studios not found.',
   RECOMMENDATIONS_NOT_FOUND: 'Recommendations not found.',
   DESCRIPTION_NOT_FOUND: 'Description not found.',
+  ROLE_NOT_FOUND: 'Role not found.', 
+  VA_NOT_FOUND: 'Voice Actor not found.',
 
   // Error messages for Manga
   VOLUMES_NOT_FOUND: 'Volumes not found.',
