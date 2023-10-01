@@ -11,7 +11,17 @@ const { EmbedBuilder, Message } = require('discord.js')
 
 const { getMangaID } = require('../utils/getMangaID')
 
-const { discordClient, jikanClient, rightArrow, leftArrow, MANGA_MODE, THUMBNAIL, ICON_URL, ROLE_NOT_FOUND , MAX_VALUE_LENGTH} = require('../../config')
+const { 
+    discordClient, 
+    jikanClient, 
+    rightArrow, 
+    leftArrow,
+    MANGA_MODE, 
+    THUMBNAIL, 
+    ICON_URL, 
+    ROLE_NOT_FOUND, 
+    MAX_VALUE_LENGTH
+} = require('../../config')
 
 const { getCharacterUtil } = require('../utils/getCharacterUtil')
 
