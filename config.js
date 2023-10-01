@@ -52,8 +52,8 @@ module.exports = {
   leftArrow,
 
   // Links to embed images
-  THUMBNAIL: 'https://github.com/arescrimson/Lytro/blob/master/img/profile.jpg?raw=true',
-  ICON_URL: 'https://github.com/arescrimson/Lytro/blob/master/img/icon.png?raw=true',
+  THUMBNAIL: 'https://github.com/arescrimson/Lytro/blob/master/media/profile.jpg?raw=true',
+  ICON_URL: 'https://github.com/arescrimson/Lytro/blob/master/media/icon.png?raw=true',
   QUOTE_URL: "https://waifu.it/api/quote",
 
   // Maximum length of embed values
@@ -74,6 +74,7 @@ module.exports = {
   TRAILER_NOT_FOUND: 'Trailer not found.',
   STUDIO_NOT_FOUND: 'Studios not found.',
   RECOMMENDATIONS_NOT_FOUND: 'Recommendations not found.',
+  DESCRIPTION_NOT_FOUND: 'Description not found.',
 
   // Error messages for Manga
   VOLUMES_NOT_FOUND: 'Volumes not found.',
