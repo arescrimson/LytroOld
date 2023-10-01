@@ -114,7 +114,7 @@ async function getMangaCharacters(message, mangaID, characterName) {
 
         let i = 0;
         let embedMessage; 
-        //This function passes all of the information from each character.
+
         const characterEmbed = createCharacterEmbed(
             characterArr[i].character.name,
             characterArr[i].character.url,
@@ -123,14 +123,14 @@ async function getMangaCharacters(message, mangaID, characterName) {
             characterArr[i].role,
             characterArr[i].character.image.webp.default,
         );
-        //Sends message using the information from CharacterEmbed.
+
         embedMessage = await message.channel.send({ embeds: [characterEmbed] });
 
         if (characterArr.length > 1) {
             embedMessage.react(leftArrow);
             embedMessage.react(rightArrow);
         }
-        //This function catches errors. Returns characters to nextline after max length of each setence is reached. 
+
         function handleReaction(reaction, user) {
             if (user.bot) return;
         

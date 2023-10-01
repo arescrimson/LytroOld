@@ -49,9 +49,9 @@ async function getMangaImages(message, mangaID) {
         else {
             searchedSet.add(randomImageIndex);
         }
-        //Assign picture based on search term.
+        
         const pictureLink = pictures[randomImageIndex].webp.default.href;
-        //Create return image based on user command.
+        
         const embedMessage = new EmbedBuilder()
             .setColor(0x0099FF)
             .setAuthor({ name: `Currently Searching ${MANGA_MODE} : ${manga.title.default}` })

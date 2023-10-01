@@ -53,7 +53,6 @@ function createEmbed(TITLE, URL, THUMBNAIL, AUTHOR, SYNOPSIS, SYNOPSIS2, VOLUMES
     return createdEmbed;
 }
 
-
 /**
  * Get information about a manga and send it as an embed message.
  *
