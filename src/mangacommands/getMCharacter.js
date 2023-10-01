@@ -20,7 +20,8 @@ const {
     THUMBNAIL, 
     ICON_URL, 
     ROLE_NOT_FOUND, 
-    MAX_VALUE_LENGTH
+    MAX_VALUE_LENGTH, 
+    DESCRIPTION_NOT_FOUND,
 } = require('../../config')
 
 const { getCharacterUtil } = require('../utils/findCharacterUtil')
@@ -147,6 +148,7 @@ async function getMangaCharacters(message, mangaID, characterName) {
         }
 
         let i = 0;
+
         characterObj = await getCharacterUtil(characterArr[i].character.name);
 
         if (characterObj) {
@@ -180,7 +182,7 @@ async function getMangaCharacters(message, mangaID, characterName) {
             } else {
                 i = (i + 1) % characterArr.length; // Increment and wrap around
             }
-
+            console.log(characterArr[i].character.name)
             characterObj = await getCharacterUtil(characterArr[i].character.name); 
 
             if (characterObj) {
@@ -217,7 +219,7 @@ async function getMangaCharacters(message, mangaID, characterName) {
 
 module.exports = {
     name: 'mchr',
-    description: '!mchr [main, sup, character_name] [manga_name] Returns character information. Use main for main characters, sup for supporting characters, and specify name for a specific character.',
+    description: '!mchr [main, sup, character_name] [manga_name] Returns character information. Use main for main characters, sup for supporting characters, and specify name for a specific character. NOTE: MAY CONTAIN SPOILERS.',
     /**
      * Execute the !mchr command.
      *
@@ -226,7 +228,6 @@ module.exports = {
      * @param {string} searchName - The name of the manga being searched.
      */
     async execute(message, args, searchName) {
-
         try {
             //takes character name from zero index. Needs reworking for 2 word character names. 
             const characterName = args[0].toLowerCase();

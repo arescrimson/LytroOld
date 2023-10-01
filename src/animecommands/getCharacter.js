@@ -223,7 +223,7 @@ async function getAnimeCharacters(message, animeID, characterName) {
 
 module.exports = {
     name: 'chr',
-    description: '!chr [main, sup, character_name] [anime_name] Returns character information. Use main for main characters, sup for supporting characters, and specify name for a specific character.',
+    description: '!chr [main, sup, character_name] [anime_name] Returns character information. Use main for main characters, sup for supporting characters, and specify name for a specific character. NOTE: MAY CONTAIN SPOILERS.',
     /**
      * Executes the `img` command to retrieve character information. 
      *
