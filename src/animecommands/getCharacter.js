@@ -11,10 +11,9 @@ const { EmbedBuilder } = require('discord.js')
 
 const { getAnimeID } = require('../utils/getAnimeID')
 
-const { discordClient, jikanClient, rightArrow, leftArrow, THUMBNAIL, ICON_URL, ANIME_MODE } = require('../../config')
+const { discordClient, jikanClient, rightArrow, leftArrow, THUMBNAIL, ICON_URL, ANIME_MODE, DESCRIPTION_NOT_FOUND, MAX_VALUE_LENGTH } = require('../../config')
 
-let embedMessage = null;
-let characterArr = [];
+const { getCharacterUtil } = require('../utils/getCharacterUtil')
 
 /**
  * Gets first name from either a single first name, or a lastname, firstname format. 
@@ -48,7 +47,7 @@ function getFirstName(message, characterName, databaseNames) {
  * @param {string} IMAGE - The URL of the character's image.
  * @returns {EmbedBuilder} - An EmbedBuilder object for the character information.
  */
-function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, VOICEACTOR, IMAGE) {
+function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, DESCRIPTION, VOICEACTOR, IMAGE) {
     return new EmbedBuilder()
         .setColor(0x0099FF)
         .setTitle(`${NAME}`)
@@ -57,11 +56,54 @@ function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, VOICEACTOR, IMA
         .setThumbnail(THUMBNAIL)
         .addFields(
             { name: 'Role:', value: `${ROLE}` },
+            { name: 'Description:', value: `${DESCRIPTION}` },
             { name: 'Japanese Voice Actor:', value: `${VOICEACTOR}`, inline: true },
         )
         .setImage(`${IMAGE}`)
         .setTimestamp()
         .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL });
+}
+/*
+let description;
+async function getCharacterObj(characterName) {
+
+    const characterObj = await getCharacterUtil(characterName);
+    
+    if (characterObj) {
+        if (characterObj.description) {
+            if (characterObj.description.length > MAX_VALUE_LENGTH) {
+                const midPoint = characterObj.description.lastIndexOf('.', MAX_VALUE_LENGTH);
+                if (midPoint !== -1) {
+                    const descriptionFirstPart = characterObj.description.substring(0, midPoint + 1);
+                    description = descriptionFirstPart;
+                }
+            } else {
+                description = characterObj.description;
+            }
+        } else {
+            description = characterObj.description;
+        }
+    } else {
+        description = DESCRIPTION_NOT_FOUND;
+    }
+
+    return characterObj;
+}
+*/
+function getDescription(characterDescription) {
+    let description;
+
+    if (characterDescription.length > MAX_VALUE_LENGTH) {
+        const midPoint = characterDescription.lastIndexOf('.', MAX_VALUE_LENGTH);
+        if (midPoint !== -1) {
+            const descriptionFirstPart = characterDescription.substring(0, midPoint + 1);
+            description = descriptionFirstPart;
+        }
+    } else {
+        description = characterDescription
+    }
+
+    return description;
 }
 
 /**
@@ -71,17 +113,20 @@ function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, VOICEACTOR, IMA
  * @param {number} animeID is the animeID passed. 
  * @param {string} characterName is the lowercased character Name being searched. 
  */
+
 async function getAnimeCharacters(message, animeID, characterName) {
 
     try {
 
         const anime = await jikanClient.anime.get(animeID);
         const ch = await jikanClient.anime.getCharacters(animeID);
-
         const animeName = anime.title.default;
 
+        let description = '';
+        let characterObj;
         let characterFound = false;
-        characterArr = [];
+        let embedMessage = null;
+        let characterArr = [];
 
         for (let i = 0; i < ch.length; i++) {
 
@@ -115,7 +160,10 @@ async function getAnimeCharacters(message, animeID, characterName) {
             return;
         }
 
+
         let i = 0;
+        characterObj = await getCharacterUtil(characterArr[i].character.name);
+        description = getDescription(characterObj.description);
 
         const characterEmbed = createCharacterEmbed(
             characterArr[i].character.name,
@@ -123,33 +171,37 @@ async function getAnimeCharacters(message, animeID, characterName) {
             animeName,
             THUMBNAIL,
             characterArr[i].role,
+            description,
             characterArr[i].voiceActors[0].person.name,
             characterArr[i].character.image.webp.default,
         );
 
         embedMessage = await message.channel.send({ embeds: [characterEmbed] });
-        
 
         if (characterArr.length > 1) {
             embedMessage.react(leftArrow);
             embedMessage.react(rightArrow);
         }
 
-        function handleReaction(reaction, user) {
+        async function handleReaction(reaction, user) {
             if (user.bot) return;
-        
+
             if (reaction.emoji.name === leftArrow) {
                 i = (i - 1 + characterArr.length) % characterArr.length; // Decrement and wrap around
             } else {
                 i = (i + 1) % characterArr.length; // Increment and wrap around
             }
-        
+
+            characterObj = await getCharacterUtil(characterArr[i].character.name);
+            description = getDescription(characterObj.description);
+
             const updatedEmbed = createCharacterEmbed(
                 characterArr[i].character.name,
                 characterArr[i].character.url,
                 animeName,
                 THUMBNAIL,
                 characterArr[i].role,
+                description,
                 characterArr[i].voiceActors[0].person.name,
                 characterArr[i].character.image.webp.default
             );
@@ -160,9 +212,8 @@ async function getAnimeCharacters(message, animeID, characterName) {
         };
 
         discordClient.removeAllListeners('messageReactionAdd');
-        discordClient.on('messageReactionAdd', (reaction, user) => {
-            handleReaction(reaction, user);
-            
+        discordClient.on('messageReactionAdd', async (reaction, user) => {
+            await handleReaction(reaction, user);
         });
 
     } catch (error) {
