@@ -11,7 +11,9 @@ const { EmbedBuilder, Message } = require('discord.js')
 
 const { getMangaID } = require('../utils/getMangaID')
 
-const { discordClient, jikanClient, rightArrow, leftArrow, MANGA_MODE, THUMBNAIL, ICON_URL, ROLE_NOT_FOUND } = require('../../config')
+const { discordClient, jikanClient, rightArrow, leftArrow, MANGA_MODE, THUMBNAIL, ICON_URL, ROLE_NOT_FOUND , MAX_VALUE_LENGTH} = require('../../config')
+
+const { getCharacterUtil } = require('../utils/getCharacterUtil')
 
 /**
  * Retrieves the first name from either a single first name or a last name, first name format.
@@ -47,7 +49,7 @@ function getFirstName(message, characterName, databaseNames) {
  * @param {string} IMAGE - The character's image URL.
  * @returns {MessageEmbed} The created embed message.
  */
-function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, IMAGE) {
+function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, DESCRIPTION, IMAGE) {
     return new EmbedBuilder()
         .setColor(0x0099FF)
         .setTitle(`${NAME}`)
@@ -56,10 +58,29 @@ function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, IMAGE) {
         .setThumbnail(THUMBNAIL)
         .addFields(
             { name: 'Role:', value: `${ROLE}` },
+            { name: 'Description', value: `${DESCRIPTION}`},
         )
         .setImage(`${IMAGE}`)
         .setTimestamp()
         .setFooter({ text: 'Information from Lytro', iconURL: ICON_URL });
+}
+
+function getDescription(characterDescription) {
+    let description;
+    
+    if (characterDescription.length > MAX_VALUE_LENGTH) {
+        const midPoint = characterDescription.lastIndexOf('.', MAX_VALUE_LENGTH);
+
+        if (midPoint !== -1) {
+            const descriptionFirstPart = characterDescription.substring(0, midPoint + 1);
+            description = descriptionFirstPart;
+        }
+    } 
+    else {
+        description = characterDescription 
+    }
+
+    return description;
 }
 
 /**
@@ -77,8 +98,11 @@ async function getMangaCharacters(message, mangaID, characterName) {
 
         const mangaName = manga.title.default; 
 
-        let characterArr = [];
+        let description = '';
+        let characterObj;
         let characterFound = false;
+        let embedMessage = null;
+        let characterArr = [];
 
         for (let i = 0; i < ch.length; i++) {
 
@@ -113,7 +137,13 @@ async function getMangaCharacters(message, mangaID, characterName) {
         }
 
         let i = 0;
-        let embedMessage; 
+        characterObj = await getCharacterUtil(characterArr[i].character.name);
+
+        if (characterObj) {
+            description = getDescription(characterObj.description);
+        } else {
+            description = DESCRIPTION_NOT_FOUND;
+        }
 
         const characterEmbed = createCharacterEmbed(
             characterArr[i].character.name,
@@ -121,6 +151,7 @@ async function getMangaCharacters(message, mangaID, characterName) {
             mangaName,
             THUMBNAIL,
             characterArr[i]?.role ?? ROLE_NOT_FOUND,
+            description,
             characterArr[i].character.image.webp.default,
         );
 
@@ -131,7 +162,7 @@ async function getMangaCharacters(message, mangaID, characterName) {
             embedMessage.react(rightArrow);
         }
 
-        function handleReaction(reaction, user) {
+        async function handleReaction(reaction, user) {
             if (user.bot) return;
         
             if (reaction.emoji.name === leftArrow) {
@@ -139,13 +170,22 @@ async function getMangaCharacters(message, mangaID, characterName) {
             } else {
                 i = (i + 1) % characterArr.length; // Increment and wrap around
             }
+
+            characterObj = await getCharacterUtil(characterArr[i].character.name); 
+
+            if (characterObj) {
+                description = getDescription(characterObj.description);
+            } else {
+                description = DESCRIPTION_NOT_FOUND;
+            }
        
             const updatedEmbed = createCharacterEmbed(
                 characterArr[i].character.name,
                 characterArr[i].character.url,
                 mangaName,
                 THUMBNAIL,
-                characterArr[i].role,
+                characterArr[i]?.role ?? ROLE_NOT_FOUND,
+                description,
                 characterArr[i].character.image.webp.default
             );
 

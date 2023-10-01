@@ -11,18 +11,18 @@ const { EmbedBuilder } = require('discord.js')
 
 const { getAnimeID } = require('../utils/getAnimeID')
 
-const { 
-    discordClient, 
-    jikanClient, 
-    rightArrow, 
-    leftArrow, 
-    THUMBNAIL, 
-    ICON_URL, 
-    ANIME_MODE, 
-    DESCRIPTION_NOT_FOUND, 
-    MAX_VALUE_LENGTH, 
-    VA_NOT_FOUND, 
-    ROLE_NOT_FOUND 
+const {
+    discordClient,
+    jikanClient,
+    rightArrow,
+    leftArrow,
+    THUMBNAIL,
+    ICON_URL,
+    ANIME_MODE,
+    DESCRIPTION_NOT_FOUND,
+    MAX_VALUE_LENGTH,
+    VA_NOT_FOUND,
+    ROLE_NOT_FOUND
 } = require('../../config')
 
 
@@ -79,15 +79,17 @@ function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, DESCRIPTION, VO
 
 function getDescription(characterDescription) {
     let description;
-
+    
     if (characterDescription.length > MAX_VALUE_LENGTH) {
         const midPoint = characterDescription.lastIndexOf('.', MAX_VALUE_LENGTH);
+
         if (midPoint !== -1) {
             const descriptionFirstPart = characterDescription.substring(0, midPoint + 1);
             description = descriptionFirstPart;
         }
-    } else {
-        description = characterDescription
+    } 
+    else {
+        description = characterDescription 
     }
 
     return description;
@@ -148,7 +150,7 @@ async function getAnimeCharacters(message, animeID, characterName) {
         }
 
         let i = 0;
-        
+
         characterObj = await getCharacterUtil(characterArr[i].character.name);
 
         if (characterObj) {
