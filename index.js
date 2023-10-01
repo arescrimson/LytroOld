@@ -16,7 +16,7 @@ const { discordClient, DISCORD_TOKEN } = require('./config');
 const { commandList } = require('./src/manage/commandManager')
 
 //IMPORT COMMAND SEARCH 
-const { getSearch } = require('./src/utils/getSearch')
+const { getSearch } = require('./src/utils/getSearchUtil')
 
 //IMPORT HELP COMMAND 
 const { execute } = require('./src/misccommands/getHelp')

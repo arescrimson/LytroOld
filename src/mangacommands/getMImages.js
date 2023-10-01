@@ -10,7 +10,7 @@
 const { EmbedBuilder } = require('discord.js')
 
 //IMPORT GETID 
-const { getMangaID } = require('../utils/getMangaID')
+const { getMangaID } = require('../utils/mangaIDUtil')
 
 //IMPORT CLIENT
 const { jikanClient, ICON_URL, MANGA_MODE } = require('../../config')

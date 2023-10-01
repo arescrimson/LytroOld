@@ -9,7 +9,7 @@
 
 const { EmbedBuilder } = require('discord.js')
 
-const { getAnimeID } = require('../utils/getAnimeID')
+const { getAnimeID } = require('../utils/animeIDUtil')
 
 const {
     discordClient,
@@ -26,7 +26,7 @@ const {
 } = require('../../config')
 
 
-const { getCharacterUtil } = require('../utils/getCharacterUtil')
+const { getCharacterUtil } = require('../utils/findCharacterUtil')
 
 /**
  * Gets first name from either a single first name, or a lastname, firstname format. 
@@ -79,7 +79,7 @@ function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, DESCRIPTION, VO
 
 function getDescription(characterDescription) {
     let description;
-    
+
     if (characterDescription.length > MAX_VALUE_LENGTH) {
         const midPoint = characterDescription.lastIndexOf('.', MAX_VALUE_LENGTH);
 

@@ -9,7 +9,7 @@
 
 const { EmbedBuilder } = require('discord.js');
 
-const { getAnimeID } = require('../utils/getAnimeID')
+const { getAnimeID } = require('../utils/animeIDUtil')
 
 const { jikanClient,
         THUMBNAIL,

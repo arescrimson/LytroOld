@@ -9,7 +9,7 @@
 
 const { EmbedBuilder } = require('discord.js');
 
-const { getMangaID } = require('../utils/getMangaID');
+const { getMangaID } = require('../utils/mangaIDUtil');
 
 const { jikanClient, MANGA_MODE, THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH } = require('../../config')
 

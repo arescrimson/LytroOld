@@ -11,7 +11,7 @@
 const { EmbedBuilder } = require('discord.js');
 
 // GETMANGAID
-const { getMangaID } = require('../utils/getMangaID');
+const { getMangaID } = require('../utils/mangaIDUtil');
 
 // LYTRO FOOTER ICON, MAX VALUE LENGTH FOR EMBEDS
 const {

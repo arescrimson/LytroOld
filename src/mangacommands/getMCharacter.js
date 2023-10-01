@@ -9,7 +9,7 @@
 
 const { EmbedBuilder, Message } = require('discord.js')
 
-const { getMangaID } = require('../utils/getMangaID')
+const { getMangaID } = require('../utils/mangaIDUtil')
 
 const { 
     discordClient, 
@@ -23,7 +23,7 @@ const {
     MAX_VALUE_LENGTH
 } = require('../../config')
 
-const { getCharacterUtil } = require('../utils/getCharacterUtil')
+const { getCharacterUtil } = require('../utils/findCharacterUtil')
 
 /**
  * Retrieves the first name from either a single first name or a last name, first name format.
