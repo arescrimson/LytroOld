@@ -66,7 +66,7 @@ https://github.com/arescrimson/Lytro/assets/66581240/79d916cc-af9c-40c7-9be9-449
 
 In addition, permanent hosting is almost done, but that unfortunately means that sometimes there will be outages for testing and transfer purposes. However, if the bot is online in discord, that means it is currently online. 
 
-Lytro can be installed [here](https://discord.com/api/oauth2/authorize?client_id=1149915243791794186&permissions=59456&scope=bot). 
+**IMPORTANT:** LYTRO WILL BE OFFLINE FOR THE TIME BEING FOR CODE REFACTORING. 
 
 <!-- LICENSE -->
 ## License
