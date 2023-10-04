@@ -67,25 +67,25 @@ module.exports = {
   MANGA_MODE: 'Manga',
 
   // Error messages for Anime
-  SYNOPSIS_NOT_FOUND: 'Synopsis not found.',
-  URL_NOT_FOUND: 'URL not found.',
-  EPISODES_NOT_FOUND: 'Episodes not found.',
-  GENRES_NOT_FOUND: 'Genres not found.',
-  RATINGS_NOT_FOUND: 'Ratings not found.',
-  BACKGROUND_NOT_FOUND: 'Background not found.',
-  YEAR_NOT_FOUND: 'Year not found.',
-  TRAILER_NOT_FOUND: 'Trailer not found.',
-  STUDIO_NOT_FOUND: 'Studios not found.',
-  RECOMMENDATIONS_NOT_FOUND: 'Recommendations not found.',
-  DESCRIPTION_NOT_FOUND: 'Description not found.',
-  ROLE_NOT_FOUND: 'Role not found.', 
-  VA_NOT_FOUND: 'Voice Actor not found.',
+  SYNOPSIS_NOT_FOUND: 'Synopsis not listed.',
+  URL_NOT_FOUND: 'URL not listed.',
+  EPISODES_NOT_FOUND: 'Episodes not listed.',
+  GENRES_NOT_FOUND: 'Genres not listed.',
+  RATINGS_NOT_FOUND: 'Ratings not listed.',
+  BACKGROUND_NOT_FOUND: 'Background not listed.',
+  YEAR_NOT_FOUND: 'Year not listed.',
+  TRAILER_NOT_FOUND: 'Trailer not listed.',
+  STUDIO_NOT_FOUND: 'Studios not listed.',
+  RECOMMENDATIONS_NOT_FOUND: 'Recommendations not listed.',
+  DESCRIPTION_NOT_FOUND: 'Description not listed.',
+  ROLE_NOT_FOUND: 'Role not listed.', 
+  VA_NOT_FOUND: 'Voice Actor not listed.',
 
   // Error messages for Manga
-  VOLUMES_NOT_FOUND: 'Volumes not found.',
-  AUTHOR_NOT_FOUND: 'Author not found.',
-  POPULARITY_NOT_FOUND: 'Popularity not found.',
-  SERIAL_NOT_FOUND: 'Serialization not found.',
+  VOLUMES_NOT_FOUND: 'Volumes not listed.',
+  AUTHOR_NOT_FOUND: 'Author not listed.',
+  POPULARITY_NOT_FOUND: 'Popularity not listed.',
+  SERIAL_NOT_FOUND: 'Serialization not listed.',
 
   // Banned genres list for random search. 
   bannedList

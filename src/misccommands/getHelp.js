@@ -47,6 +47,6 @@ module.exports = {
         } catch (error) {
             console.error('Error:', error.message);
             message.channel.send('An error occurred: ' + error.message);
-        }
+        } 
     },
 };

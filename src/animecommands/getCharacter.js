@@ -87,9 +87,9 @@ function getDescription(characterDescription) {
             const descriptionFirstPart = characterDescription.substring(0, midPoint + 1);
             description = descriptionFirstPart;
         }
-    } 
+    }
     else {
-        description = characterDescription 
+        description = characterDescription
     }
 
     return description;
@@ -223,7 +223,7 @@ async function getAnimeCharacters(message, animeID, characterName) {
 
 module.exports = {
     name: 'chr',
-    description: '!chr [main, sup, character_name] [anime_name] Returns character information. Use main for main characters, sup for supporting characters, and specify name for a specific character. NOTE: MAY CONTAIN SPOILERS.',
+    description: '!chr [main, sup, character_name] in [anime_name]. Note that (in [anime name] only needs to be used when searching for a new character that is not in the current directory you are searching in.',
     /**
      * Executes the `img` command to retrieve character information. 
      *
@@ -232,17 +232,21 @@ module.exports = {
      * @param {string} searchAnime - The anime name specified for the search.
      */
     async execute(message, args, searchName) {
-        //takes character name from zero index. Needs reworking for 2 word character names. 
-        const characterName = args[0].toLowerCase();
-        //takes anime name from index one. Needs reworking for 2 word character names. 
-        const animeName = searchName;
 
         try {
+            let characterName = args[0];
+            
+            if ( !characterName ) throw new Error('no character specified in !chr.')
+
+            characterName = characterName.toLowerCase();
+            //console.log('Character Name:' + characterName);
+            const animeName = searchName;
+
             const animeID = await getAnimeID(message, animeName);
             getAnimeCharacters(message, animeID, characterName)
         } catch (error) {
             console.error('Error:', error.message);
-            message.channel.send('An error occurred: please make sure you are specfiying an anime character and/or anime.');
+            message.channel.send('An error occurred: please make sure you are specifying an anime character and/or anime.');
         }
     }
 }

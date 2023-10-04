@@ -11,16 +11,16 @@ const { EmbedBuilder, Message } = require('discord.js')
 
 const { getMangaID } = require('../utils/mangaIDUtil')
 
-const { 
-    discordClient, 
-    jikanClient, 
-    rightArrow, 
+const {
+    discordClient,
+    jikanClient,
+    rightArrow,
     leftArrow,
-    MANGA_MODE, 
-    THUMBNAIL, 
-    ICON_URL, 
-    ROLE_NOT_FOUND, 
-    MAX_VALUE_LENGTH, 
+    MANGA_MODE,
+    THUMBNAIL,
+    ICON_URL,
+    ROLE_NOT_FOUND,
+    MAX_VALUE_LENGTH,
     DESCRIPTION_NOT_FOUND,
 } = require('../../config')
 
@@ -36,17 +36,17 @@ const { getCharacterUtil } = require('../utils/findCharacterUtil')
  * @returns {boolean} true if the characterName matches either the first or last name, false otherwise.
  */
 function getFirstName(message, characterName, databaseNames) {
-    let res = false; 
+    let res = false;
 
     //splits by nameParts, i.e Monkey D., Luffy, and sets to lowercase for comparison purposes. 
     const nameParts = databaseNames.split(',').map(part => part.trim().toLowerCase());
 
     //returns true if characterName matches either first or last name. 
     if (nameParts.includes(characterName.toLowerCase())) {
-        res = true; 
+        res = true;
     }
 
-    return res; 
+    return res;
 }
 
 /**
@@ -69,7 +69,7 @@ function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, DESCRIPTION, IM
         .setThumbnail(THUMBNAIL)
         .addFields(
             { name: 'Role:', value: `${ROLE}` },
-            { name: 'Description', value: `${DESCRIPTION}`},
+            { name: 'Description', value: `${DESCRIPTION}` },
         )
         .setImage(`${IMAGE}`)
         .setTimestamp()
@@ -78,7 +78,7 @@ function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, DESCRIPTION, IM
 
 function getDescription(characterDescription) {
     let description;
-    
+
     if (characterDescription.length > MAX_VALUE_LENGTH) {
         const midPoint = characterDescription.lastIndexOf('.', MAX_VALUE_LENGTH);
 
@@ -86,9 +86,9 @@ function getDescription(characterDescription) {
             const descriptionFirstPart = characterDescription.substring(0, midPoint + 1);
             description = descriptionFirstPart;
         }
-    } 
+    }
     else {
-        description = characterDescription 
+        description = characterDescription
     }
 
     return description;
@@ -107,7 +107,7 @@ async function getMangaCharacters(message, mangaID, characterName) {
         const manga = await jikanClient.manga.get(mangaID);
         const ch = await jikanClient.manga.getCharacters(mangaID);
 
-        const mangaName = manga.title.default; 
+        const mangaName = manga.title.default;
 
         let description = '';
         let characterObj;
@@ -121,7 +121,7 @@ async function getMangaCharacters(message, mangaID, characterName) {
             if (characterName === 'main') {
                 if (ch[i].role === 'Main') {
                     characterArr.push(ch[i]);
-                    characterFound = true; 
+                    characterFound = true;
                 }
             }
             //if character name is sup, indexes ALL SUPPORTING CHARACTERS. Temporary limit of 5 indexes until 
@@ -176,21 +176,21 @@ async function getMangaCharacters(message, mangaID, characterName) {
 
         async function handleReaction(reaction, user) {
             if (user.bot) return;
-        
+
             if (reaction.emoji.name === leftArrow) {
                 i = (i - 1 + characterArr.length) % characterArr.length; // Decrement and wrap around
             } else {
                 i = (i + 1) % characterArr.length; // Increment and wrap around
             }
-            console.log(characterArr[i].character.name)
-            characterObj = await getCharacterUtil(characterArr[i].character.name); 
+
+            characterObj = await getCharacterUtil(characterArr[i].character.name);
 
             if (characterObj) {
                 description = getDescription(characterObj.description);
             } else {
                 description = DESCRIPTION_NOT_FOUND;
             }
-       
+
             const updatedEmbed = createCharacterEmbed(
                 characterArr[i].character.name,
                 characterArr[i].character.url,
@@ -202,8 +202,8 @@ async function getMangaCharacters(message, mangaID, characterName) {
             );
 
             reaction.users.remove(user);
-        
-            embedMessage.edit({ embeds: [updatedEmbed] }).catch(console.error);
+
+            embedMessage.edit({embeds: [updatedEmbed] }).catch(console.error);
         };
 
         discordClient.removeAllListeners('messageReactionAdd');
@@ -229,9 +229,13 @@ module.exports = {
      */
     async execute(message, args, searchName) {
         try {
-            //takes character name from zero index. Needs reworking for 2 word character names. 
-            const characterName = args[0].toLowerCase();
-            //takes manga name from index one. Needs reworking for 2 word character names. 
+
+            let characterName = args[0];
+            
+            if (!characterName) throw new Error('no character specified in !mchr.')
+
+            characterName = characterName.toLowerCase();
+       
             const mangaName = searchName;
 
             const mangaID = await getMangaID(message, mangaName);

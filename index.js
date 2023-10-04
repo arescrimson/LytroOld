@@ -29,10 +29,11 @@ discordClient.on('ready', (c) => {
     console.log(`${c.user.tag + " is ready."}`);
 })
 
-let currentSearchName = '';
+const userSearchNames = new Map();
 
 //STARTS BOT FUNCTION ON MESSAGE CREATE 
 discordClient.on('messageCreate', async (message) => {
+
     try {
         if (message.author.bot) return;
 
@@ -49,10 +50,12 @@ discordClient.on('messageCreate', async (message) => {
             //command is the command i.e. !url One Piece would be url 
             const command = args.shift().toLowerCase();
 
-            if ( command === 'help' ) { 
-                execute(message); 
+            if (command === 'help') {
+                execute(message);
                 return;
             }
+
+            let currentSearchName = userSearchNames.get(message.author.id) || '';
 
             //sets currently searched name 
             currentSearchName = getSearch(args, command, currentSearchName);
@@ -71,9 +74,12 @@ discordClient.on('messageCreate', async (message) => {
             if (!found) {
                 message.channel.send('Command not found :(');
             }
+
+            userSearchNames.set(message.author.id, currentSearchName);
         }
     } catch (error) {
         console.error('error in index', error.message);
+        message.channel.send(error.message);
     }
 })
 
