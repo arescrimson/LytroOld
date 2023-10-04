@@ -29,6 +29,7 @@ discordClient.on('ready', (c) => {
     console.log(`${c.user.tag + " is ready."}`);
 })
 
+//SAVES USER USERNAMES TO A HASHMAP FOR UNIQUE HASHING
 const userSearchNames = new Map();
 
 //STARTS BOT FUNCTION ON MESSAGE CREATE 
@@ -55,6 +56,7 @@ discordClient.on('messageCreate', async (message) => {
                 return;
             }
 
+            //currently saved search name now searches within the hashmap for the corresponding user id. 
             let currentSearchName = userSearchNames.get(message.author.id) || '';
 
             //sets currently searched name 
@@ -75,6 +77,7 @@ discordClient.on('messageCreate', async (message) => {
                 message.channel.send('Command not found :(');
             }
 
+            //Sets the currently saved search name to their unique user id key. 
             userSearchNames.set(message.author.id, currentSearchName);
         }
     } catch (error) {
@@ -84,7 +87,7 @@ discordClient.on('messageCreate', async (message) => {
 })
 
 //LOGINS USING BOT TOKEN FROM ENV 
-discordClient.login(DISCORD_TOKEN);
+discordClient.login('MTE0OTkxNTI0Mzc5MTc5NDE4Ng.Gm9Nnp.ZODpG08hZO7An0Q9ZG1yUs5DM6z3bTfP5cQQPA');
 
 //SHUTS DOWN BOT AND NODE INSTANCES TO PREVENT MULTIPLE RUNNING INSTANCES
 process.on('SIGINT', () => {
