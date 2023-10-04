@@ -87,7 +87,7 @@ discordClient.on('messageCreate', async (message) => {
 })
 
 //LOGINS USING BOT TOKEN FROM ENV 
-discordClient.login('MTE0OTkxNTI0Mzc5MTc5NDE4Ng.Gm9Nnp.ZODpG08hZO7An0Q9ZG1yUs5DM6z3bTfP5cQQPA');
+discordClient.login(process.env.DISCORD_TOKEN);
 
 //SHUTS DOWN BOT AND NODE INSTANCES TO PREVENT MULTIPLE RUNNING INSTANCES
 process.on('SIGINT', () => {
