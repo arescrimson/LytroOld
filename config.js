@@ -66,6 +66,9 @@ module.exports = {
   ANIME_MODE: 'Anime',
   MANGA_MODE: 'Manga',
 
+  //Character command string
+  CHR_COMMAND: 'in', 
+
   // Error messages for Anime
   SYNOPSIS_NOT_FOUND: 'Synopsis not listed.',
   URL_NOT_FOUND: 'URL not listed.',

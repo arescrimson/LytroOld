@@ -5,6 +5,8 @@
  * @author Ares
  */
 
+const {CHR_COMMAND} = require('../../config');
+
 /**
  * Parses a Discord command message to cache a searched anime name for convenience.
  *
@@ -28,10 +30,10 @@ function getSearch(args, command, currentSearchName) {
     else {
 
         if ((command === 'chr' || command === 'mchr')){
-            if (args.slice(1).includes('in')) { 
+            if (args.slice(1).includes(CHR_COMMAND)) { 
 
                 // parses searchname by slicing from the last index of in, and taking any words after. 
-                currentSearchName = args.slice(args.lastIndexOf('in') + 1).join(' '); 
+                currentSearchName = args.slice(args.lastIndexOf(CHR_COMMAND) + 1).join(' '); 
 
                 //if someone does the command without specifying an anime name. 
                 if (!currentSearchName) throw Error('No identifier name specified.');
