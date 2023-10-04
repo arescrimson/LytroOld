@@ -27,17 +27,18 @@ function getSearch(args, command, currentSearchName) {
     //since !chr command requires a character name/prefix, takes the anime identifier after the name if one is provided.
     else {
 
-        // Handle different commands and arguments.
-        if ((command === 'chr' || command === 'mchr') && args.length > 1) {
-            currentSearchName = args.slice(1).join(' ');
-        } 
+        if ((command === 'chr' || command === 'mchr')){
+            if (args.slice(1).includes('in')) { 
 
-        //if !chr is provided with only a character identifier, uses currentSearchName as the anime name. 
-        else if (command === 'chr' || command === 'mchr') {
-            animeName = currentSearchName;
-            currentSearchName = animeName;
-        } 
-        
+                // parses searchname by slicing from the last index of in, and taking any words after. 
+                currentSearchName = args.slice(args.lastIndexOf('in') + 1).join(' '); 
+
+                //if someone does the command without specifying an anime name. 
+                if (!currentSearchName) throw Error('No identifier name specified.');
+            } else { 
+                
+            }
+        }
         //if not !chr, will be a command like !a anime name, so return anime name as the current search name. 
         else {
             animeName = args.join(' ');
@@ -45,6 +46,8 @@ function getSearch(args, command, currentSearchName) {
         }
     }
 
+    //console.log('AnimeName: ' + animeName); 
+    //console.log('CurrentSearchName: ' + currentSearchName);
     return currentSearchName;
 }
 
