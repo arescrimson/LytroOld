@@ -10,31 +10,29 @@
 
 Currently features commands for anime and manga. Currently planning to expand to include more APIs, as well as embed and streaming information support. Permanent hosting support also on the way. 
 
-Now supports title caching; any command with an **[anime name]** identifier will stay within the searched title directory. Commands pertaining to that directory can be entered without the **[anime name]**.
+Now supports title caching; any command with an **[name]** identifier will stay within the searched title directory. Commands pertaining to that directory can be entered without the **[name]**.
 
 **Data Source:** This bot uses the [MyAnimeList (MAL) API](https://myanimelist.net/apiconfig/references/api/v2) and [AniList API](https://anilist.gitbook.io/anilist-apiv2-docs/) to fetch anime and manga information. You can visit [MyAnimeList](https://myanimelist.net/) or [AniList](https://anilist.co/) for more details.
 
 ## Anime Commands
 
-**!a [anime name]:** returns information like synopsis, rating based off total votes, genre, and url. 
+**!a [name]:** returns information like synopsis, rating based off total votes, genre, and url. Scroll to return addition information like background, studio, related animes and release year. 
 
-**!info [anime name]** returns additional information like background, studio, related animes and release year. 
+**!chr [prefix] in [name]:** depending on prefix, returns either 'main' main characters, 'sup' supporting characters, or a specified character name. If searching for a character in a new anime/manga directory, specify the in, ex. !chr luffy in one piece. Provides information like character role, description, and voice actor. 
 
-**!chr [prefix] [anime name]:** depending on prefix, returns either 'main' main characters, 'sup' supporting characters, or a specified character name. Provides information like character role, description, and voice actor. 
-
-**!img [anime name]:** returns a random image pertaining to the picture gallery of the specific anime. 
+**!img [name]:** returns a random image in the picture gallery of the specific anime. 
 
 **!rand:** returns information identical to !info with a random anime(sfw).
 
 ## Manga Commands
 
-**!m [manga name]:** returns information like synopsis, rating based off total votes, genre, and url. 
+**!m [name]:** returns information like synopsis, rating based off total votes, genre, and url. 
 
-**!minfo [manga name]** returns additional information like manga rank, serialization, and publish date. 
+**!minfo [name]** returns additional information like manga rank, serialization, and publish date. 
 
-**!mchr [prefix] [manga name]:** depending on prefix, returns either 'main' main characters, 'sup' supporting characters, or a specified character name. Provides information like character role.
+**!mchr [prefix] [name]:** depending on prefix, returns either 'main' main characters, 'sup' supporting characters, or a specified character name. If searching for a character in a new anime/manga directory, specify the in, ex. !mchr luffy in one piece. Provides information like character role and description.
 
-**!mimg [manga name]:** returns a random image pertaining to the picture gallery of the specific manga. 
+**!mimg [name]:** returns a random image in the picture gallery of the specific manga. 
 
 **!mrand:** returns information identical to !info with a random manga(sfw).
 
