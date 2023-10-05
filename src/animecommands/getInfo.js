@@ -9,8 +9,6 @@
 
 const { EmbedBuilder } = require('discord.js');
 
-const { getAnimeID } = require('../utils/animeIDUtil')
-
 const { jikanClient,
     THUMBNAIL,
     ICON_URL,
@@ -119,11 +117,11 @@ async function getInfo(message, animeID) {
         const BACKGROUND = background;
         const BACKGROUND2 = background2;
         const YEAR = anime.year ?? YEAR_NOT_FOUND;
-        const TRAILER = (anime.trailer?.embedUrl.href !== null) ? anime.trailer.embedUrl.href : TRAILER_NOT_FOUND;
+        const TRAILER = anime?.trailer?.embedUrl ?? TRAILER_NOT_FOUND;
         const STUDIO = anime.studios[0]?.name ?? STUDIO_NOT_FOUND;
         const RECOMMENDATIONS = recListString
 
-        const exampleEmbed = createEmbed(
+        const infoEmbed = createEmbed(
             anime.title.default,
             anime.url,
             THUMBNAIL,
@@ -135,8 +133,7 @@ async function getInfo(message, animeID) {
             anime.image.webp.default
         )
 
-        // message.channel.send({ embeds: [exampleEmbed] });
-        return exampleEmbed;
+        return infoEmbed;
 
     } catch (error) {
         console.error('Error in getInfo:', error.message);
@@ -154,12 +151,11 @@ module.exports = {
      * @param {Array} args - An array of arguments passed with the command, typically containing the anime name.
      * @param {string} searchAnime - The anime name specified for the search.
      */
-    async test(message, animeID) {
+    async getInfo(message, animeID) {
 
         try {
-            //const animeID = await getAnimeID(message, animeName);
-            const test = await getInfo(message, animeID);
-            return test; 
+            const infoEmbed = await getInfo(message, animeID);
+            return infoEmbed; 
         } catch (error) {
             console.error('Error in info:', error.message);
             message.channel.send('Error: please make sure you have specified an anime.');
