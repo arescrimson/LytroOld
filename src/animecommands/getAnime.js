@@ -11,7 +11,7 @@ const { EmbedBuilder } = require('discord.js');
 
 const { getAnimeID } = require('../utils/animeIDUtil');
 
-const { test } = require('../animecommands/getInfo');
+const { getInfo } = require('../animecommands/getInfo');
 
 const {
     jikanClient,
@@ -166,7 +166,7 @@ async function getAnimeInfo(message, animeID) {
             if (reaction.emoji.name === leftArrow) {
                 embedMessage.edit({embeds: [animeEmbed]}).catch(console.error);
             } else {
-                const updatedEmbed = await test(message, animeID);
+                const updatedEmbed = await getInfo(message, animeID);
                 embedMessage.edit({ embeds: [updatedEmbed] }).catch(console.error);
             }
 
