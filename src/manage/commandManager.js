@@ -1,7 +1,6 @@
 //ANIME COMMAND LIST 
 const animeCommands = [
     'getAnime',
-    //'getInfo',
     'getCharacter',
     'getImages',
     'getRandom'
@@ -10,7 +9,6 @@ const animeCommands = [
 //MANGA COMMAND LIST 
 const mangaCommands = [
     'getManga',
-    'getMInfo',
     'getMCharacter',
     'getMImages',
     'getMRandom'
