@@ -9,7 +9,7 @@
 
 const { EmbedBuilder } = require('discord.js');
 
-const { getMangaID } = require('../utils/mangaIDUtil');
+const { getID } = require('../utils/getIDUtil');
 
 const { getMInfo } = require('../mangacommands/getMInfo');
 
@@ -193,7 +193,7 @@ module.exports = {
         const passedMangaName = searchName
 
         try {
-            const mangaID = await getMangaID(message, passedMangaName);
+            const mangaID = await getID(message, MANGA_MODE, passedMangaName);
             getMangaInfo(message, mangaID);
         } catch (error) {
             console.error('Error:', error.message);

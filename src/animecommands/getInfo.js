@@ -5,8 +5,6 @@
  * @author Ares
  */
 
-//IMPORTS
-
 const { EmbedBuilder } = require('discord.js');
 
 const { jikanClient,
@@ -15,7 +13,6 @@ const { jikanClient,
     MAX_VALUE_LENGTH,
     ANIME_MODE
 } = require('../../config')
-
 
 const { BACKGROUND_NOT_FOUND,
     YEAR_NOT_FOUND,
@@ -148,8 +145,7 @@ module.exports = {
      * Executes the `info` command to retrieve and display additional information about an anime.
      * 
      * @param {Message} message - the Discord message being sent. 
-     * @param {Array} args - An array of arguments passed with the command, typically containing the anime name.
-     * @param {string} searchAnime - The anime name specified for the search.
+     * @param {number} animeID - the animeID passed from getAnime. 
      */
     async getInfo(message, animeID) {
 

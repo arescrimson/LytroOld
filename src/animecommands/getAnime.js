@@ -9,7 +9,7 @@
 
 const { EmbedBuilder } = require('discord.js');
 
-const { getAnimeID } = require('../utils/animeIDUtil');
+const { getID } = require('../utils/getIDUtil');
 
 const { getInfo } = require('../animecommands/getInfo');
 
@@ -194,12 +194,9 @@ module.exports = {
      * @param {Array} args - An array of arguments passed with the command, typically containing the anime name.
      * @param {string} searchAnime - The anime name specified for the search.
      */
-    async execute(message, args, searchName) {
-
-        const passedAnimeName = searchName
-
+    async execute(message, args, animeName) {
         try {
-            const animeID = await getAnimeID(message, passedAnimeName);
+            const animeID = await getID(message, ANIME_MODE, animeName);
             getAnimeInfo(message, animeID);
         } catch (error) {
             console.error('Error:', error.message);

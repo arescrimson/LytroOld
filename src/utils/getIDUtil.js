@@ -18,10 +18,19 @@ const { jikanClient } = require('../../config')
  * @param {string} searchString - The anime name or search string.
  * @returns {Promise<number>} The ID of the best-matching anime, or null if not found.
  */
-async function getAnimeID(message, searchString) {
+async function getID(message, mediaType, searchString) {
     try {
+        let searchResults; 
+        
         // Perform a search for anime based on the search string.
-        const searchResults = await jikanClient.anime.search(searchString);
+        switch(mediaType) { 
+            case 'Anime': 
+                searchResults = await jikanClient.anime.search(searchString);
+                break; 
+            case 'Manga': 
+                searchResults = await jikanClient.manga.search(searchString);
+                break; 
+        }
 
         // Determine the number of results to consider (approximately the top quarter).
         const quarterLength = Math.ceil(searchResults.length / 4);
@@ -41,7 +50,7 @@ async function getAnimeID(message, searchString) {
         }
 
         // Check if a manga ID was found or not.
-        if (foundID !== undefined && foundID !== null) {
+        if (foundID) {
             return foundID;
         } 
 
@@ -50,4 +59,4 @@ async function getAnimeID(message, searchString) {
     }
 }
 
-module.exports = { getAnimeID };
+module.exports = { getID };

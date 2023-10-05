@@ -9,7 +9,7 @@
 
 const { EmbedBuilder } = require('discord.js')
 
-const { getAnimeID } = require('../utils/animeIDUtil')
+const { getID } = require('../utils/getIDUtil')
 
 const { jikanClient , ICON_URL, ANIME_MODE} = require('../../config')
 
@@ -78,15 +78,12 @@ module.exports = {
      * Executes the `img` command to retrieve and display a random image from an anime's picture gallery.
      *
      * @param {Message} message - The Discord message object representing the user's command.
-     * @param {Array} args - An array of arguments passed with the command, typically containing the anime name.
-     * @param {string} searchAnime - The anime name specified for the search.
+     * @param {Array} args - An array of arguments passed with the command,
+     * @param {string} animeName - The anime name specified for the search.
      */
-    async execute(message, args, searchAnime) {
-
-        const animeName = searchAnime;
-
+    async execute(message, args, animeName) {
         try {
-            const animeID = await getAnimeID(message, animeName);
+            const animeID = await getID(message, ANIME_MODE, animeName);
             getAnimeImages(message, animeID)
         } catch (error) {
             console.error('Error:', error.message);

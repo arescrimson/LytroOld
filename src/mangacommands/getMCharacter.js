@@ -9,7 +9,7 @@
 
 const { EmbedBuilder, Message } = require('discord.js')
 
-const { getMangaID } = require('../utils/mangaIDUtil')
+const { getID } = require('../utils/getIDUtil')
 
 const {
     discordClient,
@@ -240,7 +240,7 @@ module.exports = {
        
             const mangaName = searchName;
 
-            const mangaID = await getMangaID(message, mangaName);
+            const mangaID = await getID(message, MANGA_MODE, mangaName);
             getMangaCharacters(message, mangaID, characterName)
         } catch (error) {
             console.error(`Error: Couldn't find manga character.`);

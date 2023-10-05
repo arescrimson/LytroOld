@@ -10,7 +10,7 @@
 const { EmbedBuilder } = require('discord.js')
 
 //IMPORT GETID 
-const { getMangaID } = require('../utils/mangaIDUtil')
+const { getID } = require('../utils/getIDUtil')
 
 //IMPORT CLIENT
 const { jikanClient, ICON_URL, MANGA_MODE } = require('../../config')
@@ -89,7 +89,7 @@ module.exports = {
         const mangaName = searchManga;
 
         try {
-            const mangaID = await getMangaID(message, mangaName);
+            const mangaID = await getID(message, MANGA_MODE, mangaName);
             getMangaImages(message, mangaID);
         } catch (error) {
             console.error('Error:', error.message);

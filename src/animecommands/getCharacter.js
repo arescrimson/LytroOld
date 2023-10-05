@@ -9,7 +9,7 @@
 
 const { EmbedBuilder } = require('discord.js')
 
-const { getAnimeID } = require('../utils/animeIDUtil')
+const { getID } = require('../utils/getIDUtil')
 
 const {
     discordClient,
@@ -227,14 +227,15 @@ module.exports = {
     name: 'chr',
     description: '!chr [main, sup, character_name] in [anime_name].\n' + 
     '(in [anime_name]) only needs to be used when searching for a new character that is not in the current directory you are searching in.\n\n' + 
-    'NOTE: MAY CONTAIN SPOILERS.',    /**
-     * Executes the `img` command to retrieve character information. 
+    'NOTE: MAY CONTAIN SPOILERS.',    
+    /**
+     * Executes the `chr` command to retrieve character information. 
      *
      * @param {Message} message - The Discord message object representing the user's command.
-     * @param {Array} args - An array of arguments passed with the command, typically containing the anime name.
+     * @param {Array} args - An array of arguments passed with the command. 
      * @param {string} searchAnime - The anime name specified for the search.
      */
-    async execute(message, args, searchName) {
+    async execute(message, args, animeName) {
 
         try {
             let characterName = args[0];
@@ -243,9 +244,8 @@ module.exports = {
 
             characterName = characterName.toLowerCase();
             //console.log('Character Name:' + characterName);
-            const animeName = searchName;
 
-            const animeID = await getAnimeID(message, animeName);
+            const animeID = await getID(message, ANIME_MODE, animeName);
             getAnimeCharacters(message, animeID, characterName)
         } catch (error) {
             console.error('Error in !chr:', error.message);

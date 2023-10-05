@@ -10,9 +10,6 @@
 // EMBEDBUILDER
 const { EmbedBuilder } = require('discord.js');
 
-// GETMANGAID
-const { getMangaID } = require('../utils/mangaIDUtil');
-
 // LYTRO FOOTER ICON, MAX VALUE LENGTH FOR EMBEDS
 const {
     jikanClient,
@@ -140,11 +137,9 @@ module.exports = {
      * Execute the !minfo command.
      *
      * @param {Message} message - The Discord message object.
-     * @param {string[]} args - The command arguments.
-     * @param {string} searchmanga - The searched manga name.
+     * @param {number} mangaID - the manga ID passed. 
      */
     async getMInfo(message, mangaID) {
-
         try {
             const mangaEmbed = await getInfo(message, mangaID);
             return mangaEmbed; 
