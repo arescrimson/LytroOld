@@ -11,12 +11,17 @@ const { EmbedBuilder } = require('discord.js');
 
 const { getAnimeID } = require('../utils/animeIDUtil');
 
+const { test } = require('../animecommands/getInfo');
+
 const {
     jikanClient,
+    discordClient,
     THUMBNAIL,
     ICON_URL,
     MAX_VALUE_LENGTH,
     ANIME_MODE,
+    rightArrow,
+    leftArrow,
 } = require('../../config');
 
 // ERROR MESSAGES
@@ -74,6 +79,8 @@ function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, EPISODES, GENRE
  */
 async function getAnimeInfo(message, animeID) {
     try {
+
+        let embedMessage = null;
 
         //GETS ANIME INFORMATION
         const anime = await jikanClient.anime.get(animeID);
@@ -137,7 +144,7 @@ async function getAnimeInfo(message, animeID) {
         const GENRES = genres;
         const RATINGS = ratings;
 
-        const embedMessage = createEmbed(
+        const animeEmbed = createEmbed(
             anime.title.default,
             URL,
             THUMBNAIL,
@@ -149,7 +156,27 @@ async function getAnimeInfo(message, animeID) {
             anime.image.webp.default
         )
 
-        message.channel.send({embeds: [embedMessage]})
+        embedMessage = await message.channel.send({ embeds: [animeEmbed] })
+        embedMessage.react(leftArrow);
+        embedMessage.react(rightArrow);
+
+        async function handleReaction(reaction, user) {
+            if (user.bot) return;
+
+            if (reaction.emoji.name === leftArrow) {
+                embedMessage.edit({embeds: [animeEmbed]}).catch(console.error);
+            } else {
+                const updatedEmbed = await test(message, animeID);
+                embedMessage.edit({ embeds: [updatedEmbed] }).catch(console.error);
+            }
+
+            reaction.users.remove(user);
+        };
+
+        discordClient.removeAllListeners('messageReactionAdd');
+        discordClient.on('messageReactionAdd', async (reaction, user) => {
+            await handleReaction(reaction, user);
+        });
 
     } catch (error) {
         message.channel.send('Error with searching Anime.');
