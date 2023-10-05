@@ -112,7 +112,7 @@ async function getInfo(message, mangaID) {
         const SERIAL = manga.serializations[0]?.name || SERIAL_NOT_FOUND;
         const POPULARITY = manga.popularity?.toLocaleString() || POPULARITY_NOT_FOUND;
 
-        const exampleEmbed = createEmbed(
+        const mangaEmbed = createEmbed(
             manga.title.default,
             manga.url,
             THUMBNAIL,
@@ -125,7 +125,8 @@ async function getInfo(message, mangaID) {
             manga.image.webp.default
         );
 
-        message.channel.send({ embeds: [exampleEmbed] });
+        return mangaEmbed; 
+
     } catch (error) {
         console.error('Error in getInfo:', error.message);
         message.channel.send(`Couldn't find additional info :(`);
@@ -142,12 +143,11 @@ module.exports = {
      * @param {string[]} args - The command arguments.
      * @param {string} searchmanga - The searched manga name.
      */
-    async execute(message, args, searchmanga) {
-        const mangaName = searchmanga;
+    async getMInfo(message, mangaID) {
 
         try {
-            const mangaID = await getMangaID(message, mangaName);
-            getInfo(message, mangaID);
+            const mangaEmbed = await getInfo(message, mangaID);
+            return mangaEmbed; 
         } catch (error) {
             console.error('Error in info:', error.message);
             message.channel.send('An error occurred in getInfo: ' + error.message);

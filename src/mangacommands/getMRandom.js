@@ -9,9 +9,11 @@
 
 const { EmbedBuilder } = require('discord.js');
 
+const { getMInfo } = require('../mangacommands/getMInfo');
 
 const {
     jikanClient,
+    discordClient,
     THUMBNAIL,
     VOLUMES_NOT_FOUND,
     MAX_VALUE_LENGTH,
@@ -21,8 +23,10 @@ const {
     URL_NOT_FOUND,
     GENRES_NOT_FOUND,
     RATINGS_NOT_FOUND,
-    AUTHOR_NOT_FOUND, 
-    bannedList
+    AUTHOR_NOT_FOUND,
+    bannedList, 
+    rightArrow,
+    leftArrow,
 } = require('../../config');
 
 /**
@@ -71,7 +75,8 @@ async function getRandomManga(message) {
     try {
 
         let random;
-        let found = false; 
+        let found = false;
+        let embedMessage = null;
 
         do {
             random = await jikanClient.manga.random();
@@ -81,11 +86,11 @@ async function getRandomManga(message) {
                 const genres = random.genres.map(genre => genre.name).join(', ');
                 const foundManga = !(bannedList.some(value => genres.includes(value)));
 
-                if (foundManga) { 
-                    found = true; 
+                if (foundManga) {
+                    found = true;
                     break;
-                } 
-            } 
+                }
+            }
         } while (!found)
 
         const mangaID = random.id;
@@ -149,7 +154,7 @@ async function getRandomManga(message) {
         const RATINGS = ratings;
 
         // IF SYNOPSIS HAS BEEN SPLIT, USE THE SPLIT SYNOPSIS AS EMBED DOES NOT SUPPORT MORE THAN 1024 CHARACTERS PER VALUE
-        const embedMessage = createEmbed(
+        const mangaEmbed = createEmbed(
             manga.title.default,
             URL,
             THUMBNAIL,
@@ -162,7 +167,27 @@ async function getRandomManga(message) {
             manga.image.webp.default
         );
 
-        message.channel.send({ embeds: [embedMessage] });
+        embedMessage = await message.channel.send({ embeds: [mangaEmbed] });
+        embedMessage.react(leftArrow);
+        embedMessage.react(rightArrow);
+
+        async function handleReaction(reaction, user) {
+            if (user.bot) return;
+
+            if (reaction.emoji.name === leftArrow) {
+                embedMessage.edit({ embeds: [mangaEmbed] }).catch(console.error);
+            } else {
+                const updatedEmbed = await getMInfo(message, mangaID);
+                embedMessage.edit({ embeds: [updatedEmbed] }).catch(console.error);
+            }
+
+            reaction.users.remove(user);
+        };
+
+        discordClient.removeAllListeners('messageReactionAdd');
+        discordClient.on('messageReactionAdd', async (reaction, user) => {
+            await handleReaction(reaction, user);
+        });
     } catch (error) {
         message.channel.send('Error finding random manga.')
         console.error('Error in finding random manga:', error.message);

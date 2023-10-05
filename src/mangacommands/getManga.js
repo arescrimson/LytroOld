@@ -11,7 +11,18 @@ const { EmbedBuilder } = require('discord.js');
 
 const { getMangaID } = require('../utils/mangaIDUtil');
 
-const { jikanClient, MANGA_MODE, THUMBNAIL, ICON_URL, MAX_VALUE_LENGTH } = require('../../config')
+const { getMInfo } = require('../mangacommands/getMInfo');
+
+const { 
+    jikanClient,
+    discordClient, 
+    MANGA_MODE, 
+    THUMBNAIL, 
+    ICON_URL, 
+    MAX_VALUE_LENGTH, 
+    leftArrow, 
+    rightArrow,
+} = require('../../config')
 
 //ERROR MESSAGES
 const { SYNOPSIS_NOT_FOUND, URL_NOT_FOUND, AUTHOR_NOT_FOUND, VOLUMES_NOT_FOUND, GENRES_NOT_FOUND, RATINGS_NOT_FOUND } = require('../../config')
@@ -60,9 +71,11 @@ function createEmbed(TITLE, URL, THUMBNAIL, AUTHOR, SYNOPSIS, SYNOPSIS2, VOLUMES
  * @param {number} mangaID - The ID of the manga to retrieve information for.
  */
 async function getMangaInfo(message, mangaID) {
-    try {
+    try {   
 
-        //GETS manga INFORMATION
+        let embedMessage = null; 
+
+        //GETS MANGA INFORMATION
         const manga = await jikanClient.manga.get(mangaID);
         const stats = await jikanClient.manga.getStatistics(mangaID);
         let genres = manga.genres.map(genre => genre.name).join(', ');
@@ -127,7 +140,7 @@ async function getMangaInfo(message, mangaID) {
         const GENRES = genres;
         const RATINGS = ratings;
 
-        const embedMessage = createEmbed(
+        const mangaEmbed = createEmbed(
             manga.title.default,
             URL,
             THUMBNAIL,
@@ -140,8 +153,27 @@ async function getMangaInfo(message, mangaID) {
             manga.image.webp.default
         )
 
-        message.channel.send({ embeds: [embedMessage] });
+        embedMessage = await message.channel.send({ embeds: [mangaEmbed] })
+        embedMessage.react(leftArrow);
+        embedMessage.react(rightArrow);
 
+        async function handleReaction(reaction, user) {
+            if (user.bot) return;
+
+            if (reaction.emoji.name === leftArrow) {
+                embedMessage.edit({embeds: [mangaEmbed]}).catch(console.error);
+            } else {
+                const updatedEmbed = await getMInfo(message, mangaID);
+                embedMessage.edit({ embeds: [updatedEmbed] }).catch(console.error);
+            }
+
+            reaction.users.remove(user);
+        };
+
+        discordClient.removeAllListeners('messageReactionAdd');
+        discordClient.on('messageReactionAdd', async (reaction, user) => {
+            await handleReaction(reaction, user);
+        });
     } catch (error) {
         console.error('Error in finding Manga:', error.message);
     }
