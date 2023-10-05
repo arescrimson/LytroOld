@@ -8,9 +8,12 @@
 //IMPORTS
 
 const { EmbedBuilder } = require('discord.js');
+ 
+const { getInfo } = require('../animecommands/getInfo');
 
 const {
     jikanClient,
+    discordClient,
     THUMBNAIL,
     MAX_VALUE_LENGTH,
     ICON_URL,
@@ -19,7 +22,9 @@ const {
     GENRES_NOT_FOUND,
     RATINGS_NOT_FOUND,
     EPISODES_NOT_FOUND,
-    bannedList
+    bannedList, 
+    rightArrow,
+    leftArrow
 } = require('../../config');
 
 /**
@@ -68,6 +73,7 @@ async function getRandomAnime(message) {
     try {
 
         let random = ''; 
+        let embedMessage = null; 
         let found = false; 
 
         do {
@@ -99,7 +105,7 @@ async function getRandomAnime(message) {
         let synopsis2 = '\n';
 
         //SPLITS SYNOPSIS IF TOO LONG INTO 2-3 PARAGRAPHS. 
-        if (anime.synopsis) {
+        if (anime.synopsis !== null) {
             if (anime.synopsis.length > MAX_VALUE_LENGTH) {
                 const midPoint = anime.synopsis.lastIndexOf('.', MAX_VALUE_LENGTH);
                 if (midPoint !== -1) {
@@ -113,14 +119,15 @@ async function getRandomAnime(message) {
             else {
                 synopsis = anime.synopsis;
             }
-        } else { 
+        } else {
             synopsis = SYNOPSIS_NOT_FOUND;
         }
 
+        //RATINGS AS AN AVERAGED SCORE STRING 
         let ratings = '';
 
-        //RATINGS AS AN AVERAGED SCORE STRING 
         if (stats.scores !== null) {
+
             let totalScore = 0;
             let totalVotes = 0;
 
@@ -132,19 +139,21 @@ async function getRandomAnime(message) {
             const averageScore = totalScore / totalVotes;
 
             ratings = `Average score based off ${totalVotes.toLocaleString()} votes: ${averageScore.toFixed(2) + ' / 10'}`;
-        } else {
+        }
+
+        else {
             ratings = RATINGS_NOT_FOUND;
         }
 
         //SYNOPSIS, URL, EPISODES, GENRES, RATINGS
         const SYNOPSIS = synopsis;
         const SYNOPSIS2 = synopsis2;
-        const URL = anime.url ?? EPISODES_NOT_FOUND;
-        const EPISODES = anime.episodes ?? EPISODES_NOT_FOUND;
+        const URL = anime.url ?? URL_NOT_FOUND;
+        const EPISODES = anime.episodes?.toLocaleString() ?? EPISODES_NOT_FOUND;
         const GENRES = genres;
         const RATINGS = ratings;
 
-        const embedMessage = createEmbed(
+        const animeEmbed = createEmbed(
             anime.title.default,
             URL,
             THUMBNAIL,
@@ -156,7 +165,28 @@ async function getRandomAnime(message) {
             anime.image.webp.default
         )
 
-        message.channel.send({ embeds: [embedMessage] });
+        embedMessage = await message.channel.send({ embeds: [animeEmbed] });
+            
+        embedMessage.react(leftArrow);
+        embedMessage.react(rightArrow); 
+
+        async function handleReaction(reaction, user) {
+            if (user.bot) return;
+
+            if (reaction.emoji.name === leftArrow) {
+                embedMessage.edit({embeds: [animeEmbed]}).catch(console.error);
+            } else {
+                const updatedEmbed = await getInfo(message, anime.id);
+                embedMessage.edit({ embeds: [updatedEmbed] }).catch(console.error);
+            }
+
+            reaction.users.remove(user);
+        };
+
+        discordClient.removeAllListeners('messageReactionAdd');
+        discordClient.on('messageReactionAdd', async (reaction, user) => {
+            await handleReaction(reaction, user);
+        });
 
     } catch (error) {
         console.error('Error:', error.message);
