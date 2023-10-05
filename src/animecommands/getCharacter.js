@@ -153,7 +153,7 @@ async function getAnimeCharacters(message, animeID, characterName) {
 
         //characterObj = await getCharacterUtil(characterArr[i].character.name);
         characterObj = await jikanClient.characters.getFull(characterArr[i].character.id); 
-        
+
         if (characterObj) {
             description = getDescription(characterObj.about);
         } else {
@@ -219,14 +219,15 @@ async function getAnimeCharacters(message, animeID, characterName) {
 
     } catch (error) {
         message.channel.send('Error with finding anime character.')
-        console.error('Error:', error.message);
+        console.error('Error in getCharacter:', error.message);
     }
 }
 
 module.exports = {
     name: 'chr',
-    description: '!chr [main, sup, character_name] in [anime_name]. Note that (in [anime name] only needs to be used when searching for a new character that is not in the current directory you are searching in.',
-    /**
+    description: '!chr [main, sup, character_name] in [anime_name].\n' + 
+    '(in [anime_name]) only needs to be used when searching for a new character that is not in the current directory you are searching in.\n\n' + 
+    'NOTE: MAY CONTAIN SPOILERS.',    /**
      * Executes the `img` command to retrieve character information. 
      *
      * @param {Message} message - The Discord message object representing the user's command.
@@ -247,7 +248,7 @@ module.exports = {
             const animeID = await getAnimeID(message, animeName);
             getAnimeCharacters(message, animeID, characterName)
         } catch (error) {
-            console.error('Error:', error.message);
+            console.error('Error in !chr:', error.message);
             message.channel.send('An error occurred: please make sure you are specifying an anime character and/or anime.');
         }
     }
