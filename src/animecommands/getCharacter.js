@@ -151,10 +151,11 @@ async function getAnimeCharacters(message, animeID, characterName) {
 
         let i = 0;
 
-        characterObj = await getCharacterUtil(characterArr[i].character.name);
-
+        //characterObj = await getCharacterUtil(characterArr[i].character.name);
+        characterObj = await jikanClient.characters.getFull(characterArr[i].character.id); 
+        
         if (characterObj) {
-            description = getDescription(characterObj.description);
+            description = getDescription(characterObj.about);
         } else {
             description = DESCRIPTION_NOT_FOUND;
         }
@@ -186,10 +187,11 @@ async function getAnimeCharacters(message, animeID, characterName) {
                 i = (i + 1) % characterArr.length; // Increment and wrap around
             }
 
-            characterObj = await getCharacterUtil(characterArr[i].character.name);
+            //characterObj = await getCharacterUtil(characterArr[i].character.name);
+            characterObj = await jikanClient.characters.getFull(characterArr[i].character.id); 
 
             if (characterObj) {
-                description = getDescription(characterObj.description);
+                description = getDescription(characterObj.about);
             } else {
                 description = DESCRIPTION_NOT_FOUND;
             }
