@@ -22,7 +22,8 @@ const {
     DESCRIPTION_NOT_FOUND,
     MAX_VALUE_LENGTH,
     VA_NOT_FOUND,
-    ROLE_NOT_FOUND
+    ROLE_NOT_FOUND,
+    buttonRow
 } = require('../../config')
 
 
@@ -171,23 +172,21 @@ async function getAnimeCharacters(message, animeID, characterName) {
             characterArr[i].character.image.webp.default,
         );
 
-        embedMessage = await message.channel.send({ embeds: [characterEmbed] });
-
         if (characterArr.length > 1) {
-            embedMessage.react(leftArrow);
-            embedMessage.react(rightArrow);
+            embedMessage = await message.channel.send({ embeds: [characterEmbed] , components: [buttonRow]});
+        } else { 
+            embedMessage = await message.channel.send({ embeds: [characterEmbed] });
         }
 
-        async function handleReaction(reaction, user) {
-            if (user.bot) return;
+        async function handleButton(interaction) {
+            if (interaction.user.bot) return;
 
-            if (reaction.emoji.name === leftArrow) {
-                i = (i - 1 + characterArr.length) % characterArr.length; // Decrement and wrap around
+            if (interaction.customId === 'left') {
+                i = (i - 1 + characterArr.length) % characterArr.length; 
             } else {
-                i = (i + 1) % characterArr.length; // Increment and wrap around
+                i = (i + 1) % characterArr.length;
             }
-
-            //characterObj = await getCharacterUtil(characterArr[i].character.name);
+            
             characterObj = await jikanClient.characters.getFull(characterArr[i].character.id); 
 
             if (characterObj) {
@@ -207,16 +206,17 @@ async function getAnimeCharacters(message, animeID, characterName) {
                 characterArr[i].character.image.webp.default
             );
 
-            reaction.users.remove(user);
-
             embedMessage.edit({ embeds: [updatedEmbed] }).catch(console.error);
+
+            interaction.deferUpdate();
         };
 
-        discordClient.removeAllListeners('messageReactionAdd');
-        discordClient.on('messageReactionAdd', async (reaction, user) => {
-            await handleReaction(reaction, user);
-        });
+        discordClient.removeAllListeners('interactionCreate');
 
+        discordClient.on('interactionCreate', async (interaction) => {
+            if (!interaction.isButton()) return;
+            await handleButton(interaction);
+        });
     } catch (error) {
         message.channel.send('Error with finding anime character.')
         console.error('Error in getCharacter:', error.message);
