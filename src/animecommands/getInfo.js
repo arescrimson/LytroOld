@@ -7,7 +7,7 @@
 
 const { EmbedBuilder } = require('discord.js');
 
-const { jikanClient,
+const { JIKAN_CLIENT,
     THUMBNAIL,
     ICON_URL,
     MAX_VALUE_LENGTH,
@@ -67,8 +67,8 @@ async function getInfo(message, animeID) {
     try {
 
         //GETS ANIME INFORMATION
-        const anime = await jikanClient.anime.get(animeID);
-        const rec = await jikanClient.anime.getRecommendations(animeID);
+        const anime = await JIKAN_CLIENT.anime.get(animeID);
+        const rec = await JIKAN_CLIENT.anime.getRecommendations(animeID);
 
         //INITIALIZES SPLIT FOR BACKGROUNDS THAT ARE OVER 1020 CHARACTERS 
         let background = '';

@@ -14,13 +14,13 @@ const { getID } = require('../utils/getIDUtil');
 const { getInfo } = require('../animecommands/getInfo');
 
 const {
-    jikanClient,
-    discordClient,
+    JIKAN_CLIENT,
+    DISCORD_CLIENT,
     THUMBNAIL,
     ICON_URL,
     MAX_VALUE_LENGTH,
     ANIME_MODE,
-    buttonRow
+    BUTTON_ROW
 } = require('../../config');
 
 // ERROR MESSAGES
@@ -82,8 +82,8 @@ async function getAnimeInfo(message, animeID) {
         let embedMessage = null;
 
         //GETS ANIME INFORMATION
-        const anime = await jikanClient.anime.get(animeID);
-        const stats = await jikanClient.anime.getStatistics(animeID);
+        const anime = await JIKAN_CLIENT.anime.get(animeID);
+        const stats = await JIKAN_CLIENT.anime.getStatistics(animeID);
         let genres = anime.genres.map(genre => genre.name).join(', ');
 
         if (!genres || genres.trim() === '') {
@@ -155,7 +155,7 @@ async function getAnimeInfo(message, animeID) {
             anime.image.webp.default
         )
 
-        embedMessage = await message.channel.send({ embeds: [animeEmbed], components: [buttonRow] })
+        embedMessage = await message.channel.send({ embeds: [animeEmbed], components: [BUTTON_ROW] })
 
         async function handleButton(interaction) {
             if (interaction.user.bot) return;
@@ -170,9 +170,9 @@ async function getAnimeInfo(message, animeID) {
             interaction.deferUpdate();
         };
 
-        discordClient.removeAllListeners('interactionCreate');
+        DISCORD_CLIENT.removeAllListeners('interactionCreate');
 
-        discordClient.on('interactionCreate', async (interaction) => {
+        DISCORD_CLIENT.on('interactionCreate', async (interaction) => {
             if (!interaction.isButton()) return;
             await handleButton(interaction);
         });

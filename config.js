@@ -7,7 +7,7 @@
 
 const { Client, IntentsBitField, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
 const Jikan = require('jikan4.js');
-const jikanClient = new Jikan.Client();
+const JIKAN_CLIENT = new Jikan.Client();
 
 // Discord Bot Token for authentication
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
@@ -16,7 +16,7 @@ const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 const QUOTE_TOKEN = process.env.ACCESS_TOKEN;
 
 // Discord Client Manager
-const discordClient = new Client({
+const DISCORD_CLIENT = new Client({
   intents: [
     IntentsBitField.Flags.Guilds,
     IntentsBitField.Flags.GuildMessages,
@@ -37,7 +37,7 @@ const leftArrow = new ButtonBuilder()
   .setLabel('<--')
   .setStyle(ButtonStyle.Success)
 
-const buttonRow = new ActionRowBuilder()
+const BUTTON_ROW = new ActionRowBuilder()
   .setComponents(leftArrow, rightArrow)
 
 //Explicit genre check array 
@@ -52,13 +52,13 @@ module.exports = {
   DISCORD_TOKEN,
 
   // Jikan Client Manager
-  jikanClient,
+  JIKAN_CLIENT,
 
   // Discord Client Manager
-  discordClient,
+  DISCORD_CLIENT,
 
   // Scroll Button Row 
-  buttonRow,
+  BUTTON_ROW,
 
   // Links to embed images
   THUMBNAIL: 'https://github.com/arescrimson/Lytro/blob/master/media/profile.jpg?raw=true',

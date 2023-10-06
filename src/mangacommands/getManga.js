@@ -14,13 +14,13 @@ const { getID } = require('../utils/getIDUtil');
 const { getMInfo } = require('../mangacommands/getMInfo');
 
 const { 
-    jikanClient,
-    discordClient, 
+    JIKAN_CLIENT,
+    DISCORD_CLIENT, 
     MANGA_MODE, 
     THUMBNAIL, 
     ICON_URL, 
     MAX_VALUE_LENGTH, 
-    buttonRow
+    BUTTON_ROW
 } = require('../../config')
 
 //ERROR MESSAGES
@@ -75,8 +75,8 @@ async function getMangaInfo(message, mangaID) {
         let embedMessage = null; 
 
         //GETS MANGA INFORMATION
-        const manga = await jikanClient.manga.get(mangaID);
-        const stats = await jikanClient.manga.getStatistics(mangaID);
+        const manga = await JIKAN_CLIENT.manga.get(mangaID);
+        const stats = await JIKAN_CLIENT.manga.getStatistics(mangaID);
         let genres = manga.genres.map(genre => genre.name).join(', ');
 
         if (!genres || genres.trim() === '') {
@@ -152,7 +152,7 @@ async function getMangaInfo(message, mangaID) {
             manga.image.webp.default
         )
 
-        embedMessage = await message.channel.send({ embeds: [mangaEmbed], components: [buttonRow] })
+        embedMessage = await message.channel.send({ embeds: [mangaEmbed], components: [BUTTON_ROW] })
 
         async function handleButton(interaction) {
             if (interaction.user.bot) return;
@@ -167,9 +167,9 @@ async function getMangaInfo(message, mangaID) {
             interaction.deferUpdate();
         };
 
-        discordClient.removeAllListeners('interactionCreate');
+        DISCORD_CLIENT.removeAllListeners('interactionCreate');
 
-        discordClient.on('interactionCreate', async (interaction) => {
+        DISCORD_CLIENT.on('interactionCreate', async (interaction) => {
             if (!interaction.isButton()) return;
             await handleButton(interaction);
         });

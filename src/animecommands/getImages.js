@@ -11,7 +11,7 @@ const { EmbedBuilder } = require('discord.js')
 
 const { getID } = require('../utils/getIDUtil')
 
-const { jikanClient , ICON_URL, ANIME_MODE} = require('../../config')
+const { JIKAN_CLIENT , ICON_URL, ANIME_MODE} = require('../../config')
 
 const searchedSet = new Set();
 
@@ -28,8 +28,8 @@ async function getAnimeImages(message, animeID) {
 
         let randomImageIndex;     
 
-        const anime = await jikanClient.anime.get(animeID);
-        const pictures = await jikanClient.anime.getPictures(animeID);
+        const anime = await JIKAN_CLIENT.anime.get(animeID);
+        const pictures = await JIKAN_CLIENT.anime.getPictures(animeID);
 
         //randomly search index of picture gallery 
         do {

@@ -12,15 +12,15 @@ const { EmbedBuilder, Message } = require('discord.js')
 const { getID } = require('../utils/getIDUtil')
 
 const {
-    discordClient,
-    jikanClient,
+    DISCORD_CLIENT,
+    JIKAN_CLIENT,
     MANGA_MODE,
     THUMBNAIL,
     ICON_URL,
     ROLE_NOT_FOUND,
     MAX_VALUE_LENGTH,
     DESCRIPTION_NOT_FOUND,
-    buttonRow
+    BUTTON_ROW
 } = require('../../config')
 
 const { getCharacterUtil } = require('../utils/findCharacterUtil')
@@ -78,16 +78,22 @@ function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, DESCRIPTION, IM
 function getDescription(characterDescription) {
     let description;
 
-    if (characterDescription.length > MAX_VALUE_LENGTH) {
-        const midPoint = characterDescription.lastIndexOf('.', MAX_VALUE_LENGTH);
-
-        if (midPoint !== -1) {
-            const descriptionFirstPart = characterDescription.substring(0, midPoint + 1);
-            description = descriptionFirstPart;
-        }
-    }
+    if (!characterDescription) {
+        return description = DESCRIPTION_NOT_FOUND;
+    } 
+    
     else {
-        description = characterDescription
+        if (characterDescription.length > MAX_VALUE_LENGTH) {
+            const midPoint = characterDescription.lastIndexOf('.', MAX_VALUE_LENGTH);
+
+            if (midPoint !== -1) {
+                const descriptionFirstPart = characterDescription.substring(0, midPoint + 1);
+                description = descriptionFirstPart;
+            }
+        }
+        else {
+            description = characterDescription
+        }
     }
 
     return description;
@@ -103,8 +109,8 @@ function getDescription(characterDescription) {
 async function getMangaCharacters(message, mangaID, characterName) {
 
     try {
-        const manga = await jikanClient.manga.get(mangaID);
-        const ch = await jikanClient.manga.getCharacters(mangaID);
+        const manga = await JIKAN_CLIENT.manga.get(mangaID);
+        const ch = await JIKAN_CLIENT.manga.getCharacters(mangaID);
 
         const mangaName = manga.title.default;
 
@@ -149,7 +155,7 @@ async function getMangaCharacters(message, mangaID, characterName) {
         let i = 0;
 
         //characterObj = await getCharacterUtil(characterArr[i].character.name);
-        characterObj = await jikanClient.characters.getFull(characterArr[i].character.id); 
+        characterObj = await JIKAN_CLIENT.characters.getFull(characterArr[i].character.id); 
 
         if (characterObj) {
             description = getDescription(characterObj.about);
@@ -168,7 +174,7 @@ async function getMangaCharacters(message, mangaID, characterName) {
         );
 
         if (characterArr.length > 1) {
-            embedMessage = await message.channel.send({ embeds: [characterEmbed] , components: [buttonRow]});
+            embedMessage = await message.channel.send({ embeds: [characterEmbed] , components: [BUTTON_ROW]});
         } else { 
             embedMessage = await message.channel.send({ embeds: [characterEmbed] });
         }
@@ -182,7 +188,7 @@ async function getMangaCharacters(message, mangaID, characterName) {
                 i = (i + 1) % characterArr.length;
             }
             
-            characterObj = await jikanClient.characters.getFull(characterArr[i].character.id); 
+            characterObj = await JIKAN_CLIENT.characters.getFull(characterArr[i].character.id); 
 
             if (characterObj) {
                 description = getDescription(characterObj.about);
@@ -205,9 +211,9 @@ async function getMangaCharacters(message, mangaID, characterName) {
             interaction.deferUpdate();
         };
 
-        discordClient.removeAllListeners('interactionCreate');
+        DISCORD_CLIENT.removeAllListeners('interactionCreate');
 
-        discordClient.on('interactionCreate', async (interaction) => {
+        DISCORD_CLIENT.on('interactionCreate', async (interaction) => {
             if (!interaction.isButton()) return;
             await handleButton(interaction);
         });

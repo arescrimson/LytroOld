@@ -12,7 +12,7 @@ const { EmbedBuilder } = require('discord.js');
 
 // LYTRO FOOTER ICON, MAX VALUE LENGTH FOR EMBEDS
 const {
-    jikanClient,
+    JIKAN_CLIENT,
     THUMBNAIL,
     ICON_URL,
     MAX_VALUE_LENGTH,
@@ -74,7 +74,7 @@ function createEmbed(TITLE, URL, THUMBNAIL, AUTHOR, BACKGROUND, BACKGROUND2, DAT
 async function getInfo(message, mangaID) {
     try {
         // GET MANGA INFORMATION
-        const manga = await jikanClient.manga.get(mangaID);
+        const manga = await JIKAN_CLIENT.manga.get(mangaID);
 
         // INITIALIZE SPLIT FOR BACKGROUNDS THAT ARE OVER 1020 CHARACTERS
         let background = '';
@@ -105,7 +105,7 @@ async function getInfo(message, mangaID) {
         const BACKGROUND = background;
         const BACKGROUND2 = background2;
         const AUTHOR = manga.authors[0]?.name || AUTHOR_NOT_FOUND;
-        const DATE = manga.publishInfo.publishedFrom?.getFullYear() || YEAR_NOT_FOUND;
+        const DATE = manga.publishInfo?.publishedFrom?.getFullYear() || YEAR_NOT_FOUND;
         const SERIAL = manga.serializations[0]?.name || SERIAL_NOT_FOUND;
         const POPULARITY = manga.popularity?.toLocaleString() || POPULARITY_NOT_FOUND;
 

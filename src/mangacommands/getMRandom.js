@@ -12,8 +12,8 @@ const { EmbedBuilder } = require('discord.js');
 const { getMInfo } = require('../mangacommands/getMInfo');
 
 const {
-    jikanClient,
-    discordClient,
+    JIKAN_CLIENT,
+    DISCORD_CLIENT,
     THUMBNAIL,
     VOLUMES_NOT_FOUND,
     MAX_VALUE_LENGTH,
@@ -25,8 +25,7 @@ const {
     RATINGS_NOT_FOUND,
     AUTHOR_NOT_FOUND,
     bannedList, 
-    rightArrow,
-    leftArrow,
+    BUTTON_ROW
 } = require('../../config');
 
 /**
@@ -79,7 +78,7 @@ async function getRandomManga(message) {
         let embedMessage = null;
 
         do {
-            random = await jikanClient.manga.random();
+            random = await JIKAN_CLIENT.manga.random();
 
             if (random.genres) {
 
@@ -96,7 +95,7 @@ async function getRandomManga(message) {
         const mangaID = random.id;
 
         const manga = random;
-        const stats = await jikanClient.manga.getStatistics(mangaID);
+        const stats = await JIKAN_CLIENT.manga.getStatistics(mangaID);
         const genres = manga.genres.map(genre => genre.name).join(', ');
 
         if (!genres || genres.trim() === '') {
@@ -167,30 +166,29 @@ async function getRandomManga(message) {
             manga.image.webp.default
         );
 
-        embedMessage = await message.channel.send({ embeds: [mangaEmbed] });
-        embedMessage.react(leftArrow);
-        embedMessage.react(rightArrow);
+        embedMessage = await message.channel.send({ embeds: [mangaEmbed], components: [BUTTON_ROW] })
 
-        async function handleReaction(reaction, user) {
-            if (user.bot) return;
+        async function handleButton(interaction) {
+            if (interaction.user.bot) return;
 
-            if (reaction.emoji.name === leftArrow) {
-                embedMessage.edit({ embeds: [mangaEmbed] }).catch(console.error);
+            if (interaction.customId === 'left') {
+                embedMessage.edit({embeds: [mangaEmbed]}).catch(console.error);
             } else {
                 const updatedEmbed = await getMInfo(message, mangaID);
-                embedMessage.edit({ embeds: [updatedEmbed] }).catch(console.error);
+                embedMessage.edit({embeds: [updatedEmbed]}).catch(console.error);
             }
-
-            reaction.users.remove(user);
+            
+            interaction.deferUpdate();
         };
 
-        discordClient.removeAllListeners('messageReactionAdd');
-        discordClient.on('messageReactionAdd', async (reaction, user) => {
-            await handleReaction(reaction, user);
+        DISCORD_CLIENT.removeAllListeners('interactionCreate');
+
+        DISCORD_CLIENT.on('interactionCreate', async (interaction) => {
+            if (!interaction.isButton()) return;
+            await handleButton(interaction);
         });
     } catch (error) {
-        message.channel.send('Error finding random manga.')
-        console.error('Error in finding random manga:', error.message);
+        console.error('Error in finding Manga:', error.message);
     }
 }
 

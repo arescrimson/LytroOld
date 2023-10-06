@@ -8,12 +8,12 @@
 //IMPORTS
 
 const { EmbedBuilder } = require('discord.js');
- 
+
 const { getInfo } = require('../animecommands/getInfo');
 
 const {
-    jikanClient,
-    discordClient,
+    JIKAN_CLIENT,
+    DISCORD_CLIENT,
     THUMBNAIL,
     MAX_VALUE_LENGTH,
     ICON_URL,
@@ -22,9 +22,8 @@ const {
     GENRES_NOT_FOUND,
     RATINGS_NOT_FOUND,
     EPISODES_NOT_FOUND,
-    bannedList, 
-    rightArrow,
-    leftArrow
+    bannedList,
+    BUTTON_ROW
 } = require('../../config');
 
 /**
@@ -72,28 +71,28 @@ async function getRandomAnime(message) {
 
     try {
 
-        let random = ''; 
-        let embedMessage = null; 
-        let found = false; 
+        let random = '';
+        let embedMessage = null;
+        let found = false;
 
         do {
-            random = await jikanClient.anime.random();
+            random = await JIKAN_CLIENT.anime.random();
 
             if (random.genres) {
 
                 const genres = random.genres.map(genre => genre.name).join(', ');
                 const foundManga = !(bannedList.some(value => genres.includes(value)));
 
-                if (foundManga) { 
-                    found = true; 
+                if (foundManga) {
+                    found = true;
                     break;
-                } 
-            } 
+                }
+            }
         } while (!found)
 
-        const anime = random; 
+        const anime = random;
 
-        const stats = await jikanClient.anime.getStatistics(anime.id);
+        const stats = await JIKAN_CLIENT.anime.getStatistics(anime.id);
         let genres = anime.genres.map(genre => genre.name).join(', ');
 
         if (!genres || genres.trim() === '') {
@@ -165,32 +164,30 @@ async function getRandomAnime(message) {
             anime.image.webp.default
         )
 
-        embedMessage = await message.channel.send({ embeds: [animeEmbed] });
-            
-        embedMessage.react(leftArrow);
-        embedMessage.react(rightArrow); 
+        embedMessage = await message.channel.send({ embeds: [animeEmbed], components: [BUTTON_ROW] })
 
-        async function handleReaction(reaction, user) {
-            if (user.bot) return;
+        async function handleButton(interaction) {
+            if (interaction.user.bot) return;
 
-            if (reaction.emoji.name === leftArrow) {
-                embedMessage.edit({embeds: [animeEmbed]}).catch(console.error);
+            if (interaction.customId === 'left') {
+                embedMessage.edit({ embeds: [animeEmbed] }).catch(console.error);
             } else {
                 const updatedEmbed = await getInfo(message, anime.id);
                 embedMessage.edit({ embeds: [updatedEmbed] }).catch(console.error);
             }
 
-            reaction.users.remove(user);
+            interaction.deferUpdate();
         };
 
-        discordClient.removeAllListeners('messageReactionAdd');
-        discordClient.on('messageReactionAdd', async (reaction, user) => {
-            await handleReaction(reaction, user);
-        });
+        DISCORD_CLIENT.removeAllListeners('interactionCreate');
 
+        DISCORD_CLIENT.on('interactionCreate', async (interaction) => {
+            if (!interaction.isButton()) return;
+            await handleButton(interaction);
+        });
     } catch (error) {
+        message.channel.send('Error with searching Anime.');
         console.error('Error:', error.message);
-        message.channel.send('An error occured: ' + error.message)
     }
 }
 

@@ -10,7 +10,7 @@
 require('dotenv').config();
 
 //IMPORT DISCORD CLIENT, DISCORD LOGIN TOKEN
-const { discordClient, DISCORD_TOKEN } = require('./config');
+const { DISCORD_CLIENT, DISCORD_TOKEN } = require('./config');
 
 //IMPORT COMMAND LIST 
 const { commandList } = require('./src/manage/commandManager')
@@ -25,7 +25,7 @@ const { execute } = require('./src/misccommands/getHelp')
 const PREFIX = '!';
 
 //DISPLAYS BOT STATUS IN TERMINAL ON START 
-discordClient.on('ready', (c) => {
+DISCORD_CLIENT.on('ready', (c) => {
     console.log(`${c.user.tag + " is ready."}`);
 })
 
@@ -33,13 +33,13 @@ discordClient.on('ready', (c) => {
 const userSearchNames = new Map();
 
 //STARTS BOT FUNCTION ON MESSAGE CREATE 
-discordClient.on('messageCreate', async (message) => {
+DISCORD_CLIENT.on('messageCreate', async (message) => {
 
     try {
         if (message.author.bot) return;
 
         if (message.content.startsWith(PREFIX)) {
-            
+
             message.channel.sendTyping();
 
             //Returns all words after command in an array. 
@@ -84,18 +84,18 @@ discordClient.on('messageCreate', async (message) => {
 })
   
 //LOGINS USING BOT TOKEN FROM ENV 
-discordClient.login(DISCORD_TOKEN);
+DISCORD_CLIENT.login(DISCORD_TOKEN);
 
 //SHUTS DOWN BOT AND NODE INSTANCES TO PREVENT MULTIPLE RUNNING INSTANCES
 process.on('SIGINT', () => {
     console.log('Received SIGINT signal. Shutting down.');
-    discordClient.destroy(); // Close the Discord.js client connection
+    DISCORD_CLIENT.destroy(); // Close the Discord.js client connection
     process.exit(0); // Exit the Node.js process
 });
 
 process.on('SIGTERM', () => {
     console.log('Received SIGTERM signal. Shutting down.');
-    discordClient.destroy(); // Close the Discord.js client connection
+    DISCORD_CLIENT.destroy(); // Close the Discord.js client connection
     process.exit(0); // Exit the Node.js process
 });
 

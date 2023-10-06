@@ -12,10 +12,8 @@ const { EmbedBuilder } = require('discord.js')
 const { getID } = require('../utils/getIDUtil')
 
 const {
-    discordClient,
-    jikanClient,
-    rightArrow,
-    leftArrow,
+    DISCORD_CLIENT,
+    JIKAN_CLIENT,
     THUMBNAIL,
     ICON_URL,
     ANIME_MODE,
@@ -23,7 +21,7 @@ const {
     MAX_VALUE_LENGTH,
     VA_NOT_FOUND,
     ROLE_NOT_FOUND,
-    buttonRow
+    BUTTON_ROW
 } = require('../../config')
 
 
@@ -81,16 +79,22 @@ function createCharacterEmbed(NAME, URL, TITLE, THUMBNAIL, ROLE, DESCRIPTION, VO
 function getDescription(characterDescription) {
     let description;
 
-    if (characterDescription.length > MAX_VALUE_LENGTH) {
-        const midPoint = characterDescription.lastIndexOf('.', MAX_VALUE_LENGTH);
-
-        if (midPoint !== -1) {
-            const descriptionFirstPart = characterDescription.substring(0, midPoint + 1);
-            description = descriptionFirstPart;
-        }
-    }
+    if (!characterDescription) {
+        return description = DESCRIPTION_NOT_FOUND;
+    } 
+    
     else {
-        description = characterDescription
+        if (characterDescription.length > MAX_VALUE_LENGTH) {
+            const midPoint = characterDescription.lastIndexOf('.', MAX_VALUE_LENGTH);
+
+            if (midPoint !== -1) {
+                const descriptionFirstPart = characterDescription.substring(0, midPoint + 1);
+                description = descriptionFirstPart;
+            }
+        }
+        else {
+            description = characterDescription
+        }
     }
 
     return description;
@@ -108,8 +112,8 @@ async function getAnimeCharacters(message, animeID, characterName) {
 
     try {
 
-        const anime = await jikanClient.anime.get(animeID);
-        const ch = await jikanClient.anime.getCharacters(animeID);
+        const anime = await JIKAN_CLIENT.anime.get(animeID);
+        const ch = await JIKAN_CLIENT.anime.getCharacters(animeID);
         const animeName = anime.title.default;
 
         let description = '';
@@ -153,7 +157,7 @@ async function getAnimeCharacters(message, animeID, characterName) {
         let i = 0;
 
         //characterObj = await getCharacterUtil(characterArr[i].character.name);
-        characterObj = await jikanClient.characters.getFull(characterArr[i].character.id); 
+        characterObj = await JIKAN_CLIENT.characters.getFull(characterArr[i].character.id);
 
         if (characterObj) {
             description = getDescription(characterObj.about);
@@ -173,8 +177,8 @@ async function getAnimeCharacters(message, animeID, characterName) {
         );
 
         if (characterArr.length > 1) {
-            embedMessage = await message.channel.send({ embeds: [characterEmbed] , components: [buttonRow]});
-        } else { 
+            embedMessage = await message.channel.send({ embeds: [characterEmbed], components: [BUTTON_ROW] });
+        } else {
             embedMessage = await message.channel.send({ embeds: [characterEmbed] });
         }
 
@@ -182,12 +186,12 @@ async function getAnimeCharacters(message, animeID, characterName) {
             if (interaction.user.bot) return;
 
             if (interaction.customId === 'left') {
-                i = (i - 1 + characterArr.length) % characterArr.length; 
+                i = (i - 1 + characterArr.length) % characterArr.length;
             } else {
                 i = (i + 1) % characterArr.length;
             }
-            
-            characterObj = await jikanClient.characters.getFull(characterArr[i].character.id); 
+
+            characterObj = await JIKAN_CLIENT.characters.getFull(characterArr[i].character.id);
 
             if (characterObj) {
                 description = getDescription(characterObj.about);
@@ -211,9 +215,9 @@ async function getAnimeCharacters(message, animeID, characterName) {
             interaction.deferUpdate();
         };
 
-        discordClient.removeAllListeners('interactionCreate');
+        DISCORD_CLIENT.removeAllListeners('interactionCreate');
 
-        discordClient.on('interactionCreate', async (interaction) => {
+        DISCORD_CLIENT.on('interactionCreate', async (interaction) => {
             if (!interaction.isButton()) return;
             await handleButton(interaction);
         });
@@ -225,9 +229,9 @@ async function getAnimeCharacters(message, animeID, characterName) {
 
 module.exports = {
     name: 'chr',
-    description: '!chr [main, sup, character_name] in [anime_name].\n' + 
-    '(in [anime_name]) only needs to be used when searching for a new character that is not in the current directory you are searching in.\n\n' + 
-    'NOTE: MAY CONTAIN SPOILERS.',    
+    description: '!chr [main, sup, character_name] in [anime_name].\n' +
+        '(in [anime_name]) only needs to be used when searching for a new character that is not in the current directory you are searching in.\n\n' +
+        'NOTE: MAY CONTAIN SPOILERS.',
     /**
      * Executes the `chr` command to retrieve character information. 
      *
@@ -239,8 +243,8 @@ module.exports = {
 
         try {
             let characterName = args[0];
-            
-            if ( !characterName ) throw new Error('no character specified in !chr.')
+
+            if (!characterName) throw new Error('no character specified in !chr.')
 
             characterName = characterName.toLowerCase();
             //console.log('Character Name:' + characterName);
