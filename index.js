@@ -39,8 +39,9 @@ discordClient.on('messageCreate', async (message) => {
         if (message.author.bot) return;
 
         if (message.content.startsWith(PREFIX)) {
-            message.channel.sendTyping();
             
+            message.channel.sendTyping();
+
             //Returns all words after command in an array. 
             const args = message.content.slice(PREFIX.length).trim().split(/ +/);
 
@@ -81,7 +82,7 @@ discordClient.on('messageCreate', async (message) => {
         message.channel.send(error.message);
     }
 })
-
+  
 //LOGINS USING BOT TOKEN FROM ENV 
 discordClient.login(DISCORD_TOKEN);
 
