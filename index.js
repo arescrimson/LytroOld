@@ -39,13 +39,9 @@ discordClient.on('messageCreate', async (message) => {
         if (message.author.bot) return;
 
         if (message.content.startsWith(PREFIX)) {
-
-            /**
-             * Returns all words after command in an array. 
-             * ex. !a one piece would return ['one', 'piece']
-             * ex. !chr luffy would return ['luffy']
-             * 
-             */
+            message.channel.sendTyping();
+            
+            //Returns all words after command in an array. 
             const args = message.content.slice(PREFIX.length).trim().split(/ +/);
 
             //command is the command i.e. !url One Piece would be url 
