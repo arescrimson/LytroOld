@@ -6,7 +6,7 @@
  */
 
 //IMPORT JIKAN CLIENT
-const { jikanClient } = require('../../config')
+const { JIKAN_CLIENT } = require('../../config')
 
 /**
  * Gets an anime ID from a search string.
@@ -25,10 +25,10 @@ async function getID(message, mediaType, searchString) {
         // Perform a search for anime based on the search string.
         switch(mediaType) { 
             case 'Anime': 
-                searchResults = await jikanClient.anime.search(searchString);
+                searchResults = await JIKAN_CLIENT.anime.search(searchString);
                 break; 
             case 'Manga': 
-                searchResults = await jikanClient.manga.search(searchString);
+                searchResults = await JIKAN_CLIENT.manga.search(searchString);
                 break; 
         }
 
