@@ -176,30 +176,6 @@ async function getAnimeInfo(message, animeID) {
             if (!interaction.isButton()) return;
             await handleButton(interaction);
         });
-
-        //embedMessage.react(leftArrow);
-        //embedMessage.react(rightArrow);
-            /*
-
-        async function handleReaction(reaction, user) {
-            if (user.bot) return;
-
-            if (reaction.emoji.name === leftArrow) {
-                embedMessage.edit({embeds: [animeEmbed]}).catch(console.error);
-            } else {
-                const updatedEmbed = await getInfo(message, animeID);
-                embedMessage.edit({ embeds: [updatedEmbed] }).catch(console.error);
-            }
-
-            reaction.users.remove(user);
-        };
-
-        discordClient.removeAllListeners('messageReactionAdd');
-        discordClient.on('messageReactionAdd', async (reaction, user) => {
-            await handleReaction(reaction, user);
-        });
-        */
-
     } catch (error) {
         message.channel.send('Error with searching Anime.');
         console.error('Error:', error.message);
