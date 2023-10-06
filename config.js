@@ -5,7 +5,7 @@
  * @author Ares
  */
 
-const { Client, IntentsBitField } = require('discord.js');
+const { Client, IntentsBitField, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
 const Jikan = require('jikan4.js');
 const jikanClient = new Jikan.Client();
 
@@ -26,9 +26,19 @@ const discordClient = new Client({
   ],
 });
 
-// Unicode emojis for reactions
-const rightArrow = '▶️';
-const leftArrow = '◀️';
+//right and left arrow buttons
+const right = new ButtonBuilder()
+  .setCustomId('right')
+  .setLabel('-->')
+  .setStyle(ButtonStyle.Success)
+
+const left = new ButtonBuilder()
+  .setCustomId('left')
+  .setLabel('<--')
+  .setStyle(ButtonStyle.Success)
+
+const buttonRow = new ActionRowBuilder()
+  .setComponents(left, right)
 
 //Explicit genre check array 
 const explicitList = process.env.BANNED_LIST;
@@ -47,9 +57,8 @@ module.exports = {
   // Discord Client Manager
   discordClient,
 
-  // Unicode emojis for embed reactions
-  rightArrow,
-  leftArrow,
+  // Button row
+  buttonRow,
 
   // Links to embed images
   THUMBNAIL: 'https://github.com/arescrimson/Lytro/blob/master/media/profile.jpg?raw=true',
@@ -67,7 +76,7 @@ module.exports = {
   MANGA_MODE: 'Manga',
 
   //Character command string
-  CHR_COMMAND: 'in', 
+  CHR_COMMAND: 'in',
 
   // Error messages for Anime
   SYNOPSIS_NOT_FOUND: 'Synopsis not listed.',
@@ -81,7 +90,7 @@ module.exports = {
   STUDIO_NOT_FOUND: 'Studios not listed.',
   RECOMMENDATIONS_NOT_FOUND: 'Recommendations not listed.',
   DESCRIPTION_NOT_FOUND: 'Description not listed.',
-  ROLE_NOT_FOUND: 'Role not listed.', 
+  ROLE_NOT_FOUND: 'Role not listed.',
   VA_NOT_FOUND: 'Voice Actor not listed.',
 
   // Error messages for Manga
