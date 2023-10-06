@@ -20,8 +20,7 @@ const {
     THUMBNAIL, 
     ICON_URL, 
     MAX_VALUE_LENGTH, 
-    leftArrow, 
-    rightArrow,
+    buttonRow
 } = require('../../config')
 
 //ERROR MESSAGES
@@ -153,26 +152,26 @@ async function getMangaInfo(message, mangaID) {
             manga.image.webp.default
         )
 
-        embedMessage = await message.channel.send({ embeds: [mangaEmbed] })
-        embedMessage.react(leftArrow);
-        embedMessage.react(rightArrow);
+        embedMessage = await message.channel.send({ embeds: [mangaEmbed], components: [buttonRow] })
 
-        async function handleReaction(reaction, user) {
-            if (user.bot) return;
+        async function handleButton(interaction) {
+            if (interaction.user.bot) return;
 
-            if (reaction.emoji.name === leftArrow) {
+            if (interaction.customId === 'left') {
                 embedMessage.edit({embeds: [mangaEmbed]}).catch(console.error);
             } else {
                 const updatedEmbed = await getMInfo(message, mangaID);
-                embedMessage.edit({ embeds: [updatedEmbed] }).catch(console.error);
+                embedMessage.edit({embeds: [updatedEmbed]}).catch(console.error);
             }
-
-            reaction.users.remove(user);
+            
+            interaction.deferUpdate();
         };
 
-        discordClient.removeAllListeners('messageReactionAdd');
-        discordClient.on('messageReactionAdd', async (reaction, user) => {
-            await handleReaction(reaction, user);
+        discordClient.removeAllListeners('interactionCreate');
+
+        discordClient.on('interactionCreate', async (interaction) => {
+            if (!interaction.isButton()) return;
+            await handleButton(interaction);
         });
     } catch (error) {
         console.error('Error in finding Manga:', error.message);
