@@ -5,8 +5,6 @@
  * @author Ares
  */
 
-// IMPORTS
-
 const { EmbedBuilder } = require('discord.js');
 
 const { getMInfo } = require('../mangacommands/getMInfo');

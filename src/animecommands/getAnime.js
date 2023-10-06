@@ -5,8 +5,6 @@
  * @author Ares
  */
 
-// IMPORTS
-
 const { EmbedBuilder } = require('discord.js');
 
 const { getID } = require('../utils/getIDUtil');

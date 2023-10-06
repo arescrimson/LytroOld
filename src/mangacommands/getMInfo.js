@@ -5,8 +5,6 @@
  * @author Ares
  */
 
-// IMPORTS
-
 // EMBEDBUILDER
 const { EmbedBuilder } = require('discord.js');
 
