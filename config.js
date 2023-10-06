@@ -27,18 +27,18 @@ const discordClient = new Client({
 });
 
 //right and left arrow buttons
-const right = new ButtonBuilder()
+const rightArrow = new ButtonBuilder()
   .setCustomId('right')
   .setLabel('-->')
   .setStyle(ButtonStyle.Success)
 
-const left = new ButtonBuilder()
+const leftArrow = new ButtonBuilder()
   .setCustomId('left')
   .setLabel('<--')
   .setStyle(ButtonStyle.Success)
 
 const buttonRow = new ActionRowBuilder()
-  .setComponents(left, right)
+  .setComponents(leftArrow, rightArrow)
 
 //Explicit genre check array 
 const explicitList = process.env.BANNED_LIST;
@@ -57,7 +57,7 @@ module.exports = {
   // Discord Client Manager
   discordClient,
 
-  // Button row
+  // Scroll Button Row 
   buttonRow,
 
   // Links to embed images
