@@ -20,8 +20,7 @@ const {
     ICON_URL,
     MAX_VALUE_LENGTH,
     ANIME_MODE,
-    rightArrow,
-    leftArrow,
+    buttonRow
 } = require('../../config');
 
 // ERROR MESSAGES
@@ -156,9 +155,31 @@ async function getAnimeInfo(message, animeID) {
             anime.image.webp.default
         )
 
-        embedMessage = await message.channel.send({ embeds: [animeEmbed] })
-        embedMessage.react(leftArrow);
-        embedMessage.react(rightArrow);
+        embedMessage = await message.channel.send({ embeds: [animeEmbed], components: [buttonRow] })
+
+        async function handleButton(interaction) {
+            if (interaction.user.bot) return;
+
+            if (interaction.customId === 'left') {
+                embedMessage.edit({embeds: [animeEmbed]}).catch(console.error);
+            } else {
+                const updatedEmbed = await getInfo(message, animeID);
+                embedMessage.edit({embeds: [updatedEmbed]}).catch(console.error);
+            }
+            
+            interaction.deferUpdate();
+        };
+
+        discordClient.removeAllListeners('interactionCreate');
+
+        discordClient.on('interactionCreate', async (interaction) => {
+            if (!interaction.isButton()) return;
+            await handleButton(interaction);
+        });
+
+        //embedMessage.react(leftArrow);
+        //embedMessage.react(rightArrow);
+            /*
 
         async function handleReaction(reaction, user) {
             if (user.bot) return;
@@ -177,6 +198,7 @@ async function getAnimeInfo(message, animeID) {
         discordClient.on('messageReactionAdd', async (reaction, user) => {
             await handleReaction(reaction, user);
         });
+        */
 
     } catch (error) {
         message.channel.send('Error with searching Anime.');
