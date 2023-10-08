@@ -93,7 +93,7 @@ async function getAnimeInfo(message, animeID) {
         let synopsis2 = '\n';
 
         //SPLITS SYNOPSIS IF TOO LONG INTO 2-3 PARAGRAPHS. 
-        if (anime.synopsis !== null) {
+        if (anime.synopsis) {
             if (anime.synopsis.length > MAX_VALUE_LENGTH) {
                 const midPoint = anime.synopsis.lastIndexOf('.', MAX_VALUE_LENGTH);
                 if (midPoint !== -1) {
@@ -114,7 +114,7 @@ async function getAnimeInfo(message, animeID) {
         //RATINGS AS AN AVERAGED SCORE STRING 
         let ratings = '';
 
-        if (stats.scores !== null) {
+        if (stats.scores) {
 
             let totalScore = 0;
             let totalVotes = 0;

@@ -75,7 +75,7 @@ async function getInfo(message, animeID) {
         let background2 = '\n';
 
         //SPLITS BACKGROUND IF TOO LONG INTO 2 PARAGRAPHS.  
-        if (anime.background !== null) {
+        if (anime.background) {
             if (anime.background.length > MAX_VALUE_LENGTH) {
                 const midPoint = anime.background.lastIndexOf('.', MAX_VALUE_LENGTH);
                 if (midPoint !== -1) {
