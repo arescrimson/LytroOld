@@ -48,13 +48,13 @@ Now supports title caching; any command with an **[name]** identifier will stay 
 
 ## Anime Demo 
 
-https://github.com/arescrimson/Lytro/assets/66581240/fc257995-02b1-4446-b091-ef94954c33a1
+https://github.com/arescrimson/Lytro/assets/66581240/1eda06f3-1193-4f69-a5eb-e2e803ceb63d
 
 <p align="center"> Featuring !a, !info, !img, !chr, and !quote.</p>
 
 ## Manga Demo
 
-https://github.com/arescrimson/Lytro/assets/66581240/79d916cc-af9c-40c7-9be9-449e2433eb02
+https://github.com/arescrimson/Lytro/assets/66581240/365eaafa-e7d2-4858-95eb-46f34781ee5e
 
 <p align="center"> Featuring !m, !minfo, !mimg, and !mchr.</p>
 
