@@ -8,7 +8,7 @@
 <!-- PROJECT ABOUT !-->
 ## About
 
-Currently features commands for anime and manga. Currently planning to expand to include more APIs, as well as embed and streaming information support. Permanent hosting support also on the way. 
+Anime Discord Bot for quick information on anime/manga, characters, and more. 
 
 Now supports title caching; any command with an **[name]** identifier will stay within the searched title directory. Commands pertaining to that directory can be entered without the **[name]**.
 
@@ -48,23 +48,15 @@ Now supports title caching; any command with an **[name]** identifier will stay 
 
 ## Anime Demo 
 
-https://github.com/arescrimson/Lytro/assets/66581240/fc257995-02b1-4446-b091-ef94954c33a1
+https://github.com/arescrimson/Lytro/assets/66581240/1eda06f3-1193-4f69-a5eb-e2e803ceb63d
 
 <p align="center"> Featuring !a, !info, !img, !chr, and !quote.</p>
 
 ## Manga Demo
 
-https://github.com/arescrimson/Lytro/assets/66581240/79d916cc-af9c-40c7-9be9-449e2433eb02
+https://github.com/arescrimson/Lytro/assets/66581240/365eaafa-e7d2-4858-95eb-46f34781ee5e
 
 <p align="center"> Featuring !m, !minfo, !mimg, and !mchr.</p>
-
-## Installation 
-
-**NOTE:** Lytro currently does not have channel restrictions, meaning that this bot will work in any channel. In addition, it currently is not recommmended to be used by multiple people at once, as it is currently primarily designed for a sole user functionality. However, these issues are all in development and are being actively looked into. Please let me know if there's any issues :)) 
-
-In addition, permanent hosting is almost done, but that unfortunately means that sometimes there will be outages for testing and transfer purposes. However, if the bot is online in discord, that means it is currently online. 
-
-**IMPORTANT:** LYTRO WILL BE OFFLINE FOR THE TIME BEING FOR CODE REFACTORING. 
 
 <!-- LICENSE -->
 ## License
