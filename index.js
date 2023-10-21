@@ -39,7 +39,7 @@ DISCORD_CLIENT.on('messageCreate', async (message) => {
         if (message.author.bot) return;
 
         if (message.content.startsWith(PREFIX)) {
-            
+
             //Returns all words after command in an array. 
             const args = message.content.slice(PREFIX.length).trim().split(/ +/);
 
@@ -66,7 +66,7 @@ DISCORD_CLIENT.on('messageCreate', async (message) => {
                     found = true;
                     break;
                 }
-            }
+            }   
 
             if (!found) {
                 message.channel.send('Command not found :(');

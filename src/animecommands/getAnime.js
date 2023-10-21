@@ -74,7 +74,7 @@ function createEmbed(TITLE, URL, THUMBNAIL, SYNOPSIS, SYNOPSIS2, EPISODES, GENRE
  * @param {Message} message is the discord message. 
  * @param {number} animeID is the animeID passed. 
  */
-async function getAnimeInfo(message, animeID) {
+async function getAnimeInfo(message, animeID, userID) {
     try {
 
         let embedMessage = null;
@@ -190,10 +190,10 @@ module.exports = {
      * @param {Array} args - An array of arguments passed with the command, typically containing the anime name.
      * @param {string} searchAnime - The anime name specified for the search.
      */
-    async execute(message, args, animeName) {
+    async execute(message, args, animeName, userID) {
         try {
             const animeID = await getID(message, ANIME_MODE, animeName);
-            getAnimeInfo(message, animeID);
+            getAnimeInfo(message, animeID, userID);
         } catch (error) {
             console.error('Error:', error.message);
             message.channel.send('Error: please make sure you have specified an anime.');
