@@ -8,6 +8,8 @@
 <!-- PROJECT ABOUT !-->
 ## About
 
+**IMPORTANT** AS OF 12/19/2023, THIS BOT HAS NOW BEEN COMPLETELY REWRITTEN INTO A NEWER VERSION, WHICH CAN BE LOCATED HERE. 
+
 Anime Discord Bot for quick information on anime/manga, characters, and more. 
 
 Now supports title caching; any command with an **[name]** identifier will stay within the searched title directory. Commands pertaining to that directory can be entered without the **[name]**.
